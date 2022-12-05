@@ -7,9 +7,9 @@ namespace pick_and_go.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly PickAndGoContext _db;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(PickAndGoContext context)
         {
             _db = context;
         }
