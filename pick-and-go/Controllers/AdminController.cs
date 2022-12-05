@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using pick_and_go.Data;
 using pick_and_go.Models;
 using System.Diagnostics;
 
@@ -6,11 +7,11 @@ namespace pick_and_go.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly ILogger<AdminController> _logger;
+        private readonly ApplicationDbContext _db;
 
-        public AdminController(ILogger<AdminController> logger)
+        public AdminController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _db = context;
         }
 
         public IActionResult Index()
