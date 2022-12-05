@@ -8,7 +8,7 @@ namespace pick_and_go.Controllers
     public class HomeController : Controller
     {
 
-        private readonly HomeController _db;
+        private readonly ApplicationDbContext _db;
 
         public HomeController(ApplicationDbContext context)
         {
