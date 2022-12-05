@@ -12,7 +12,7 @@ namespace pick_and_go.Models
         }
 
         public string DietaryId { get; set; } = null!;
-        public string? DietaryName { get; set; }
+        public string DietaryName { get; set; } = null!;
         public byte[]? DietaryImage { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }

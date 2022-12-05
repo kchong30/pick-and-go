@@ -13,13 +13,13 @@ namespace pick_and_go.Models
         }
 
         public int OrderId { get; set; }
-        public int? CustomerId { get; set; }
+        public int CustomerId { get; set; }
         public DateTime? OrderDate { get; set; }
         public decimal? OrderValue { get; set; }
         public TimeSpan? PickupTime { get; set; }
         public string? OrderStatus { get; set; }
 
-        public virtual Customer? Customer { get; set; }
+        public virtual Customer Customer { get; set; } = null!;
         public virtual ICollection<Favorite> Favorites { get; set; }
         public virtual ICollection<LineIngredient> LineIngredients { get; set; }
         public virtual ICollection<OrderLine> OrderLines { get; set; }

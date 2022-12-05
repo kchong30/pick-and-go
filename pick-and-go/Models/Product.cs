@@ -11,7 +11,7 @@ namespace pick_and_go.Models
         }
 
         public int ProductId { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; } = null!;
         public decimal? BasePrice { get; set; }
         public byte[]? Image { get; set; }
 

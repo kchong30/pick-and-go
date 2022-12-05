@@ -154,6 +154,10 @@ namespace pick_and_go.Models
                     .HasColumnName("adminUser")
                     .IsFixedLength();
 
+                entity.Property(e => e.DateLastOrdered)
+                    .HasColumnType("date")
+                    .HasColumnName("dateLastOrdered");
+
                 entity.Property(e => e.DateSignedUp)
                     .HasColumnType("date")
                     .HasColumnName("dateSignedUp");
@@ -199,7 +203,7 @@ namespace pick_and_go.Models
             modelBuilder.Entity<DietaryType>(entity =>
             {
                 entity.HasKey(e => e.DietaryId)
-                    .HasName("PK__DietaryT__9B5E3E4C5418F43B");
+                    .HasName("PK__DietaryT__9B5E3E4CF087F04B");
 
                 entity.ToTable("DietaryType");
 
@@ -283,6 +287,7 @@ namespace pick_and_go.Models
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Ingredients)
                     .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Ingredien__categ__628FA481");
 
                 entity.HasMany(d => d.Dietaries)
@@ -339,7 +344,7 @@ namespace pick_and_go.Models
             modelBuilder.Entity<OrderHeader>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__OrderHea__0809337D93589E57");
+                    .HasName("PK__OrderHea__0809337DA99DA31A");
 
                 entity.ToTable("OrderHeader");
 
@@ -366,6 +371,7 @@ namespace pick_and_go.Models
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.OrderHeaders)
                     .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__OrderHead__custo__656C112C");
             });
 
@@ -394,6 +400,7 @@ namespace pick_and_go.Models
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderLines)
                     .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__OrderLine__produ__693CA210");
             });
 

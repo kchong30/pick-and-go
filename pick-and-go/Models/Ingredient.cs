@@ -12,12 +12,12 @@ namespace pick_and_go.Models
         }
 
         public int IngredientId { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; } = null!;
         public decimal? Price { get; set; }
-        public string? CategoryId { get; set; }
+        public string CategoryId { get; set; } = null!;
         public string? InStock { get; set; }
 
-        public virtual Category? Category { get; set; }
+        public virtual Category Category { get; set; } = null!;
         public virtual ICollection<LineIngredient> LineIngredients { get; set; }
 
         public virtual ICollection<DietaryType> Dietaries { get; set; }
