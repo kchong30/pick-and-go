@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace pick_and_go.Areas.Identity.Pages.Account.Manage
+namespace PickAndGo.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {

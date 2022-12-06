@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace pick_and_go.Models
+namespace PickAndGo.Models
 {
     public partial class Customer
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using pick_and_go.Data;
-using pick_and_go.Models;
+using PickAndGo.Data;
+using PickAndGo.Models;
 using System.Diagnostics;
 
-namespace pick_and_go.Controllers
+namespace PickAndGo.Controllers
 {
     public class AdminController : Controller
     {
