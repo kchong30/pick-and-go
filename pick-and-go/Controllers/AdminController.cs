@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PickAndGo.Data;
 using PickAndGo.Models;
-using PickAndGo.Repositories;
+using PickAndGo.ViewModels;
 using System.Diagnostics;
+using PickAndGo.Repositories;
 
 namespace PickAndGo.Controllers
 {
@@ -20,6 +21,7 @@ namespace PickAndGo.Controllers
             return View();
         }
 
+
         public IActionResult CustomerList()
         {
             CustomerRepository cR = new CustomerRepository(_db);
@@ -33,6 +35,17 @@ namespace PickAndGo.Controllers
             var vm = cR.ReturnCustomerById(customerId);
 
             return View(vm);
+        }
+
+        public IActionResult Overview()
+        {
+            OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
+            OrderHeaderVM ohVM = new OrderHeaderVM();
+
+            ohVM.Pending = ohRepo.GetAll().Item1;
+            ohVM.Completed = ohRepo.GetAll().Item2;
+
+            return View(ohVM);
         }
 
     }
