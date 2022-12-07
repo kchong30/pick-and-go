@@ -4,6 +4,11 @@ using PickAndGo.Models;
 using PickAndGo.ViewModels;
 using System.Diagnostics;
 using PickAndGo.Repositories;
+using NuGet.Protocol;
+using System.Net;
+using Microsoft.EntityFrameworkCore;
+using PickAndGo.ViewModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PickAndGo.Controllers
 {
@@ -21,6 +26,51 @@ namespace PickAndGo.Controllers
             return View();
         }
 
+        public IActionResult IngredientsIndex()
+        {
+            return View(_db.Ingredients.ToList());
+        }
+
+        public IActionResult IngredientsCreate()
+        {
+            ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult IngredientsCreate(IngredientVM ingredient)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _db.Ingredients.Add(new Ingredient
+                    {
+                        Description = ingredient.Description,
+                        Price = ingredient.Price,
+                        CategoryId = ingredient.CategoryId,
+                        InStock = ingredient.InStock
+                    });
+                    _db.SaveChanges();
+                    return RedirectToAction("IngredientsIndex");
+                }
+            }
+            catch
+            {
+                return View();
+            }
+
+            ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
+            return View(ingredient);
+        }
+
+        public IActionResult IngredientsDetails(int id)
+        {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            var vm = iR.ReturnIngredientById(id);
+            
+            return View(vm);
+        }
 
         public IActionResult CustomerList()
         {
