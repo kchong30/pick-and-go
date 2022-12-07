@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PickAndGo.Data;
 using PickAndGo.Models;
+using PickAndGo.Repositories;
 using System.Diagnostics;
 
 namespace PickAndGo.Controllers
@@ -18,5 +19,21 @@ namespace PickAndGo.Controllers
         {
             return View();
         }
+
+        public IActionResult CustomerList()
+        {
+            CustomerRepository cR = new CustomerRepository(_db);
+            var vm = cR.ReturnAllCustomers();
+
+            return View(vm);
+        }
+        public IActionResult CustomerDetail(int customerId)
+        {
+            CustomerRepository cR = new CustomerRepository(_db);
+            var vm = cR.ReturnCustomerById(customerId);
+
+            return View(vm);
+        }
+
     }
 }
