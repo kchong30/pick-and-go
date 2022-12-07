@@ -3,35 +3,21 @@
 @{
     ViewData["Title"] = "Overview";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int pending = Model != null ? Model.Pending : 0;
+    int outstanding = Model != null ? Model.Outstanding : 0;
     int completed = Model != null ? Model.Completed : 0;
-
+    string date = Model.Date;
 }
-
 
 <h1>Overview</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Pending
-            </th>
-            <th>
-                Completed
-            </th>
+<form asp-controller="Admin" asp-action="Overview" method="get">
+    <input type="submit" name="submitBtn" value="<" />
+    <input type="date" name="currentDate" value="@date" required />
+    <input type="submit" name="submitBtn" value="Go" />
+    <input type="submit" name="submitBtn" value=">" @(Convert.ToDateTime(date).CompareTo(DateTime.Now.Date) < 0  ? "" : "disabled") />
+</form>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                @pending
-            </td>
-            <td>
-                @completed
-            </td>
-        </tr>
-    </tbody>
-</table>
+<p>Last Update: @ViewData["CurrentTime"]</p>
+
+<p><b>Outstanding:</b> @outstanding</p>
+<p><b>Completed:</b> @completed</p>

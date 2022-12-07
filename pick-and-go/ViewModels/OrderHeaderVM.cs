@@ -2,7 +2,8 @@
 {
     public class OrderHeaderVM
     {
-        public int Pending { get; set; }
+        public int Outstanding { get; set; }
         public int Completed { get; set; }
+        public string Date { get; set; }
     }
 }

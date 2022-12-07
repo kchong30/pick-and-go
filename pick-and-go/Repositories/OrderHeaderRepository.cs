@@ -13,17 +13,12 @@ namespace PickAndGo.Repositories
         }
 
 
-        public Tuple<int, int> GetAll()
+        public Tuple<int, int> GetOverview(string date)
         {
-            int pending = _db.OrderHeaders.Where(oh => oh.OrderStatus == "P").Select(oh => oh.OrderStatus).Count();
-            int completed = _db.OrderHeaders.Where(oh => oh.OrderStatus == "C").Select(oh => oh.OrderStatus).Count();
+            // "P" & "C" Will be changed later on.
+            int pending = _db.OrderHeaders.Where(oh=>oh.OrderDate.ToString() == date).Where(oh => oh.OrderStatus == "P").Select(oh => oh.OrderStatus).Count();
+            int completed = _db.OrderHeaders.Where(oh => oh.OrderDate.ToString() == date).Where(oh => oh.OrderStatus == "C").Select(oh => oh.OrderStatus).Count();
 
-
-            //OrderHeaderVM ohVM = new OrderHeaderVM()
-            //{
-            //    Pending = pending,
-            //    Completed = completed
-            //};
             return Tuple.Create(pending, completed);
         }
     }
