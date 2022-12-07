@@ -52,5 +52,12 @@ namespace PickAndGo.Repositories
             _db.SaveChanges();
             return message;
         }
+
+        public void DeleteIngredientsRecord(Ingredient ingredient)
+        {
+            var result = _db.Ingredients.Where(i => i.IngredientId == ingredient.IngredientId).FirstOrDefault();
+            _db.Remove(result);
+            _db.SaveChanges();
+        }
     }
 }

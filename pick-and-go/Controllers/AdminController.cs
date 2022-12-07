@@ -108,6 +108,39 @@ namespace PickAndGo.Controllers
             }
         }
 
+        public IActionResult IngredientsDelete(int id)
+        {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            var thedelete = iR.ReturnIngredientById(id);
+            return View(thedelete);
+        }
+
+        [HttpPost]
+        public IActionResult IngredientsDelete(IngredientVM ingredient)
+        {
+            if (!ModelState.IsValid)
+            {
+                try
+                {
+                    IngredientsRepository iR = new IngredientsRepository(_db);
+                    Ingredient ing = new Ingredient()
+                    {
+                        IngredientId = ingredient.IngredientId,
+                        Description = ingredient.Description,
+                        Price = ingredient.Price,
+                        CategoryId = ingredient.CategoryId,
+                        InStock = ingredient.InStock
+                    };
+                    iR.DeleteIngredientsRecord(ing);
+                }
+                catch 
+                {
+                    return View();
+                }
+            }
+            return RedirectToAction("IngredientsIndex");
+        }
+
         public IActionResult CustomerList()
         {
             CustomerRepository cR = new CustomerRepository(_db);
