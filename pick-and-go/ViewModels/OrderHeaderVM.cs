@@ -1,4 +1,4 @@
-﻿namespace pick_and_go.ViewModels
+﻿namespace PickAndGo.ViewModels
 {
     public class OrderHeaderVM
     {
