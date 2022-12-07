@@ -21,6 +21,22 @@ namespace PickAndGo.Controllers
             return View();
         }
 
+
+        public IActionResult CustomerList()
+        {
+            CustomerRepository cR = new CustomerRepository(_db);
+            var vm = cR.ReturnAllCustomers();
+
+            return View(vm);
+        }
+        public IActionResult CustomerDetail(int customerId)
+        {
+            CustomerRepository cR = new CustomerRepository(_db);
+            var vm = cR.ReturnCustomerById(customerId);
+
+            return View(vm);
+        }
+
         public IActionResult Overview()
         {
             OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
@@ -31,5 +47,6 @@ namespace PickAndGo.Controllers
 
             return View(ohVM);
         }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using PickAndGo.Models;
 using PickAndGo.Data;
-
+using pick_and_go.ViewModel;
+using System.Linq;
 
 namespace PickAndGo.Repositories
 {
@@ -28,5 +29,31 @@ namespace PickAndGo.Repositories
             _db.Add(newCustomer);
             _db.SaveChanges();
         }
+
+        public IEnumerable<CustomerVM> ReturnAllCustomers()
+        {
+            var vm = from c in _db.Customers
+                     let oCount = (from o in _db.OrderHeaders where c.CustomerId == o.CustomerId select o).Count()
+                     select new CustomerVM
+                     {
+                         CustomerId = c.CustomerId,
+                         EmailAddress = c.EmailAddress,
+                         DateLastOrdered = c.DateLastOrdered,
+                         FirstName = c.FirstName,
+                         LastName = c.LastName,
+                         PhoneNumber = c.PhoneNumber,
+                         NumbersOfOrders = oCount
+                     };
+
+            return vm;
+        }
+
+        public CustomerVM ReturnCustomerById(int customerId)
+        {
+            var vm = ReturnAllCustomers().Where(c => c.CustomerId == customerId).FirstOrDefault();
+
+            return vm;
+        }
+
     }
 }
