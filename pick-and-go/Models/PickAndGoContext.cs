@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace pick_and_go.Models
+namespace PickAndGo.Models
 {
     public partial class PickAndGoContext : DbContext
     {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using pick_and_go.Data;
-using pick_and_go.ViewModels;
-using pick_and_go.Models;
+using PickAndGo.Data;
+using PickAndGo.Models;
+using PickAndGo.ViewModels
 using System.Diagnostics;
 using pick_and_go.Repository;
 
-namespace pick_and_go.Controllers
+namespace PickAndGo.Controllers
 {
     public class AdminController : Controller
     {
