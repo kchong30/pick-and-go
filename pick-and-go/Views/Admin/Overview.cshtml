@@ -1,0 +1,37 @@
+﻿@model pick_and_go.ViewModels.OrderHeaderVM
+
+@{
+    ViewData["Title"] = "Overview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int pending = Model != null ? Model.Pending : 0;
+    int completed = Model != null ? Model.Completed : 0;
+
+}
+
+
+<h1>Overview</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Pending
+            </th>
+            <th>
+                Completed
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @pending
+            </td>
+            <td>
+                @completed
+            </td>
+        </tr>
+    </tbody>
+</table>
