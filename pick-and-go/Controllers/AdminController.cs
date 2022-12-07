@@ -9,6 +9,7 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using PickAndGo.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PickAndGo.Controllers
 {
@@ -70,6 +71,41 @@ namespace PickAndGo.Controllers
             var vm = iR.ReturnIngredientById(id);
             
             return View(vm);
+        }
+
+        public IActionResult IngredientsEdit(int? id)
+        {
+            Ingredient ingredient = _db.Ingredients.Find(id);
+            ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
+            return View(ingredient);
+        }
+
+        [HttpPost]
+        public IActionResult IngredientsEdit(IngredientVM ingredient)
+        {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    iR.EditIngredient(new Ingredient
+                    {
+                        IngredientId = ingredient.IngredientId,
+                        Description = ingredient.Description,
+                        Price = ingredient.Price,
+                        CategoryId = ingredient.CategoryId,
+                        InStock = ingredient.InStock
+                    });
+                    HttpContext.Session.SetString("CategoryId", ingredient.CategoryId);
+                }
+                ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
+
+                return RedirectToAction("IngredientsDetails", "Ingredients", new { id = ingredient.IngredientId });
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         public IActionResult CustomerList()
