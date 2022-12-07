@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-pick_and_go-C62F8582-8107-4AF8-B2DA-9EC24CF9BAFE</UserSecretsId>
-    <RootNamespace>pick_and_go</RootNamespace>
+    <UserSecretsId>aspnet-PickAndGo-C62F8582-8107-4AF8-B2DA-9EC24CF9BAFE</UserSecretsId>
+    <RootNamespace>PickAndGo</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

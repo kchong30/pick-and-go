@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PickAndGo.Data;
 using PickAndGo.Models;
-using PickAndGo.ViewModels
+using PickAndGo.ViewModels;
 using System.Diagnostics;
-using pick_and_go.Repository;
+using PickAndGo.Repositories;
 
 namespace PickAndGo.Controllers
 {

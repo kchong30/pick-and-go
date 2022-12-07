@@ -1,7 +1,7 @@
-﻿using pick_and_go.Models;
-using pick_and_go.ViewModels;
+﻿using PickAndGo.Models;
+using PickAndGo.ViewModels;
 
-namespace pick_and_go.Repository
+namespace PickAndGo.Repositories
 {
     public class OrderHeaderRepository
     {
