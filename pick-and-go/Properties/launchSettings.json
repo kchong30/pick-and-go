@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "pick_and_go": {
+    "PickAndGo": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
