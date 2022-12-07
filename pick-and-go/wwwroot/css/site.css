@@ -16,3 +16,106 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Order list with expanding/collapsing sections */
+
+.order-title {
+    display: flex;
+}
+
+.order-filter {
+    flex-direction: column;
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.order-search {
+    flex-direction: column;
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.order-filter #orderfilter {
+    height: 31px;
+}
+
+.accordion-button {
+    padding: 10px;
+}
+
+.accordion-body {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.accordion-table {
+    margin-left: 330px;
+}
+
+.hdg1 {
+    width: 74px;
+}
+
+.hdg2 {
+    width: 279px;
+}
+
+.hdg3 {
+    width: 275px;
+}
+
+.hdg4 {
+    width: 140px;
+}
+
+.hdg5 {
+    width: 350px;
+}
+
+.hdg6 {
+
+    width: 200px;
+}
+
+.hdg7 {
+    width: 200px;
+}
+
+.col1 {
+    width: 68px;
+    text-align: right;
+    padding-right: 35px;
+}
+
+.col2 {
+    width: 230px;
+}
+
+.col3 {
+    width: 235px;
+}
+
+.col4 {
+    width: 110px;
+}
+
+.col5 {
+    width: 265px;
+}
+
+.col6 {
+    width: 230px;
+}
+
+.col7 {
+    width: 200px;
+}
+
+.cell1 {
+    width: 160px;
+}
+
+.cell2 {
+    width: 60px;
+    text-align: right;
+}
