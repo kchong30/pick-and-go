@@ -1,4 +1,5 @@
-﻿using pick_and_go.ViewModel;
+﻿using Microsoft.EntityFrameworkCore;
+using pick_and_go.ViewModel;
 using PickAndGo.Models;
 using PickAndGo.ViewModel;
 
@@ -35,6 +36,21 @@ namespace PickAndGo.Repositories
             var vm = ReturnAllIngredients().Where(c => c.IngredientId == ingredientId).FirstOrDefault();
 
             return vm;
+        }
+
+        public string EditIngredient(Ingredient ingredient)
+        {
+            string message = "";
+            _db.Update(new Ingredient
+            {
+                IngredientId = ingredient.IngredientId,
+                Description= ingredient.Description,
+                Price = ingredient.Price,
+                CategoryId = ingredient.CategoryId,
+                InStock = ingredient.InStock
+            });
+            _db.SaveChanges();
+            return message;
         }
     }
 }
