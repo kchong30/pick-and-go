@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using pick_and_go.ViewModel;
-using PickAndGo.Models;
 using PickAndGo.ViewModels;
+using PickAndGo.Models;
 
 namespace PickAndGo.Repositories
 {

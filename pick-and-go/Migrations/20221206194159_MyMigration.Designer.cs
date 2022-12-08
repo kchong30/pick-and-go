@@ -9,7 +9,7 @@ using PickAndGo.Models;
 
 #nullable disable
 
-namespace pick_and_go.Migrations
+namespace PickAndGo.Migrations
 {
     [DbContext(typeof(PickAndGoContext))]
     [Migration("20221206194159_MyMigration")]

@@ -8,7 +8,7 @@ using PickAndGo.Models;
 
 #nullable disable
 
-namespace pick_and_go.Migrations
+namespace PickAndGo.Migrations
 {
     [DbContext(typeof(PickAndGoContext))]
     partial class PickAndGoContextModelSnapshot : ModelSnapshot

@@ -1,6 +1,6 @@
 namespace PickAndGo.Models
 {
-    public class ErrorViewModel
+    public class ErrorViewModels
     {
         public string? RequestId { get; set; }
 

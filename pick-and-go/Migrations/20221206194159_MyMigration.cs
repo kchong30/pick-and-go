@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace pick_and_go.Migrations
+namespace PickAndGo.Migrations
 {
     public partial class MyMigration : Migration
     {
