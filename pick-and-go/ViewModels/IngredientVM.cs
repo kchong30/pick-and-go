@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PickAndGo.Models;
 
-namespace PickAndGo.ViewModel
+namespace PickAndGo.ViewModels
 {
     [Keyless]
     public class IngredientVM
     {
-        
+
         public int IngredientId { get; set; }
         public string Description { get; set; }
         public decimal? Price { get; set; }

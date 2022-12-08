@@ -1,7 +1,7 @@
 ﻿using PickAndGo.Models;
 using PickAndGo.Data;
-using pick_and_go.ViewModel;
 using System.Linq;
+using PickAndGo.ViewModels;
 
 namespace PickAndGo.Repositories
 {

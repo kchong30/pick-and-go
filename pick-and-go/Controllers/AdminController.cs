@@ -7,7 +7,6 @@ using PickAndGo.Repositories;
 using NuGet.Protocol;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
-using PickAndGo.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 

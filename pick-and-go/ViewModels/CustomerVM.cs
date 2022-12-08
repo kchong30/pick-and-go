@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PickAndGo.Models;
 
-namespace pick_and_go.ViewModel
+namespace PickAndGo.ViewModels
 {
     [Keyless]
     public class CustomerVM
@@ -17,7 +17,7 @@ namespace pick_and_go.ViewModel
         public DateTime? DateLastOrdered { get; set; }
         public virtual ICollection<OrderHeader> OrderHeaders { get; set; }
 
-        public int? NumbersOfOrders    { get; set; }
+        public int? NumbersOfOrders { get; set; }
 
     }
 }
