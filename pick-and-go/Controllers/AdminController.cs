@@ -57,7 +57,7 @@ namespace pick_and_go.Controllers
             if (changeStatus)
             {
                 string editMessage = "";
-                editMessage = or.UpdateOrderStatus(orderId, COMPLETED);
+                editMessage = or.UpdateOrderStatus(0, COMPLETED);
 
                 return RedirectToAction("Orders", "Admin", new { message = editMessage });
             }
