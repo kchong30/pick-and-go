@@ -16,8 +16,8 @@ namespace PickAndGo.Models
         public int CustomerId { get; set; }
         public DateTime? OrderDate { get; set; }
         public decimal? OrderValue { get; set; }
-        public TimeSpan? PickupTime { get; set; }
-        public string? OrderStatus { get; set; }
+        public DateTime? PickupTime { get; set; }
+        public string OrderStatus { get; set; } = null!;
 
         public virtual Customer Customer { get; set; } = null!;
         public virtual ICollection<Favorite> Favorites { get; set; }

@@ -38,7 +38,7 @@ namespace PickAndGo.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server= KCHONG1902\\SQLEXPRESS_KC3;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True ");
+                optionsBuilder.UseSqlServer("Server= DESKTOP-FE33CFA\\SQLEXPRESS;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True ");
             }
         }
 
@@ -204,7 +204,7 @@ namespace PickAndGo.Models
             modelBuilder.Entity<DietaryType>(entity =>
             {
                 entity.HasKey(e => e.DietaryId)
-                    .HasName("PK__DietaryT__9B5E3E4CF087F04B");
+                    .HasName("PK__DietaryT__9B5E3E4C437664CF");
 
                 entity.ToTable("DietaryType");
 
@@ -345,7 +345,7 @@ namespace PickAndGo.Models
             modelBuilder.Entity<OrderHeader>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__OrderHea__0809337DA99DA31A");
+                    .HasName("PK__OrderHea__0809337DDCBC5015");
 
                 entity.ToTable("OrderHeader");
 
@@ -367,7 +367,9 @@ namespace PickAndGo.Models
                     .HasColumnType("decimal(9, 2)")
                     .HasColumnName("orderValue");
 
-                entity.Property(e => e.PickupTime).HasColumnName("pickupTime");
+                entity.Property(e => e.PickupTime)
+                    .HasColumnType("datetime")
+                    .HasColumnName("pickupTime");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.OrderHeaders)
