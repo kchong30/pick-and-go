@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace pick_and_go.Migrations
+namespace PickAndGo.Data.Migrations
 {
     public partial class initialcreate : Migration
     {

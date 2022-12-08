@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using pick_and_go.Data;
+using PickAndGo.Data;
+using System;
 
-#nullable disable
-
-namespace pick_and_go.Migrations
+namespace PickAndGo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20221206185753_initialcreate")]

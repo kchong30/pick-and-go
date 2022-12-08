@@ -1,0 +1,42 @@
+﻿@model IEnumerable<PickAndGo.Models.Customer>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdminUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateSignedUp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateLastOrdered)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+</table>

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using PickAndGo.ViewModels;
 
-namespace pick_and_go.Models
+namespace PickAndGo.Models
 {
     public partial class PickAndGoContext : DbContext
     {
@@ -432,5 +433,7 @@ namespace pick_and_go.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<IngredientVM> IngredientVM { get; set; }
     }
 }

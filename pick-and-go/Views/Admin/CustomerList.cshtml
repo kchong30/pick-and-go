@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CustomerVM>
+@    using pick_and_go.ViewModel
+
+@{
+    ViewData["Title"] = "Vendor List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Customer List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateLastOrdered)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumbersOfOrders)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.EmailAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.DateLastOrdered)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.NumbersOfOrders)
+                </td>
+
+                <td>
+                    <a asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Detail</a> 
+@*                    <a asp-action="Edit" asp-route-accountNum="@item.CustomerId">Edit</a> |
+                    <a asp-action="Delete" asp-route-accountNum="@item.CustomerId">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
