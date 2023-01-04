@@ -134,7 +134,7 @@ namespace PickAndGo.Controllers
             OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
             OrderHeaderVM ohVM = new OrderHeaderVM();
 
-            ohVM.Pending = ohRepo.GetAll().Item1;
+            ohVM.Outstanding = ohRepo.GetAll().Item1;
             ohVM.Completed = ohRepo.GetAll().Item2;
 
             return View(ohVM);

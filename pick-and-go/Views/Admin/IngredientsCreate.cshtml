@@ -7,9 +7,8 @@
 
 }
 
-<h1>IngredientsCreate</h1>
+<h1>Add a new ingredient</h1>
 
-<h4>IngredientVM</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -26,14 +25,14 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
+                <label asp-for="CategoryId" class="control-label">Category</label>
                     <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.categories">
                         <option value="">Please Select One</option>
                     </select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="InStock" class="control-label"></label>
+                <label asp-for="InStock" class="control-label">In Stock</label>
                 <input asp-for="InStock" class="form-control" />
                 <span asp-validation-for="InStock" class="text-danger"></span>
             </div>
@@ -45,7 +44,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="IngredientsIndex">Back to List</a>
 </div>
 
 @section Scripts {
