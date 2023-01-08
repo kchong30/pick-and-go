@@ -13,6 +13,8 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.SignalR.Protocol;
+using NuGet.Protocol.Core.Types;
+using System.Security.Principal;
 
 namespace PickAndGo.Controllers
 {
@@ -33,9 +35,12 @@ namespace PickAndGo.Controllers
             return View();
         }
 
-        public IActionResult IngredientsIndex()
+        public IActionResult Ingredients()
         {
-            return View(_db.Ingredients.ToList());
+            IngredientsRepository ir = new IngredientsRepository(_db);
+            IQueryable<IngredientListVM> vm = ir.BuildIngredientListVM();
+
+            return View(vm);
         }
 
         public IActionResult IngredientsCreate()
@@ -59,7 +64,7 @@ namespace PickAndGo.Controllers
                         InStock = ingredient.InStock
                     });
                     _db.SaveChanges();
-                    return RedirectToAction("IngredientsIndex");
+                    return RedirectToAction("Ingredients");
                 }
             }
             catch
@@ -75,7 +80,7 @@ namespace PickAndGo.Controllers
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.ReturnIngredientById(id);
-            
+
             return View(vm);
         }
 
@@ -114,6 +119,26 @@ namespace PickAndGo.Controllers
             }
         }
 
+        public IActionResult IngredientsDelete(int id)
+        {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            IngredientVM ingredient = iR.ReturnIngredientById(id);
+            ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
+            return View(ingredient);
+        }
+
+        [HttpPost]
+        public IActionResult IngredientsDelete(IngredientVM ingredient)
+        {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+
+            string deleteMessage = "";
+
+            deleteMessage = iR.DeleteIngredient(ingredient.IngredientId);
+
+            return RedirectToAction("Ingredients", "Admin", new { message = deleteMessage });
+        }
+
         public IActionResult CustomerList()
         {
             CustomerRepository cR = new CustomerRepository(_db);
@@ -140,7 +165,6 @@ namespace PickAndGo.Controllers
             return View(ohVM);
         }
 
-
         public IActionResult Orders(string message)
         {
             if (message == null)
@@ -163,14 +187,15 @@ namespace PickAndGo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Orders(string searchName, string searchOrder, bool changeStatus = false)
+        public IActionResult Orders(string searchName, string searchOrder, int orderId, int lineId,
+                                    Boolean changeStatus)
         {
             OrderRepository or = new OrderRepository(_db);
 
             if (changeStatus)
             {
                 string editMessage = "";
-                editMessage = or.UpdateOrderStatus(0, COMPLETED);
+                editMessage = or.UpdateOrderLineStatus(orderId, lineId, COMPLETED);
 
                 return RedirectToAction("Orders", "Admin", new { message = editMessage });
             }
@@ -185,7 +210,7 @@ namespace PickAndGo.Controllers
             ViewData["CurrentFilter"] = orderFilter;
             ViewData["CurrentNameSearch"] = searchName;
             ViewData["CurrentOrderSearch"] = searchOrder;
-            
+
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
 
             return View(vm);

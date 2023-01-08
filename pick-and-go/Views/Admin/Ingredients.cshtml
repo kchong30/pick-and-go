@@ -1,0 +1,95 @@
+﻿@using PickAndGo.ViewModels;
+@model IEnumerable<IngredientListVM>
+
+@{
+    ViewData["Title"] = "Ingredients";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+ }
+ 
+<h1>Ingredients</h1>
+
+<p>
+    <a asp-action="IngredientsCreate">Create New</a>
+</p>
+
+<div class="container">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="accordion" id="PickAndGoAccordion">
+
+            @foreach (var cat in Model)
+            {
+                <tr>
+                    <td>@cat.CategoryId</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="false" aria-controls="@cat.CategoryId"></button>
+                    </td>
+                </tr>
+
+                <tr id="@cat.CategoryId" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
+
+                    <td class="accordion-detail accordion-body" colspan="8">
+                        <table class="accordion-table container">
+                            @if (cat.Ingredients.Count > 0)
+                            {
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>In Stock</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            }
+                            @foreach (var ing in cat.Ingredients)
+                            {   
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="celldesc">@ing.Description</td>
+                                    <td>@ing.Price</td>
+                                    <td>@ing.InStock</td>
+                                    <td>
+                                        <a asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a> |
+                                        <a asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a> |
+                                        @if (!ing.OutstandingOrders)
+                                        {
+                                            <a asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId">Delete</a>
+                                        }
+                                        else {
+                                            <a asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" aria-current="page">Delete</a>
+                                        }
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>  
+@ViewBag.Message

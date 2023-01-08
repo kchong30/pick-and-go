@@ -1,7 +1,11 @@
-﻿using PickAndGo.Data;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using PickAndGo.Data;
 using PickAndGo.Models;
 using PickAndGo.ViewModels;
+using System.Data;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace PickAndGo.Repositories
 {
@@ -21,7 +25,7 @@ namespace PickAndGo.Repositories
                          join c in _db.Customers on o.CustomerId equals c.CustomerId
                          join p in _db.Products on l.ProductId equals p.ProductId
                          where (o.OrderStatus.Contains(orderFilter))
-                         orderby o.OrderDate descending, o.PickupTime descending
+                         orderby o.PickupTime descending
                          select new OrderListVM
                          {
                              OrderId = o.OrderId,
@@ -39,7 +43,7 @@ namespace PickAndGo.Repositories
                              Price = p.BasePrice,
                              OrderValue = (decimal)o.OrderValue,
                              OrderStatus = o.OrderStatus,
-                             SelectedStatus = orderFilter,
+                             LineStatus = l.LineStatus,
                              Ingredients = (List<OrderIngredientVM>)(from li in _db.LineIngredients
                                                                      join i in _db.Ingredients on li.IngredientId equals i.IngredientId
                                                                      where o.OrderId == li.OrderId && l.LineId == li.LineId
@@ -76,23 +80,49 @@ namespace PickAndGo.Repositories
             return orderHeader;
         }
 
-        public string UpdateOrderStatus(int orderId, string orderStatus)
+        public OrderLine GetOrderLine(int orderId, int lineId)
+        {
+            var orderLine = _db.OrderLines.Where(ol => ol.OrderId == orderId &&  
+                                                 ol.LineId == lineId).FirstOrDefault();
+
+            return orderLine;
+        }
+
+        public string UpdateOrderLineStatus(int orderId, int lineId, string orderStatus)
         {
             string editMessage = "";
-            OrderHeader order = GetOrderHeader(orderId);
-            order.OrderStatus = orderStatus;
+            OrderLine orderLine = GetOrderLine(orderId, lineId);
+            orderLine.LineStatus = orderStatus; 
 
             try
             {
-                _db.OrderHeaders.Update(order);
+                _db.OrderLines.Update(orderLine);
                 _db.SaveChanges();
+                //editMessage = $"{orderLine.Description}, for customer {order.FullName} on order number {order.OrderId} has been completed";
             }
             catch (Exception ex)
             {
                 editMessage = ex.Message;
             }
 
+            if (editMessage == "")
+            {
+                try
+                {
+                    UpdateOrderHeaderStatus(orderId);
+                }
+                catch (Exception ex)
+                {
+                    editMessage = ex.Message;
+                }
+            }
+
             return editMessage;
+        }
+
+        public void UpdateOrderHeaderStatus(int orderId)
+        {
+            _db.OrderHeaders.FromSqlInterpolated($"spUpdateOrderHeaderStatus {orderId}");
         }
     }
 }

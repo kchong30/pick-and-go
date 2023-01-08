@@ -2,14 +2,17 @@
 @using PickAndGo.ViewModels
 
 @{
-    ViewData["Title"] = "IngredientsDetails";
+    ViewData["Title"] = "IngredientsDelete";
         Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
 }
 
-<h1>Ingredient Details</h1>
+<h1>Ingredient Delete</h1>
+
+<h3>Are you sure you want to delete this ingredient?</h3>
 
 <div>
+
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -37,8 +40,10 @@
             @Html.DisplayFor(model => model.CategoryId)
         </dd>
     </dl>
+    <form asp-action="IngredientsDelete">
+        <input type="hidden" asp-for="IngredientId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Ingredients">Back to List</a>
+    </form>
 </div>
-<div>
-    <a asp-action="IngredientsEdit" asp-route-id="@Model?.IngredientId">Edit</a> |
-    <a asp-action="Ingredients">Back to List</a>
-</div>
+

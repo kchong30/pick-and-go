@@ -19,7 +19,7 @@ namespace PickAndGo.ViewModels
         public decimal? Price { get; set; }
         public decimal OrderValue { get; set; }
         public string OrderStatus { get; set; }
-        public string SelectedStatus { get; set; }
+        public string LineStatus { get; set; }
         public List<OrderIngredientVM> Ingredients { get; set; }
         public string OrderFilter { get; set; }
     }

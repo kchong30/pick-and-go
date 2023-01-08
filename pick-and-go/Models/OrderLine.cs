@@ -15,6 +15,7 @@ namespace PickAndGo.Models
         public int LineId { get; set; }
         public int ProductId { get; set; }
         public int? Quantity { get; set; }
+        public string? LineStatus { get; set; }
 
         public virtual OrderHeader Order { get; set; } = null!;
         public virtual Product Product { get; set; } = null!;
