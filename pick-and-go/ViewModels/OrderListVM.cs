@@ -21,6 +21,5 @@ namespace PickAndGo.ViewModels
         public string OrderStatus { get; set; }
         public string LineStatus { get; set; }
         public List<OrderIngredientVM> Ingredients { get; set; }
-        public string OrderFilter { get; set; }
     }
 }

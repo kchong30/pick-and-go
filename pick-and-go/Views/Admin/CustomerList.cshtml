@@ -12,16 +12,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerId)
+                Customer ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmailAddress)
+                Email Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateLastOrdered)
+                Date Last Ordered
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumbersOfOrders)
+                Orders
             </th>
         </tr>
     </thead>
@@ -43,9 +43,9 @@
                 </td>
 
                 <td>
-                    <a asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Detail</a> 
-@*                    <a asp-action="Edit" asp-route-accountNum="@item.CustomerId">Edit</a> |
-                    <a asp-action="Delete" asp-route-accountNum="@item.CustomerId">Delete</a>*@
+                    <a asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Detail</a>
+                    @*                    <a asp-action="Edit" asp-route-accountNum="@item.CustomerId">Edit</a> |
+                <a asp-action="Delete" asp-route-accountNum="@item.CustomerId">Delete</a>*@
                 </td>
             </tr>
         }

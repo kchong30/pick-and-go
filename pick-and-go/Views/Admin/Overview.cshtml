@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Overview";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    int pending = Model != null ? Model.Pending : 0;
+    int pending = Model != null ? Model.Outstanding : 0;
     int completed = Model != null ? Model.Completed : 0;
 
 }
@@ -15,7 +15,7 @@
     <thead>
         <tr>
             <th>
-                Pending
+                Outstanding
             </th>
             <th>
                 Completed

@@ -1,11 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using PickAndGo.Data;
+﻿using Microsoft.EntityFrameworkCore;
 using PickAndGo.Models;
 using PickAndGo.ViewModels;
 using System.Data;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace PickAndGo.Repositories
 {

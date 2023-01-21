@@ -15,16 +15,16 @@ namespace PickAndGo.Repositories
 
         public Tuple<int, int> GetAll()
         {
-            int pending = _db.OrderHeaders.Where(oh => oh.OrderStatus == "P").Select(oh => oh.OrderStatus).Count();
+            int outstanding = _db.OrderHeaders.Where(oh => oh.OrderStatus == "O").Select(oh => oh.OrderStatus).Count();
             int completed = _db.OrderHeaders.Where(oh => oh.OrderStatus == "C").Select(oh => oh.OrderStatus).Count();
 
 
             //OrderHeaderVM ohVM = new OrderHeaderVM()
             //{
-            //    Pending = pending,
+            //    Outstanding = outstanding,
             //    Completed = completed
             //};
-            return Tuple.Create(pending, completed);
+            return Tuple.Create(outstanding, completed);
         }
     }
 }
