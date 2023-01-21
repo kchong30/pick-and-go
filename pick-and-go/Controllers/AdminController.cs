@@ -92,31 +92,27 @@ namespace PickAndGo.Controllers
         }
 
         [HttpPost]
-        public IActionResult IngredientsEdit(IngredientVM ingredient)
+        public IActionResult IngredientsEdit([Bind("IngredientId,Description,Price,CategoryId," +
+                                                   "InStock")] Ingredient ingredient)
         {
+            var message = "";
             IngredientsRepository iR = new IngredientsRepository(_db);
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                message = iR.EditIngredient(new Ingredient
                 {
-                    iR.EditIngredient(new Ingredient
-                    {
-                        IngredientId = ingredient.IngredientId,
-                        Description = ingredient.Description,
-                        Price = ingredient.Price,
-                        CategoryId = ingredient.CategoryId,
-                        InStock = ingredient.InStock
-                    });
-                    HttpContext.Session.SetString("CategoryId", ingredient.CategoryId);
-                }
+                    IngredientId = ingredient.IngredientId,
+                    Description = ingredient.Description,
+                    Price = ingredient.Price,
+                    CategoryId = ingredient.CategoryId,
+                    InStock = ingredient.InStock
+                });
+
                 ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
 
-                return RedirectToAction("IngredientsDetails", "Ingredients", new { id = ingredient.IngredientId });
+                return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredient.IngredientId });
             }
-            catch
-            {
-                return View();
-            }
+            return View(ingredient);
         }
 
         public IActionResult IngredientsDelete(int id)

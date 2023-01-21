@@ -54,7 +54,7 @@
 
             @foreach (var order in Model)
             {
-                <tr>
+                <tr style="color:@order.LineColor">
                     <td>@order.OrderId</td>
                     <td>@order.FullName</td>
                     <td>@order.Description</td>

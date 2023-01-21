@@ -35,7 +35,8 @@ namespace PickAndGo.Repositories
                                                                     Description = i.Description,
                                                                     Price = i.Price,
                                                                     InStock = i.InStock,
-                                                                    OutstandingOrders = (oCount > 0) ? true : false, 
+                                                                    OutstandingOrders = (oCount > 0) ? true : false,
+                                                                    InStockIcon = (i.InStock == "Y") ? "check.svg" : "x.svg",
                                                                 }),
                          };
 
@@ -76,15 +77,16 @@ namespace PickAndGo.Repositories
         public string EditIngredient(Ingredient ingredient)
         {
             string message = "";
-            _db.Update(new Ingredient
+            try
             {
-                IngredientId = ingredient.IngredientId,
-                Description= ingredient.Description,
-                Price = ingredient.Price,
-                CategoryId = ingredient.CategoryId,
-                InStock = ingredient.InStock
-            });
-            _db.SaveChanges();
+                _db.Ingredients.Update(ingredient);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }
+            
             return message;
         }
 

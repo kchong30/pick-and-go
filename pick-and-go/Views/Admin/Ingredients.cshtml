@@ -68,7 +68,7 @@
                                     <td></td>
                                     <td class="celldesc">@ing.Description</td>
                                     <td>@ing.Price</td>
-                                    <td>@ing.InStock</td>
+                                    <td><img class="stock-icon" src="../images/@ing.InStockIcon"/></td>
                                     <td>
                                         <a asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a> |
                                         <a asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a> |

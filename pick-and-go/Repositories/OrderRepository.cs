@@ -2,6 +2,7 @@
 using PickAndGo.Models;
 using PickAndGo.ViewModels;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 
 namespace PickAndGo.Repositories
@@ -41,6 +42,7 @@ namespace PickAndGo.Repositories
                              OrderValue = (decimal)o.OrderValue,
                              OrderStatus = o.OrderStatus,
                              LineStatus = l.LineStatus,
+                             LineColor = (l.LineStatus == "C" & o.OrderStatus != "C") ? "#FF0000" : "#000000",
                              Ingredients = (List<OrderIngredientVM>)(from li in _db.LineIngredients
                                                                      join i in _db.Ingredients on li.IngredientId equals i.IngredientId
                                                                      where o.OrderId == li.OrderId && l.LineId == li.LineId
