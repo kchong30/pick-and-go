@@ -21,7 +21,7 @@ namespace PickAndGo.Repositories
 
             //OrderHeaderVM ohVM = new OrderHeaderVM()
             //{
-            //    Pending = pending,
+            //    Outstanding = outstanding,
             //    Completed = completed
             //};
             return Tuple.Create(outstanding, completed);

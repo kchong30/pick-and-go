@@ -1,20 +1,56 @@
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+/* General accordion styles */
+
+.accordion-button {
+    border-style: none;
+    background-color: white !important;
+    outline: none;
+    padding: 0;
+    margin-left: 0px;
+}
+
+.accordion-button:focus {
+    background-color: white !important;
+    box-shadow: none !important;
+    border-style: none;
+    outline: 0;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: white !important;
+    box-shadow: none !important;
+    border-style: none;
+    outline: 0;
+}
+
+.accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active {
+    background-color: white !important;
+    box-shadow: none !important;
+    border-style: none;
+    outline: 0;
+}
+
+.col {
+    padding: 0;
 }
 
 /* Order list with expanding/collapsing sections */
@@ -39,83 +75,31 @@ body {
     height: 31px;
 }
 
-.accordion-button {
-    padding: 10px;
+.col7 form {
+    text-align: center;
 }
 
-.accordion-body {
-    padding-top: 3px;
-    padding-bottom: 3px;
+/* Modal confirmation window styles */
+
+.modal-table {
+    text-align: left;
+    margin-left: 30px;
+    margin-bottom: 30px;
 }
 
-.accordion-table {
-    margin-left: 330px;
+.modal-table td {
+    padding-left: 15px;
 }
 
-.hdg1 {
-    width: 74px;
+/* Ingredient list with expanding/collapsing sections */
+
+.celldesc {
+    width: 250px;
 }
 
-.hdg2 {
-    width: 279px;
-}
-
-.hdg3 {
-    width: 275px;
-}
-
-.hdg4 {
-    width: 140px;
-}
-
-.hdg5 {
-    width: 350px;
-}
-
-.hdg6 {
-
-    width: 200px;
-}
-
-.hdg7 {
-    width: 200px;
-}
-
-.col1 {
-    width: 68px;
-    text-align: right;
-    padding-right: 35px;
-}
-
-.col2 {
-    width: 230px;
-}
-
-.col3 {
-    width: 235px;
-}
-
-.col4 {
-    width: 110px;
-}
-
-.col5 {
-    width: 265px;
-}
-
-.col6 {
-    width: 230px;
-}
-
-.col7 {
-    width: 200px;
-}
-
-.cell1 {
-    width: 160px;
-}
-
-.cell2 {
-    width: 60px;
-    text-align: right;
+[aria-current="page"] {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    color: lightgray;
 }

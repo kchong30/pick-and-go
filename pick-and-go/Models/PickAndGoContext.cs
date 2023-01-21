@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using PickAndGo.ViewModels;
 
 namespace PickAndGo.Models
 {
@@ -195,6 +194,8 @@ namespace PickAndGo.Models
 
                             j.ToTable("Customer_DietaryType");
 
+                            j.HasIndex(new[] { "DietaryId" }, "IX_Customer_DietaryType_dietaryID");
+
                             j.IndexerProperty<int>("CustomerId").HasColumnName("customerID");
 
                             j.IndexerProperty<string>("DietaryId").HasMaxLength(2).IsUnicode(false).HasColumnName("dietaryID");
@@ -204,7 +205,7 @@ namespace PickAndGo.Models
             modelBuilder.Entity<DietaryType>(entity =>
             {
                 entity.HasKey(e => e.DietaryId)
-                    .HasName("PK__DietaryT__9B5E3E4C437664CF");
+                    .HasName("PK__DietaryT__9B5E3E4CF087F04B");
 
                 entity.ToTable("DietaryType");
 
@@ -228,6 +229,8 @@ namespace PickAndGo.Models
                 entity.HasKey(e => new { e.CustomerId, e.OrderId, e.LineId });
 
                 entity.ToTable("Favorite");
+
+                entity.HasIndex(e => new { e.OrderId, e.LineId }, "IX_Favorite_orderID_lineID");
 
                 entity.Property(e => e.CustomerId).HasColumnName("customerID");
 
@@ -262,6 +265,8 @@ namespace PickAndGo.Models
             modelBuilder.Entity<Ingredient>(entity =>
             {
                 entity.ToTable("Ingredient");
+
+                entity.HasIndex(e => e.CategoryId, "IX_Ingredient_categoryID");
 
                 entity.Property(e => e.IngredientId).HasColumnName("ingredientID");
 
@@ -303,6 +308,8 @@ namespace PickAndGo.Models
 
                             j.ToTable("Ingredient_DietaryType");
 
+                            j.HasIndex(new[] { "DietaryId" }, "IX_Ingredient_DietaryType_dietaryID");
+
                             j.IndexerProperty<int>("IngredientId").HasColumnName("ingredientID");
 
                             j.IndexerProperty<string>("DietaryId").HasMaxLength(2).IsUnicode(false).HasColumnName("dietaryID");
@@ -314,6 +321,8 @@ namespace PickAndGo.Models
                 entity.HasKey(e => new { e.OrderId, e.LineId, e.IngredientId });
 
                 entity.ToTable("LineIngredient");
+
+                entity.HasIndex(e => e.IngredientId, "IX_LineIngredient_ingredientID");
 
                 entity.Property(e => e.OrderId).HasColumnName("orderID");
 
@@ -345,9 +354,11 @@ namespace PickAndGo.Models
             modelBuilder.Entity<OrderHeader>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__OrderHea__0809337DDCBC5015");
+                    .HasName("PK__OrderHea__0809337DA99DA31A");
 
                 entity.ToTable("OrderHeader");
+
+                entity.HasIndex(e => e.CustomerId, "IX_OrderHeader_customerID");
 
                 entity.Property(e => e.OrderId).HasColumnName("orderID");
 
@@ -367,9 +378,7 @@ namespace PickAndGo.Models
                     .HasColumnType("decimal(9, 2)")
                     .HasColumnName("orderValue");
 
-                entity.Property(e => e.PickupTime)
-                    .HasColumnType("datetime")
-                    .HasColumnName("pickupTime");
+                entity.Property(e => e.PickupTime).HasColumnName("pickupTime");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.OrderHeaders)
@@ -384,11 +393,20 @@ namespace PickAndGo.Models
 
                 entity.ToTable("OrderLine");
 
+                entity.HasIndex(e => e.ProductId, "IX_OrderLine_productID");
+
                 entity.Property(e => e.OrderId).HasColumnName("orderID");
 
                 entity.Property(e => e.LineId)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("lineID");
+
+                entity.Property(e => e.LineStatus)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasColumnName("lineStatus")
+                    .HasDefaultValueSql("('O')")
+                    .IsFixedLength();
 
                 entity.Property(e => e.ProductId).HasColumnName("productID");
 
@@ -433,7 +451,5 @@ namespace PickAndGo.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        public DbSet<IngredientVM> IngredientVM { get; set; }
     }
 }
