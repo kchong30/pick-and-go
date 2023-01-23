@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace PickAndGo.ViewModels
 {
@@ -20,6 +21,7 @@ namespace PickAndGo.ViewModels
         public decimal OrderValue { get; set; }
         public string OrderStatus { get; set; }
         public string LineStatus { get; set; }
+        public string LineColor { get; set; }
         public List<OrderIngredientVM> Ingredients { get; set; }
     }
 }

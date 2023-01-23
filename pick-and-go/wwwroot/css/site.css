@@ -103,3 +103,9 @@ body {
     text-decoration: none;
     color: lightgray;
 }
+
+.stock-icon {
+    height: 1em;
+    width: 1em;
+    margin-left: 20px;
+}

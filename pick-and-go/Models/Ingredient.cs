@@ -17,7 +17,7 @@ namespace PickAndGo.Models
         public string CategoryId { get; set; } = null!;
         public string? InStock { get; set; }
 
-        public virtual Category Category { get; set; } = null!;
+        public virtual Category? Category { get; set; } = null!;
         public virtual ICollection<LineIngredient> LineIngredients { get; set; }
 
         public virtual ICollection<DietaryType> Dietaries { get; set; }

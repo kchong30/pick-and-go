@@ -12,7 +12,8 @@ namespace PickAndGo.ViewModels
         public decimal? Price { get; set; }
         public string CategoryId { get; set; }
         public string? InStock { get; set; }
-        public Boolean OutstandingOrders {get; set; }   
+        public Boolean OutstandingOrders {get; set; }
+        public string InStockIcon { get; set; }
 
     }
 }
