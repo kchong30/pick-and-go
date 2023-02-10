@@ -168,3 +168,9 @@ INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
                             VALUES(4, 8, 16, 1);
 
+
+
+
+
+Scaffold-DbContext "DESKTOP-H91607K\SSD_SQL_SERVER;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True " Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
+
