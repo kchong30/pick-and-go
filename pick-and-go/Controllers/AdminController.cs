@@ -115,8 +115,7 @@ namespace PickAndGo.Controllers
         }
 
         [HttpPost]
-        public IActionResult IngredientsEdit([Bind("IngredientId,Description,Price,CategoryId," +
-                                                   "InStock")] Ingredient ingredient)
+        public IActionResult IngredientsEdit(IngredientVM ingredientVM)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             if (ModelState.IsValid)
