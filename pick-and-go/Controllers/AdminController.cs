@@ -99,9 +99,19 @@ namespace PickAndGo.Controllers
 
         public IActionResult IngredientsEdit(int? id)
         {
-            Ingredient ingredient = _db.Ingredients.Find(id);
+            IngredientVM vm = new IngredientVM();
+            var i = _db.Ingredients.Where(i => i.IngredientId == id).FirstOrDefault();
+            vm.IngredientId = i.IngredientId;
+            vm.Description = i.Description;
+            vm.Price = i.Price;
+            vm.CategoryId = i.CategoryId;
+            vm.IngredientInStock = i.InStock == "Y" ? true : false;
+
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
-            return View(ingredient);
+            return View(vm);
+            //Ingredient ingredient = _db.Ingredients.Find(id);
+            //ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
+            //return View(ingredient);
         }
 
         [HttpPost]
