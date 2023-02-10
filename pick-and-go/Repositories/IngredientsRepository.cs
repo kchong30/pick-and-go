@@ -90,7 +90,7 @@ namespace PickAndGo.Repositories
             return message;
         }
 
-        public string DeleteIngredient(int ingredientId)
+        public string DeleteIngredient(int ingredientId, string category)
         {
             string deleteMessage = "";
             Ingredient ingredient = GetIngredientRecord(ingredientId);
@@ -109,7 +109,7 @@ namespace PickAndGo.Repositories
             if (deleteMessage == "")
             {
                 deleteMessage = $"** Ingredient {ingredient.Description} has been deleted " +
-                                $"from category {ingredient.CategoryId}.";
+                                $"from category {category}.";
             }
             return deleteMessage;
         }

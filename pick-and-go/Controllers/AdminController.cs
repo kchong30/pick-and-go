@@ -35,10 +35,17 @@ namespace PickAndGo.Controllers
             return View();
         }
 
-        public IActionResult Ingredients()
+        public IActionResult Ingredients(string message)
         {
+            if (message == null)
+            {
+                message = "";
+            }
+
             IngredientsRepository ir = new IngredientsRepository(_db);
             IQueryable<IngredientListVM> vm = ir.BuildIngredientListVM();
+
+            ViewData["Message"] = message;
 
             return View(vm);
         }
@@ -50,7 +57,7 @@ namespace PickAndGo.Controllers
         }
 
         [HttpPost]
-        public IActionResult IngredientsCreate(IngredientVM ingredient)
+        public IActionResult IngredientsCreate(Ingredient ingredient)
         {
             try
             {
@@ -64,7 +71,11 @@ namespace PickAndGo.Controllers
                         InStock = ingredient.InStock
                     });
                     _db.SaveChanges();
-                    return RedirectToAction("Ingredients");
+
+                    var addMessage = $"** Ingredient {ingredient.Description} has been added " +
+                                      $"to category {ingredient.CategoryId}.";
+
+                    return RedirectToAction("Ingredients", "Admin", new { message = addMessage });
                 }
             }
             catch
@@ -124,13 +135,13 @@ namespace PickAndGo.Controllers
         }
 
         [HttpPost]
-        public IActionResult IngredientsDelete(IngredientVM ingredient)
+        public IActionResult IngredientsDelete(int id, string category)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
 
             string deleteMessage = "";
 
-            deleteMessage = iR.DeleteIngredient(ingredient.IngredientId);
+            deleteMessage = iR.DeleteIngredient(id, category);
 
             return RedirectToAction("Ingredients", "Admin", new { message = deleteMessage });
         }
