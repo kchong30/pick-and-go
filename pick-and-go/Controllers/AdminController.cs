@@ -91,6 +91,8 @@ namespace PickAndGo.Controllers
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.ReturnIngredientById(id);
+            vm.IngredientInStock = vm.InStock == "Y" ? true : false;
+            return View(vm);
 
             return View(vm);
         }
