@@ -91,39 +91,35 @@ namespace PickAndGo.Controllers
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.ReturnIngredientById(id);
-
+            vm.InStockIcon = (vm.InStock == "Y") ? "check.svg" : "x.svg";
             return View(vm);
         }
 
-        public IActionResult IngredientsEdit(int? id)
+        public IActionResult IngredientsEdit(int id)
         {
-            Ingredient ingredient = _db.Ingredients.Find(id);
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            var i = iR.GetIngredientRecord(id);
+
+            IngredientVM vm = new IngredientVM();
+            vm.IngredientId = i.IngredientId;
+            vm.Description = i.Description;
+            vm.Price = i.Price;
+            vm.CategoryId = i.CategoryId;
+            vm.IngredientInStock = i.InStock == "Y" ? true : false;
+
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
-            return View(ingredient);
+            return View(vm);
         }
 
         [HttpPost]
-        public IActionResult IngredientsEdit([Bind("IngredientId,Description,Price,CategoryId," +
-                                                   "InStock")] Ingredient ingredient)
+        public IActionResult IngredientsEdit(IngredientVM ingredientVM)
         {
-            var message = "";
             IngredientsRepository iR = new IngredientsRepository(_db);
             if (ModelState.IsValid)
             {
-                message = iR.EditIngredient(new Ingredient
-                {
-                    IngredientId = ingredient.IngredientId,
-                    Description = ingredient.Description,
-                    Price = ingredient.Price,
-                    CategoryId = ingredient.CategoryId,
-                    InStock = ingredient.InStock
-                });
-
-                ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
-
-                return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredient.IngredientId });
+                iR.EditIngredient(ingredientVM);
             }
-            return View(ingredient);
+            return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredientVM.IngredientId });
         }
 
         public IActionResult IngredientsDelete(int id)
