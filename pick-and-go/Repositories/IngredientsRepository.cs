@@ -70,23 +70,21 @@ namespace PickAndGo.Repositories
         public Ingredient GetIngredientRecord(int ingredientId)
         {
             var ingredient = _db.Ingredients.Where(i => i.IngredientId == ingredientId).FirstOrDefault();
-
             return ingredient;
         }
 
-        public string EditIngredient(Ingredient ingredient)
+        public string EditIngredient(IngredientVM ingredientVM)
         {
             string message = "";
-            try
+            _db.Update(new Ingredient
             {
-                _db.Ingredients.Update(ingredient);
-                _db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                message = ex.Message;
-            }
-            
+                IngredientId = ingredientVM.IngredientId,
+                Description = ingredientVM.Description,
+                Price = ingredientVM.Price,
+                CategoryId = ingredientVM.CategoryId,
+                InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
+            }); ;
+            _db.SaveChanges();
             return message;
         }
 

@@ -97,10 +97,12 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
-        public IActionResult IngredientsEdit(int? id)
+        public IActionResult IngredientsEdit(int id)
         {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            var i = iR.GetIngredientRecord(id);
+
             IngredientVM vm = new IngredientVM();
-            var i = _db.Ingredients.Where(i => i.IngredientId == id).FirstOrDefault();
             vm.IngredientId = i.IngredientId;
             vm.Description = i.Description;
             vm.Price = i.Price;
@@ -109,9 +111,6 @@ namespace PickAndGo.Controllers
 
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
             return View(vm);
-            //Ingredient ingredient = _db.Ingredients.Find(id);
-            //ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
-            //return View(ingredient);
         }
 
         [HttpPost]
