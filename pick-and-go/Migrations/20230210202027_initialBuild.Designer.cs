@@ -6,19 +6,20 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PickAndGo.Data;
-using System;
 
-namespace PickAndGo.Data.Migrations
+#nullable disable
+
+namespace PickAndGo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221206185753_initialcreate")]
-    partial class initialcreate
+    [Migration("20230210202027_initialBuild")]
+    partial class initialBuild
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);

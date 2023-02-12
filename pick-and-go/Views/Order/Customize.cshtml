@@ -1,0 +1,207 @@
+﻿@using PickAndGo.ViewModels;
+@model IEnumerable<IngredientListVM>
+
+@{
+    ViewData["Title"] = "Ingredients";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Customize</h1>
+
+<!--Add shopping cart icon here-->
+
+<div class="container">
+
+    <select onchange="subSize(event)" id="sub-size">
+        <!-- Select Data comes from previous page-->
+        <option value="">--size--</option>
+        <option selected="selected" value="lg">Large</option>
+        <option value="md">Medium</option>
+        <option value="sm">Small</option>
+    </select>
+
+    <div class="accordion" id="customize">
+        @foreach (var cat in Model)
+        {
+            <div class="accordion-item">
+                <!-- Accordion Header : Catogory -->
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="true" aria-controls="@cat.CategoryId">
+                        @cat.CategoryId
+                    </button>
+                </h2>
+                <!-- Accordion Body : Ingredients, add show in the  class -->
+                <div id="@cat.CategoryId" class="accordion-collapse collapse" aria-labelledby="@cat.CategoryId">
+                    <div class="accordion-body">
+                        <!-- Ingredients Table -->
+                        <table class="accordion-table container">
+                            <tr>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Button</th>
+                                <th>Quantity</th>
+                            </tr>
+                            @foreach (var ing in cat.Ingredients)
+                            {
+                                @* Ingredient not displayed when out of stock *@
+                                if (ing.InStock == "Y")
+                                {
+                                    <tr>
+                                        <td class="celldesc">@ing.Description</td>
+                                        <td id="@ing.IngredientId-price" class="price">@ing.Price</td>
+                                        <td>
+                                            <button id="@ing.IngredientId-add" onclick="updateShoppingCart(event)">+</button>
+                                            <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>
+                                        </td>
+                                        <td id="@ing.IngredientId-quantity" class="quantity">0</td>
+                                        <td id="@ing.IngredientId-amount" class="amount">0</td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                        <!-- End of table-->
+                    </div>
+                </div>
+            </div>  
+        }
+    </div>
+</div>
+<hr />
+<span id="sub-price">0</span> <span id="total-ing">0</span>
+<span>Total : $</span> <span id="total">0</span> <!-- Add Sandwich price by default, changes with selection change-->
+<button onclick="addToCart()">Add to cart</button> <!-- Trigger to save in localStorage-->
+<button id="remove-all" onclick="removeAll(event)">Cancel Sub</button>
+
+
+<!-- Cart jQuery Script-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    function addToCart(){
+        var oldCart = JSON.parse(localStorage.getItem('cart'))
+
+        if (oldCart ==null){
+            oldCart = [];
+        }
+        if (!(oldCart instanceof Array)) {
+            oldCart = [oldCart];
+        }
+
+        
+        var item = {
+            bread: 1,
+            price: $('#total').html()
+        }
+
+        oldCart.push(item)
+        localStorage.setItem("cart", JSON.stringify(oldCart))
+    }
+
+    // CLEAN CODEEEEEEE
+    (function ($) {
+        $(document).ready(function () {
+            initialSubSize();
+            var sum = parseFloat($('#sub-price').html()) + parseFloat($('#total-ing').html())
+            $('#total').text(sum)
+        });
+    })(jQuery);
+
+    function initialSubSize() {
+        var size = $('#sub-size option:selected').val();
+        subSize(size)
+    }
+
+    function subSize(event) {
+        var option;
+        if (!event.target) {
+            option = event;
+        } else {
+            option = event.target.value;
+        }
+        switch (option) {
+            case "lg":
+                $("#sub-price").text(12);
+                break;
+            case "md":
+                $("#sub-price").text(10);
+                break;
+            case "sm":
+                $("#sub-price").text(8);
+                break;
+            default:
+                $("#sub-price").text(0);
+                break;
+        }
+        var sum = parseFloat($('#sub-price').html()) + parseFloat($('#total-ing').html())
+        $('#total').text(sum)
+    }
+
+    function removeAll(event) {
+        $('.quantity').each(function () {
+            $(this).text(0);
+        });
+
+        $('.amount').each(function () {
+            $(this).text(0);
+        });
+
+        initialSubSize();
+        var sum = parseFloat($('#sub-price').html()) 
+        $('#total').text(sum);
+        localStorage.clear();
+    }
+
+    function updateShoppingCart(event) {
+        var clickedId = event.target.id;
+        var elementIdSplit = clickedId.split('-');
+        var id = elementIdSplit[0];
+        var action = elementIdSplit[1];
+
+        ChangeCart(id, action);
+    }
+
+    function ChangeCart(id, action) {
+        var itemPriceId = "#" + id + "-price";
+        var cartQtyId = "#" + id + "-quantity";
+        var cartAmtId = "#" + id + "-amount";
+
+        var quantity = $(cartQtyId).html();
+
+        if (action == "add") {
+            quantity++;
+        } else {
+            quantity--;
+            if (quantity < 0) {
+                quantity = 0;
+            }
+        }
+
+        $(cartQtyId).text(quantity);
+
+        //Calculate new amount
+        var amount = $(itemPriceId).html();
+
+        var newAmount = (amount * quantity).toFixed(2);
+
+        $(cartAmtId).text(newAmount);
+
+
+        //Calculate totals
+        var totalQuantity = 0;
+        $('.quantity').each(function () {
+            var thisQuantity = $(this).html();
+            totalQuantity += parseInt(thisQuantity);
+        });
+
+        var totalIngredient = parseFloat($("#total-ing").html());
+        $('.amount').each(function () {
+            var thisAmount = $(this).html();
+            totalIngredient += parseFloat(thisAmount);
+        });
+
+        $("#total-ing").text(totalIngredient.toFixed(2));
+        var sum = parseFloat($('#sub-price').html()) + parseFloat($('#total-ing').html())
+        $('#total').text(sum)
+    }
+</script>
+<!-- End of Script-->
