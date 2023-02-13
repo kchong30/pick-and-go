@@ -9,6 +9,13 @@
 <h1>Customize</h1>
 
 <!--Add shopping cart icon here-->
+<button type="button" class="btn btn-primary position-relative">
+  Shopping Cart
+  <span id="cart-icon" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    0
+    <span class="visually-hidden">unread messages</span>
+  </span>
+</button>
 
 <div class="container">
 
@@ -79,7 +86,7 @@
 <span>Total : $</span> <span id="total">0</span> <!-- Add Sandwich price by default, changes with selection change-->
 <button onclick="addToCart()">Add to cart</button> <!-- Trigger to save in localStorage-->
 <button id="remove-all" onclick="removeAll(event)">Cancel Sub</button>
-
+<button id="empty-cart" onclick="emptyCart(event)">Empty Cart</button>
 
 <!-- Cart jQuery Script-->
 
@@ -95,15 +102,16 @@
             oldCart = [oldCart];
         }
 
-        // Same as db
+@*        // Same as db*@
         var item = {
             size: 1,
-            category: [ bread: [ { description: tomato, quantity: 2} ], sauce: []  ],
+            @*category: [ bread: [ { description: tomato, quantity: 2} ], sauce: []  ],*@
             subTotal: $('#total').html()
         }
 
         oldCart.push(item)
-        localStorage.setItem("cart", JSON.stringify(oldCart))
+        localStorage.setItem("cart", JSON.stringify(oldCart));
+        $('#cart-icon').text(oldCart.length);
     }
 
     // CLEAN CODEEEEEEE
@@ -157,6 +165,11 @@
         initialSubSize();
         var sum = parseFloat($('#sub-price').html()) 
         $('#total').text(sum);
+
+    }
+
+    function emptyCart(event) {
+        $('#cart-icon').text(0);
         localStorage.clear();
     }
 
