@@ -55,6 +55,14 @@
                                         </td>
                                         <td id="@ing.IngredientId-quantity" class="quantity">0</td>
                                         <td id="@ing.IngredientId-amount" class="amount">0</td>
+
+                                        @*forEach(i=0; i<localStroage.length; i++) {
+                                            if (localStorage[i] == @ing.Description) {
+                                                quantity = localStorage.quantity
+                                            } else {
+                                                quantity =0
+                                            }
+                                        }*@
                                     </tr>
                                 }
                             }
@@ -87,10 +95,11 @@
             oldCart = [oldCart];
         }
 
-        
+        // Same as db
         var item = {
-            bread: 1,
-            price: $('#total').html()
+            size: 1,
+            category: [ bread: [ { description: tomato, quantity: 2} ], sauce: []  ],
+            subTotal: $('#total').html()
         }
 
         oldCart.push(item)
