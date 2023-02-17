@@ -21,23 +21,24 @@ namespace PickAndGo.Repositories
                          select new IngredientListVM
                          {
                              CategoryId = c.CategoryId,
-                             Ingredients = (List<IngredientVM>)(from i in _db.Ingredients
-                                                                where c.CategoryId == i.CategoryId
-                                                                orderby i.CategoryId
-                                                                let oCount = (from l in _db.LineIngredients
-                                                                                join ol in _db.OrderLines on l.LineId equals ol.LineId
-                                                                                where l.IngredientId == i.IngredientId &&
-                                                                                      ol.LineStatus == "O" select l).Count()
-                                                                select new IngredientVM
-                                                                {
-                                                                    CategoryId = c.CategoryId,
-                                                                    IngredientId = i.IngredientId,
-                                                                    Description = i.Description,
-                                                                    Price = i.Price,
-                                                                    InStock = i.InStock,
-                                                                    OutstandingOrders = (oCount > 0) ? true : false,
-                                                                    InStockIcon = (i.InStock == "Y") ? "check.svg" : "x.svg",
-                                                                }),
+                             Ingredients = (List<IngredientVM>)
+                                              (from i in _db.Ingredients
+                                               where c.CategoryId == i.CategoryId
+                                               orderby i.CategoryId
+                                               let oCount = (from l in _db.LineIngredients
+                                                             join ol in _db.OrderLines on l.LineId equals ol.LineId
+                                                             where l.IngredientId == i.IngredientId &&
+                                                                   ol.LineStatus == "O" select l).Count()
+                                                             select new IngredientVM
+                                                             {
+                                                                CategoryId = c.CategoryId,
+                                                                IngredientId = i.IngredientId,
+                                                                Description = i.Description,
+                                                                Price = i.Price,
+                                                                InStock = i.InStock,
+                                                                OutstandingOrders = (oCount > 0) ? true : false,
+                                                                InStockIcon = (i.InStock == "Y") ? "check.svg" : "x.svg",
+                                                             }),
                          };
 
             return vmList;
@@ -77,11 +78,21 @@ namespace PickAndGo.Repositories
         {
             var ingredient = GetIngredientRecord(ingredientId);
             IngredientVM vm = new IngredientVM();
-            vm.IngredientId = ingredient.IngredientId;
-            vm.Description = ingredient.Description;
-            vm.Price = ingredient.Price;
-            vm.CategoryId = ingredient.CategoryId;
-            vm.IngredientInStock = ingredient.InStock == "Y" ? true : false;
+            if (ingredientId == 0)
+            {
+                vm.Description = "";
+                vm.Price = 0;
+                vm.CategoryId = "";
+                vm.IngredientInStock = true;
+            }
+            else
+            {
+                vm.IngredientId = ingredient.IngredientId;
+                vm.Description = ingredient.Description;
+                vm.Price = ingredient.Price;
+                vm.CategoryId = ingredient.CategoryId;
+                vm.IngredientInStock = ingredient.InStock == "Y" ? true : false;
+            }
             return vm;
         }
 
@@ -134,7 +145,7 @@ namespace PickAndGo.Repositories
                     Description = ingredientVM.Description,
                     Price = ingredientVM.Price,
                     CategoryId = ingredientVM.CategoryId,
-                    InStock = ingredientVM.InStock
+                    InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
                 });
                 _db.SaveChanges();
             }

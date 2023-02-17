@@ -52,6 +52,8 @@ namespace PickAndGo.Controllers
 
         public IActionResult IngredientsCreate()
         {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            var vm = iR.BuildIngredientVM(0);
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
             return View();
         }
