@@ -1,0 +1,41 @@
+Order Controller
+Customize
+
+
+
+
+Order object to be stored in local storage:
+Consists of a products array:
+
+products[ingredients{ingredientid, qty, amount}]
+
+So each sandwich line is an element of the products array
+Each product array element contains an array of ingredients.
+Each ingredient array element contains an object consisting of ingredientid, qty (either 1 or 2), amount (qty x ingredient price)
+
+Example:
+
+Large sandwich:
+- Ciabatta bun
+- Beef
+- Tomato
+- BBQ sauce
+
+Small sandwich:
+- Rye bread
+- Chicken
+- Lettuce
+- Ranch dressing
+
+products[0, 0] = ["large", {"Ciabatta bun", 1, 0.50}]
+products[0, 1] = ["large", {"Beef", 1, 0.75}]
+products[0, 2] = ["large", {"Tomato", 2, 0.60}]
+products[0, 3] = ["large", {"BBQ sauce", 1, 0.50}]
+
+products[1, 0] = ["small", {"Rye bread", 1, 0.50}]
+products[1, 1] = ["small", {"Chicken", 1, 1.00}]
+products[1, 2] = ["small", {"Lettuce", 1, 0.20}]
+products[1, 3] = ["small", {"Ranch dressing", 1, 0.25}]
+
+To calculate sandwich total, loop through first index, adding up amounts for the same product 
+To calculate order total, loop through both indexes, adding up amounts

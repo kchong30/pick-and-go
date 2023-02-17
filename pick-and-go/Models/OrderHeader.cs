@@ -18,6 +18,10 @@ namespace PickAndGo.Models
         public decimal? OrderValue { get; set; }
         public DateTime? PickupTime { get; set; }
         public string OrderStatus { get; set; } = null!;
+        public string? Currency { get; set; }
+        public string? PaymentType { get; set; }
+        public string? PaymentId { get; set; }
+        public DateTime? PaymentDate { get; set; }
 
         public virtual Customer Customer { get; set; } = null!;
         public virtual ICollection<Favorite> Favorites { get; set; }

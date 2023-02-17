@@ -43,17 +43,18 @@ namespace PickAndGo.Repositories
                              OrderStatus = o.OrderStatus,
                              LineStatus = l.LineStatus,
                              LineColor = (l.LineStatus == "C" & o.OrderStatus != "C") ? "#FF0000" : "#000000",
-                             Ingredients = (List<OrderIngredientVM>)(from li in _db.LineIngredients
-                                                                     join i in _db.Ingredients on li.IngredientId equals i.IngredientId
-                                                                     where o.OrderId == li.OrderId && l.LineId == li.LineId
-                                                                     orderby o.OrderId, li.LineId
-                                                                     select new OrderIngredientVM
-                                                                     {
-                                                                         IngredientId = li.IngredientId,
-                                                                         IngDescription = i.Description,
-                                                                         Quantity = li.Quantity,
-                                                                         Price = i.Price
-                                                                     }),
+                             Ingredients = (List<OrderIngredientVM>)
+                                              (from li in _db.LineIngredients
+                                               join i in _db.Ingredients on li.IngredientId equals i.IngredientId
+                                               where o.OrderId == li.OrderId && l.LineId == li.LineId
+                                               orderby o.OrderId, li.LineId
+                                               select new OrderIngredientVM
+                                               {
+                                                    IngredientId = li.IngredientId,
+                                                    IngDescription = i.Description,
+                                                    Quantity = li.Quantity,
+                                                    Price = i.Price
+                                               }),
                          };
             if (searchName != null && searchName != "")
             {
@@ -97,7 +98,6 @@ namespace PickAndGo.Repositories
             {
                 _db.OrderLines.Update(orderLine);
                 _db.SaveChanges();
-                //editMessage = $"{orderLine.Description}, for customer {order.FullName} on order number {order.OrderId} has been completed";
             }
             catch (Exception ex)
             {
