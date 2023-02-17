@@ -18,7 +18,7 @@ using System.Security.Principal;
 
 namespace PickAndGo.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
 
     public class AdminController : Controller
     {

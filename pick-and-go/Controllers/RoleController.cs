@@ -7,7 +7,7 @@ using System.Data;
 
 namespace PickAndGo.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         ApplicationDbContext _context;

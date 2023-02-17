@@ -9,6 +9,7 @@
 <h1>Customize</h1>
 
 <!--Shopping Cart Icon-->
+
 <button type="button" class="btn btn-primary position-relative">
     Shopping Cart
     <span id="cart-icon" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -21,6 +22,7 @@
 
 <div class="container">
     <!-- Product Select :: Add Sessions Here -->
+    <!-- !! Receive select data from localStorage(session)-->
     <select onchange="subSize(event)" id="sub-size">
         <option value="">-----Select sandwich size-----</option>
         @foreach (var product in Model.productVMs)
@@ -91,6 +93,7 @@
 <span id="sub-price">0</span> | <span id="total-ing">0</span> | <span id="total-amt">0</span>
 <span>Total : $</span> <span id="total">0</span> <!-- Add Sandwich price by default, changes with selection change-->
 <button onclick="addToCart()">Add to cart</button> <!-- Trigger to save in localStorage-->
+<!-- !! Reset radio button (select all to none)-->
 <button id="remove-all" onclick="removeAll(event)">Cancel Sub</button>
 <button id="empty-cart" onclick="emptyCart(event)">Empty Cart</button>
 
@@ -123,6 +126,7 @@
                 var ingredient = {
                     ingredientId: $(this).find('.ingredientId').html(),
                     description: $(this).find('.description').html(),
+                    quantity: quantity,
                     price: $(this).find('.price').html()
                 }
                 ingredients.push(ingredient)
@@ -187,6 +191,8 @@
 
     function emptyCart(event) {
         $('#cart-icon').text(0);
+        //console.log($('input:radio[value="none"]'));
+        
         localStorage.clear();
     }
 

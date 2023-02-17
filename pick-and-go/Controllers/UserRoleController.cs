@@ -9,7 +9,7 @@ using PickAndGo.ViewModels;
 namespace PickAndGo.Controllers
 {
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserRoleController : Controller
     {
         private ApplicationDbContext _aspContext;
