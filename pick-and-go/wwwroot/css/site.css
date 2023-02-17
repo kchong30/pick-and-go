@@ -53,7 +53,7 @@ body {
     padding: 0;
 }
 
-/* Order list with expanding/collapsing sections */
+/* Order list with expanding/collapsing sections styles */
 
 .order-title {
     display: flex;
@@ -91,7 +91,7 @@ body {
     padding-left: 15px;
 }
 
-/* Ingredient list with expanding/collapsing sections */
+/* Ingredient list with expanding/collapsing sections styles */
 
 .celldesc {
     width: 250px;
@@ -108,4 +108,24 @@ body {
     height: 1.5em;
     width: 1.5em;
     margin-left: 20px;
+}
+
+/* Order selection styles */
+
+.sandwich-image {
+    width: 170px;
+    height: 100px;
+    border: 1px solid black;
+}
+
+.button-strip {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    height: 40px;
+    width: 100%;
+}
+
+.radio-group input[type=radio] {
+    transform: scale(1.8);
 }

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<PickAndGo.ViewModels.ProductVM>
+
+@{
+    ViewData["Title"] = "Select A Sandwich";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Select A Sandwich</h1>
+
+<form method="post" action="@Url.Action("Customize", "Order")">
+    <table class="table">
+        <thead>
+            <th></th>
+            <th></th>
+            <th class="text-center">Base Price</th>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    <img class="sandwich-image" src="../images/@item.Image" alt="Sandwich">
+                </td>
+                <td class="align-middle text-left">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td class="align-middle text-center">
+                    @Html.DisplayFor(modelItem => item.BasePrice)
+                </td>
+                <td class="radio-group align-middle">
+                    <input asp-for=@item.SelectedProductId value="@item.ProductId" id="type_radio_@item.ProductId" name="SelectedProductId" type="radio" />
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+    <div class="button-strip">
+        <button type="submit" class="btn btn-primary">Customize</button>
+        <button class="btn btn-primary"onclick="location.href='@Url.Action("Index", "Order")'">Continue</button>
+    </div>
+</form>

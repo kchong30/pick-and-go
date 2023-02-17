@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Overview";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     int pending = Model != null ? Model.Outstanding : 0;
     int completed = Model != null ? Model.Completed : 0;
 

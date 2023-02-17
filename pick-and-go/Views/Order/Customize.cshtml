@@ -1,5 +1,5 @@
 ﻿@using PickAndGo.ViewModels;
-@model IEnumerable<IngredientListVM>
+@model OrderCustomizeVM;
 
 @{
     ViewData["Title"] = "Ingredients";
@@ -8,28 +8,31 @@
 
 <h1>Customize</h1>
 
-<!--Add shopping cart icon here-->
+<!--Shopping Cart Icon-->
 <button type="button" class="btn btn-primary position-relative">
-  Shopping Cart
-  <span id="cart-icon" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    0
-    <span class="visually-hidden">unread messages</span>
-  </span>
+    Shopping Cart
+    <span id="cart-icon" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        0
+        <span class="visually-hidden">unread messages</span>
+    </span>
 </button>
 
+<hr />
+
 <div class="container">
-
+    <!-- Product Select :: Add Sessions Here -->
     <select onchange="subSize(event)" id="sub-size">
-        <!-- Select Data comes from previous page, as productId (no size, use Product)-->
-        <!-- Do CSS, touch size bigger -->
-        <option value="">--size--</option>
-        <option selected="selected" value="lg">Large</option>
-        <option value="md">Medium</option>
-        <option value="sm">Small</option>
+        <option value="">-----Select sandwich size-----</option>
+        @foreach (var product in Model.productVMs)
+        {
+            <option value="@product.ProductId-@product.BasePrice">@product.Description</option>
+        }
     </select>
+    <!-- End of Select-->
 
+    <!-- Displaying Ingredients -->
     <div class="accordion" id="customize">
-        @foreach (var cat in Model)
+        @foreach (var cat in Model.ingredientListVMs)
         {
             <div class="accordion-item">
                 <!-- Accordion Header : Catogory -->
@@ -46,8 +49,8 @@
                             <tr>
                                 <th>Description</th>
                                 <th>Price</th>
-                                <th>Button</th>
-                                <th>Quantity</th>
+                                <th>None - Reg - Extra</th>
+                                <th> </th>
                             </tr>
                             @foreach (var ing in cat.Ingredients)
                             {
@@ -55,36 +58,37 @@
                                 if (ing.InStock == "Y")
                                 {
                                     <!-- Radio button for the breads, Everything else should be regular/extar btn with check box (radio as well)-->
-                                    <tr>
-                                        <td class="celldesc">@ing.Description</td>
+                                    <tr id="inin" class="inin">
+                                        <td class="ingredientId" hidden>@ing.IngredientId</td>
+                                        <td class="description">@ing.Description</td>
                                         <td id="@ing.IngredientId-price" class="price">@ing.Price</td>
                                         <td>
-                                            <button id="@ing.IngredientId-add" onclick="updateShoppingCart(event)">+</button>
-                                            <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>
-                                        </td>
-                                        <td id="@ing.IngredientId-quantity" class="quantity">0</td>
-                                        <td id="@ing.IngredientId-amount" class="amount">0</td>
+                                      @*      <button id="@ing.IngredientId-add" onclick="updateShoppingCart(event)">+</button>
+                                            <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>*@
 
-                                        @*forEach(i=0; i<localStroage.length; i++) {
-                                            if (localStorage[i] == @ing.Description) {
-                                                quantity = localStorage.quantity
-                                            } else {
-                                                quantity =0
-                                            }
-                                        }*@
+                                            <form onchange="updateShoppingCart(event)">
+                                                <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked="checked">
+                                                <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">                                               
+                                                <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">                                              
+                                            </form>
+
+                                        </td>
+                                        <td id="@ing.IngredientId-quantity" class="quantity" hidden>0</td>
+                                        <td id="@ing.IngredientId-amount" class="amount">0</td>
                                     </tr>
                                 }
                             }
                         </table>
-                        <!-- End of table-->
+                        <!-- End of Ingredients table-->
                     </div>
                 </div>
-            </div>  
+            </div>
+            <!-- End of Accordian -->
         }
     </div>
 </div>
 <hr />
-<span id="sub-price">0</span> <span id="total-ing">0</span>
+<span id="sub-price">0</span> | <span id="total-ing">0</span> | <span id="total-amt">0</span>
 <span>Total : $</span> <span id="total">0</span> <!-- Add Sandwich price by default, changes with selection change-->
 <button onclick="addToCart()">Add to cart</button> <!-- Trigger to save in localStorage-->
 <button id="remove-all" onclick="removeAll(event)">Cancel Sub</button>
@@ -94,22 +98,45 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-    function addToCart(){
+    function quantityChange(event) {
+        console.log(event.target.value);
+    }
+
+
+    function addToCart() {
+        // Get item from localStorage
         var oldCart = JSON.parse(localStorage.getItem('cart'))
 
-        if (oldCart ==null){
+        if (oldCart == null) {
             oldCart = [];
         }
         if (!(oldCart instanceof Array)) {
             oldCart = [oldCart];
         }
 
-@*        // Same as db*@
+        // Customized items
+        var ingredients = [];
+
+        $('.inin').each(function () {
+            var quantity = $(this).find('.quantity').html();
+            if (quantity > 0) {
+                var ingredient = {
+                    ingredientId: $(this).find('.ingredientId').html(),
+                    description: $(this).find('.description').html(),
+                    price: $(this).find('.price').html()
+                }
+                ingredients.push(ingredient)
+            }
+        })
+
+        // Save item into localStorage
         var item = {
-            size: 1,
-            @*category: [ bread: [ { description: tomato, quantity: 2} ], sauce: []  ],*@
+            productId: $('#sub-size option:selected').val().split("-")[0],
+            ingredients: ingredients,
             subTotal: $('#total').html()
         }
+
+        console.log(item);
 
         oldCart.push(item)
         localStorage.setItem("cart", JSON.stringify(oldCart));
@@ -135,22 +162,10 @@
         if (!event.target) {
             option = event;
         } else {
-            option = event.target.value;
+            option = event.target.value.split("-");
         }
-        switch (option) {
-            case "lg":
-                $("#sub-price").text(12);
-                break;
-            case "md":
-                $("#sub-price").text(10);
-                break;
-            case "sm":
-                $("#sub-price").text(8);
-                break;
-            default:
-                $("#sub-price").text(0);
-                break;
-        }
+        $("#sub-price").text(option[1]);
+
         var sum = parseFloat($('#sub-price').html()) + parseFloat($('#total-ing').html())
         $('#total').text(sum)
     }
@@ -165,7 +180,7 @@
         });
 
         initialSubSize();
-        var sum = parseFloat($('#sub-price').html()) 
+        var sum = parseFloat($('#sub-price').html())
         $('#total').text(sum);
 
     }
@@ -175,6 +190,7 @@
         localStorage.clear();
     }
 
+    // SHOPPING CART!!!!!
     function updateShoppingCart(event) {
         var clickedId = event.target.id;
         var elementIdSplit = clickedId.split('-');
@@ -191,13 +207,16 @@
 
         var quantity = $(cartQtyId).html();
 
-        if (action == "add") {
-            quantity++;
-        } else {
-            quantity--;
-            if (quantity < 0) {
+        switch (action){
+            case "none":
                 quantity = 0;
-            }
+                break;
+            case "reg":
+                quantity = 1;
+                break;
+            case "extra":
+                quantity = 2;
+                break;
         }
 
         $(cartQtyId).text(quantity);
@@ -216,8 +235,9 @@
             var thisQuantity = $(this).html();
             totalQuantity += parseInt(thisQuantity);
         });
+        $('#total-amt').text(totalQuantity);
 
-        var totalIngredient = parseFloat($("#total-ing").html());
+        var totalIngredient = 0;
         $('.amount').each(function () {
             var thisAmount = $(this).html();
             totalIngredient += parseFloat(thisAmount);

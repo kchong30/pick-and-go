@@ -1,0 +1,9 @@
+When making changes to the database design:
+1) Update the database script in Master SQL, also make any seeding changes to the seeding script
+2) In SQL Server, run the SQL script to update the project tables
+3) Run the seeding script
+4) If all ok, copy the two scripts to the SQL folder inside the project
+5) In package manager, run:
+Scaffold-DbContext "Server= DESKTOP-FE33CFA\SQLEXPRESS;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True " Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
+
+

@@ -13,18 +13,33 @@ namespace PickAndGo.Controllers
         {
             _db = context;
         }
-        public IActionResult Index()
+
+        public IActionResult Index(ProductVM products)
         {
-            return View();
+            ProductRepository pr = new ProductRepository(_db);
+            var vm = pr.GetProducts();
+            return View(vm);
         }
 
         public IActionResult Customize()
         {
             // Receving Product ID from Main page
             IngredientsRepository ir = new IngredientsRepository(_db);
-            IQueryable<IngredientListVM> vm = ir.BuildIngredientListVM();
+            IQueryable<IngredientListVM> iVm = ir.BuildIngredientListVM();
 
-            return View(vm);
+            ProductRepository pr = new ProductRepository(_db);
+            IQueryable<ProductVM> pVm = pr.GetProducts();
+
+            OrderCustomizeVM ocVm = new OrderCustomizeVM();
+            ocVm.productVMs = pVm.ToList();
+            ocVm.ingredientListVMs = iVm.ToList();
+
+            return View(ocVm);
+            }
+
+        public IActionResult History()
+        {
+            return View();
         }
     }
 }

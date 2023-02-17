@@ -55,5 +55,11 @@ namespace PickAndGo.Repositories
             return vm;
         }
 
+        public Customer ReturnCustomerByEmail(string email)
+        {
+            var customer = _db.Customers.Where(c => c.EmailAddress == email).FirstOrDefault();
+            return customer;
+        }
+
     }
 }

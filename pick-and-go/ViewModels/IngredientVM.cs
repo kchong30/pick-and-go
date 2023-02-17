@@ -13,7 +13,8 @@ namespace PickAndGo.ViewModels
         public string CategoryId { get; set; }
         public string? InStock { get; set; }
         public Boolean OutstandingOrders {get; set; }
-        public string InStockIcon { get; set; }
+        public string ?InStockIcon { get; set; }
+        public bool IngredientInStock { get; set; }
 
     }
 }

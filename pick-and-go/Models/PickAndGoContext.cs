@@ -213,7 +213,8 @@ namespace PickAndGo.Models
                     .HasColumnName("dietaryID");
 
                 entity.Property(e => e.DietaryImage)
-                    .HasColumnType("image")
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
                     .HasColumnName("dietaryImage");
 
                 entity.Property(e => e.DietaryName)
@@ -350,6 +351,11 @@ namespace PickAndGo.Models
 
                 entity.Property(e => e.OrderId).HasColumnName("orderID");
 
+                entity.Property(e => e.Currency)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("currency");
+
                 entity.Property(e => e.CustomerId).HasColumnName("customerID");
 
                 entity.Property(e => e.OrderDate)
@@ -393,7 +399,6 @@ namespace PickAndGo.Models
                     .HasMaxLength(1)
                     .IsUnicode(false)
                     .HasColumnName("lineStatus")
-                    .HasDefaultValueSql("('O')")
                     .IsFixedLength();
 
                 entity.Property(e => e.ProductId).HasColumnName("productID");
@@ -431,7 +436,8 @@ namespace PickAndGo.Models
                     .HasColumnName("description");
 
                 entity.Property(e => e.Image)
-                    .HasColumnType("image")
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
                     .HasColumnName("image");
             });
 
