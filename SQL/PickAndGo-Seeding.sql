@@ -1,22 +1,21 @@
-When making changes to the database design:
-1) Delete database in SQL Server
-2) Delete all models except errorview from models folder
-3) Go into your appsettings.json file, and replace the default connection section with the appropriate string for your local machine  -->
-"DefaultConnection": "Server=DESKTOP-FE33CFA\SQLEXPRESS; Database=PickAndGo; Trusted_Connection=True; MultipleActiveResultSets=true"
-4) run "Update-Database" in the package manager line to build out the Identity Framework Tables 
-5) In SQL Server, select the newly created database and run the SQL script to create the project tables
-6) In package manager, run:
-Scaffold-DbContext "Server= DESKTOP-FE33CFA\SQLEXPRESS;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True " Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
-7) Run seeding script on new database
-
-
-
-INSERT INTO Customer (lastName, firstName, emailAddress, phoneNumber, adminUser, dateSignedUp, dateLastOrdered)
-                 VALUES('Admin', 'Admin', 'admin@admin.com', '', 'Y', '', '');
 INSERT INTO Customer (lastName, firstName, emailAddress, phoneNumber, adminUser, dateSignedUp, dateLastOrdered)
                  VALUES('Jones', 'Ricky', 'rickyjones@gmail.com', '6035869577', 'N', '2022-12-02', '2022-12-05');
 INSERT INTO Customer (lastName, firstName, emailAddress, phoneNumber, adminUser, dateSignedUp, dateLastOrdered)
                  VALUES('Sullivan', 'Gemma', 'gemmasullivan@gmail.com', '6048850125', 'N', '2022-11-15', '2022-12-04');
+
+INSERT INTO Category (categoryID) VALUES('Cheese');
+INSERT INTO Category (categoryID) VALUES('Breads');
+INSERT INTO Category (categoryID) VALUES('Protein');
+INSERT INTO Category (categoryID) VALUES('Sauces');
+INSERT INTO Category (categoryID) VALUES('Seasonings');
+INSERT INTO Category (categoryID) VALUES('Vegetables');
+
+INSERT INTO Product (productID, description, basePrice, image)
+                        VALUES(1, 'Large Sandwich', 3.00, 'sandwich-large.jpg');
+INSERT INTO Product (productID, description, basePrice, image)
+                        VALUES(2, 'Medium Sandwich', 2.00, 'sandwich-medium.jpg');
+INSERT INTO Product (productID, description, basePrice, image)
+                        VALUES(3, 'Small Sandwich', 1.00, 'sandwich-small.jpg');
 
 INSERT INTO Ingredient (description, price, categoryID, inStock)
                         VALUES('Bacon', 2.00, 'Protein', 'Y');
@@ -55,15 +54,14 @@ INSERT INTO Ingredient (description, price, categoryID, inStock)
 INSERT INTO Ingredient (description, price, categoryID, inStock)
                         VALUES('Ciabatta Bun', 0.50, 'Breads', 'Y');
 
-INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus)
-                         VALUES(4, '2022-11-15', 5.00, '2022-11-15 05:30:00 PM', 'C');
-INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus)
-                         VALUES(3, '2022-12-02', 7.25, '2022-12-02 02:45:00 PM', 'O');
-INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus)
-                         VALUES(4, '2022-12-04', 6.25, '2022-12-04 07:06:00 PM', 'O');
-INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus)
-                         VALUES(3, '2022-12-05', 8.50, '2022-12-05 10:15:00 PM', 'O');
-
+INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
+                         VALUES(2, '2022-11-15', 5.00, '2022-11-15 05:30:00 PM', 'C', 'CAD', 'Paypal', 'MPNU4QQ9N277425VE022403S', '2022-11-15 04:13:00 PM');
+INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
+                         VALUES(1, '2022-12-02', 7.25, '2022-12-02 02:45:00 PM', 'O', 'CAD', 'Paypal', 'DSPU4YD8N357407VE036207P', '2022-12-02 01:09:00 PM');
+INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
+                         VALUES(2, '2022-12-04', 6.25, '2022-12-04 07:06:00 PM', 'O', 'CAD', 'Paypal', 'EJIO4FL9N248485FR092409W', '2022-12-04 06:32:00 PM');
+INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
+                         VALUES(1, '2022-12-05', 8.50, '2022-12-05 10:15:00 PM', 'O', 'CAD', 'Paypal', 'SKYN7QRAJ290725QD65495T', '2022-12-05 08:09:00 PM');
 
 INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
                        VALUES(1, 3, 1, 'C');
@@ -133,44 +131,42 @@ INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
                             VALUES(3, 5, 9, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 5, 1, 1);
+                            VALUES(3, 5, 1, 2);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
                             VALUES(3, 5, 8, 1);
 
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
                             VALUES(3, 6, 11, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 6, 1);
+                            VALUES(3, 6, 9, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 3, 1);
+                            VALUES(3, 6, 1, 2);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 16, 1);
+                            VALUES(3, 6, 8, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 15, 1);
+                            VALUES(3, 6, 14, 1);
 
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
                             VALUES(4, 7, 12, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 2, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
                             VALUES(4, 7, 7, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 13, 1);
+                            VALUES(4, 7, 2, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 5, 1);
+                            VALUES(4, 7, 8, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
+                            VALUES(4, 7, 3, 1);
 
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 18, 1);
+                            VALUES(4, 8, 10, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 17, 1);
+                            VALUES(4, 8, 8, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 1, 1);
+                            VALUES(4, 8, 6, 1);
 INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 16, 1);
+                            VALUES(4, 8, 15, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
+                            VALUES(4, 8, 4, 1);
 
 
-
-
-
-Scaffold-DbContext "DESKTOP-H91607K\SSD_SQL_SERVER;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True " Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
-
+							

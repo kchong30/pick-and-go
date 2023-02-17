@@ -1,3 +1,6 @@
+DROP PROC IF EXISTS spUpdateOrderHeaderStatus;
+GO
+
 IF OBJECT_ID('Customer_DietaryType', 'U')    
 	IS NOT NULL DROP TABLE Customer_DietaryType;
 
@@ -45,7 +48,7 @@ CREATE TABLE Product (
 	productID INT PRIMARY KEY NOT NULL,
 	[description] VARCHAR(50) NOT NULL,
 	basePrice DECIMAL(9,2),
-	[image] IMAGE);
+	[image] VARCHAR(255));
 
 CREATE TABLE Category (
 	categoryID VARCHAR(12) PRIMARY KEY NOT NULL);
@@ -63,8 +66,12 @@ CREATE TABLE OrderHeader (
 	customerID INT NOT NULL,
 	orderDate DATE,
 	orderValue DECIMAL(9,2),
-	pickupTime TIME,
-	orderStatus CHAR(1),
+	pickupTime DATETIME,
+	orderStatus CHAR(1) NOT NULL,
+	currency VARCHAR(3),
+	paymentType VARCHAR(15),
+	paymentID VARCHAR(40),
+	paymentDate DATE,
 	FOREIGN KEY(customerID) REFERENCES Customer(customerID));
 
 CREATE TABLE OrderLine (
@@ -72,6 +79,7 @@ CREATE TABLE OrderLine (
 	lineID INT IDENTITY NOT NULL,
 	productID INT NOT NULL,
 	quantity INT,
+	lineStatus CHAR(1) NOT NULL,
 	CONSTRAINT PK_OrderLine PRIMARY KEY (orderID,lineID),
 	FOREIGN KEY(orderID) REFERENCES OrderHeader(orderID),
 	FOREIGN KEY(productID) REFERENCES Product(productID));
@@ -99,7 +107,7 @@ CREATE TABLE Favorite (
 CREATE TABLE DietaryType (
 	dietaryID VARCHAR(2) PRIMARY KEY NOT NULL,
 	dietaryName VARCHAR(30) NOT NULL,
-	dietaryImage IMAGE);
+	dietaryImage VARCHAR(255));
 
 CREATE TABLE Customer_DietaryType (
 	customerID INT NOT NULL,
@@ -115,21 +123,22 @@ CREATE TABLE Ingredient_DietaryType (
 	FOREIGN KEY(ingredientID) REFERENCES Ingredient(ingredientID),
 	FOREIGN KEY(dietaryID) REFERENCES DietaryType(dietaryID));
 
-INSERT INTO Category VALUES('Breads');
-INSERT INTO Category VALUES('Vegetables');
-INSERT INTO Category VALUES('Protein');
-INSERT INTO Category VALUES('Seasonings');
-INSERT INTO Category VALUES('Sauces');
+GO
 
-INSERT INTO Product VALUES(1,'Large sandwich', 3.00, '');
-INSERT INTO Product VALUES(2,'Medium sandwich', 2.00, '');
-INSERT INTO Product VALUES(3,'Small sandwich', 1.00, '');
+CREATE PROCEDURE spUpdateOrderHeaderStatus (@OrderId INT) AS
+BEGIN
+	DECLARE @openLines INT;
+	SET @openLines = (SELECT COUNT(ol.lineId)
+                       FROM OrderLine ol
+                       WHERE ol.orderID = @OrderId AND ol.lineStatus = 'O');
 
-INSERT INTO DietaryType VALUES('GF', 'Gluten Free', '');
-INSERT INTO DietaryType VALUES('DF', 'Dairy Free', '');
-INSERT INTO DietaryType VALUES('NT', 'May contain traces of peanuts', '');
-INSERT INTO DietaryType VALUES('VN', 'Vegan', '');
-INSERT INTO DietaryType VALUES('VG', 'Vegetarian', '');
+	IF @openLines = 0
+    BEGIN
+		UPDATE OrderHeader
+               SET orderStatus = 'C'
+			   WHERE orderId = @OrderId;
+	END
+END
 
-INSERT INTO Customer (lastName, firstName, emailAddress, phoneNumber, adminUser, dateSignedUp, dateLastOrdered)
-                      VALUES('Admin', 'Admin', 'admin@admin.com', '', 'Y', '', '');
+GO
+
