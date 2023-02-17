@@ -54,60 +54,39 @@ namespace PickAndGo.Controllers
 
         public IActionResult IngredientsCreate()
         {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            var vm = iR.BuildIngredientVM(0);
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
             return View();
         }
 
         [HttpPost]
-        public IActionResult IngredientsCreate(Ingredient ingredient)
+        public IActionResult IngredientsCreate(IngredientVM ingredient)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _db.Ingredients.Add(new Ingredient
-                    {
-                        Description = ingredient.Description,
-                        Price = ingredient.Price,
-                        CategoryId = ingredient.CategoryId,
-                        InStock = ingredient.InStock
-                    });
-                    _db.SaveChanges();
+            string addMessage = "";
 
-                    var addMessage = $"** Ingredient {ingredient.Description} has been added " +
-                                      $"to category {ingredient.CategoryId}.";
-
-                    return RedirectToAction("Ingredients", "Admin", new { message = addMessage });
-                }
-            }
-            catch
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            if (ModelState.IsValid)
             {
-                return View();
+                addMessage = iR.CreateIngredient(ingredient);
             }
 
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
-            return View(ingredient);
+            return RedirectToAction("Ingredients", "Admin", new { message = addMessage });
+          
         }
 
         public IActionResult IngredientsDetails(int id)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.ReturnIngredientById(id);
-            vm.InStockIcon = (vm.InStock == "Y") ? "check.svg" : "x.svg";
             return View(vm);
         }
 
         public IActionResult IngredientsEdit(int id)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
-            var i = iR.GetIngredientRecord(id);
-
-            IngredientVM vm = new IngredientVM();
-            vm.IngredientId = i.IngredientId;
-            vm.Description = i.Description;
-            vm.Price = i.Price;
-            vm.CategoryId = i.CategoryId;
-            vm.IngredientInStock = i.InStock == "Y" ? true : false;
+            var vm = iR.BuildIngredientVM(id);
 
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
             return View(vm);

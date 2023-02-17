@@ -26,9 +26,12 @@ namespace PickAndGo.Controllers
             return View();
         }
 
-        public IActionResult History()
+        public IActionResult History(int customerId)
         {
-            return View();
+            OrderRepository or = new OrderRepository(_db);
+            IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
+
+            return View(vm);
         }
     }
 }

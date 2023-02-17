@@ -1,0 +1,67 @@
+﻿@using PickAndGo.ViewModels
+@model IEnumerable<OrderHistoryVM>
+
+@{
+    ViewData["Title"] = "Order History";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div>
+    <h1>Order History</h1>
+    <h4>@Model.FirstOrDefault()?.FullName</h4>
+</div>
+
+<div class="container">
+
+    <table class="table">
+
+        @foreach (var order in Model)
+        {
+            int prevOrderNumber = 0;
+
+            if (order.OrderId != prevOrderNumber)
+            {
+                prevOrderNumber = order.OrderId;
+                <thead>
+                    <tr>
+                        <th>Date: @order.OrderDate</th>
+                        <th>Order#: @order.OrderId</th>
+                        <th>Total: @order.OrderValue</th>
+                    </tr>
+                </thead>
+            }
+            <tbody class="accordion" id="PickAndGoAccordion">
+
+                <tr>
+                    <td>@order.Description</td>
+                    <td>@order.Price</td>
+                    <td>
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@order.OrderStr" aria-expanded="false" aria-controls="@order.OrderStr"></button>
+                    </td>
+                </tr>
+
+                <tr id="@order.OrderStr" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
+
+                    <td class="accordion-detail accordion-body" colspan="8">
+                        <table class="accordion-table container">
+                            @foreach (var line in order.Ingredients)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@line.IngDescription</td>
+                                    <td>@line.Quantity</td>
+                                    <td>@String.Format("{0:0.00}", line.IngValue)</td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+
+                </tr>
+
+            
+            </tbody>
+        }
+    </table>
+</div>  <!--class="container"-->
+

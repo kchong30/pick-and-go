@@ -73,6 +73,47 @@ namespace PickAndGo.Repositories
             return vmList;
         }
 
+        public IQueryable<OrderHistoryVM> BuildOrderHistoryVM(int customerId)
+        {
+            var vmList = from l in _db.OrderLines
+                         join o in _db.OrderHeaders on l.OrderId equals o.OrderId
+                         join c in _db.Customers on o.CustomerId equals c.CustomerId
+                         join p in _db.Products on l.ProductId equals p.ProductId
+                         where (c.CustomerId.Equals(customerId))
+                         orderby o.OrderDate descending
+                         select new OrderHistoryVM
+                         {
+                             OrderId = o.OrderId,
+                             OrderStr = "Order" + o.OrderId + l.LineId,
+                             CustomerId = o.CustomerId,
+                             FirstName = c.FirstName,
+                             LastName = c.LastName,
+                             FullName = c.FirstName + " " + c.LastName,
+                             OrderDate = ((DateTime)o.OrderDate).ToString("MM-dd-yyyy"),
+                             LineId = l.LineId,
+                             ProductId = l.ProductId,
+                             Description = p.Description,
+                             Quantity = l.Quantity,
+                             Price = p.BasePrice,
+                             OrderValue = (decimal)o.OrderValue,
+                             Ingredients = (List<OrderIngredientVM>)
+                                              (from li in _db.LineIngredients
+                                               join i in _db.Ingredients on li.IngredientId equals i.IngredientId
+                                               where o.OrderId == li.OrderId && l.LineId == li.LineId
+                                               orderby o.OrderId, li.LineId
+                                               select new OrderIngredientVM
+                                               {
+                                                   IngredientId = li.IngredientId,
+                                                   IngDescription = i.Description,
+                                                   Quantity = li.Quantity,
+                                                   Price = i.Price,
+                                                   IngValue = (decimal)(li.Quantity * i.Price)
+                                               }),
+                         };
+
+            return vmList;
+        }
+
         public OrderHeader GetOrderHeader(int orderId)
         {
             var orderHeader = _db.OrderHeaders.Where(o => o.OrderId == orderId).FirstOrDefault();
