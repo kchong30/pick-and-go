@@ -63,7 +63,7 @@ namespace PickAndGo.Repositories
         {
 
             var vm = ReturnAllIngredients().Where(c => c.IngredientId == ingredientId).FirstOrDefault();
-
+            vm.InStockIcon = (vm.InStock == "Y") ? "check.svg" : "x.svg";
             return vm;
         }
 
@@ -71,6 +71,18 @@ namespace PickAndGo.Repositories
         {
             var ingredient = _db.Ingredients.Where(i => i.IngredientId == ingredientId).FirstOrDefault();
             return ingredient;
+        }
+
+        public IngredientVM BuildIngredientVM(int ingredientId)
+        {
+            var ingredient = GetIngredientRecord(ingredientId);
+            IngredientVM vm = new IngredientVM();
+            vm.IngredientId = ingredient.IngredientId;
+            vm.Description = ingredient.Description;
+            vm.Price = ingredient.Price;
+            vm.CategoryId = ingredient.CategoryId;
+            vm.IngredientInStock = ingredient.InStock == "Y" ? true : false;
+            return vm;
         }
 
         public string EditIngredient(IngredientVM ingredientVM)
@@ -110,6 +122,32 @@ namespace PickAndGo.Repositories
                                 $"from category {category}.";
             }
             return deleteMessage;
+        }
+
+        public string CreateIngredient(IngredientVM ingredientVM)
+        {
+            string message = "";
+            try
+            {
+                _db.Ingredients.Add(new Ingredient
+                {
+                    Description = ingredientVM.Description,
+                    Price = ingredientVM.Price,
+                    CategoryId = ingredientVM.CategoryId,
+                    InStock = ingredientVM.InStock
+                });
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+            }
+            if (message == "")
+            {
+                message = $"** Ingredient {ingredientVM.Description} has been added " +
+                               $"to category {ingredientVM.CategoryId}.";
+            }
+            return message;
         }
     }
 }

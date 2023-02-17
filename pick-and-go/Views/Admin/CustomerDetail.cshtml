@@ -47,7 +47,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="OrderHistory" asp-route-accountNum="@Model?.CustomerId">View History</a> |
+    <a asp-action="History" asp-controller="Order" asp-route-customerId="@Model?.CustomerId">View History</a> |
     <a asp-action="CustomerList">Back to List</a>
 </div>
 
