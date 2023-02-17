@@ -1,0 +1,28 @@
+﻿@model IEnumerable<PickAndGo.ViewModels.UserVM>
+
+@{
+    ViewData["Title"] = "UserRole";
+}
+
+<h1>Existing User Emails</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @Html.ActionLink("View Roles", "Detail", new { userName = item.Email })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

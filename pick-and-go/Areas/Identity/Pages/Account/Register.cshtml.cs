@@ -33,6 +33,8 @@ namespace PickAndGo.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly PickAndGoContext _db;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -40,7 +42,8 @@ namespace PickAndGo.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            PickAndGoContext context)
+            PickAndGoContext context,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -49,6 +52,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _db = context;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -147,6 +151,12 @@ namespace PickAndGo.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    var defaultRole = _roleManager.FindByNameAsync("Customer").Result;
+                    if (defaultRole != null)
+                    {
+                        IdentityResult roleResult = await _userManager.AddToRoleAsync(user, defaultRole.Name);
+                    }
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
