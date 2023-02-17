@@ -20,7 +20,8 @@
 <div class="container">
 
     <select onchange="subSize(event)" id="sub-size">
-        <!-- Select Data comes from previous page-->
+        <!-- Select Data comes from previous page, as productId (no size, use Product)-->
+        <!-- Do CSS, touch size bigger -->
         <option value="">--size--</option>
         <option selected="selected" value="lg">Large</option>
         <option value="md">Medium</option>
@@ -53,6 +54,7 @@
                                 @* Ingredient not displayed when out of stock *@
                                 if (ing.InStock == "Y")
                                 {
+                                    <!-- Radio button for the breads, Everything else should be regular/extar btn with check box (radio as well)-->
                                     <tr>
                                         <td class="celldesc">@ing.Description</td>
                                         <td id="@ing.IngredientId-price" class="price">@ing.Price</td>

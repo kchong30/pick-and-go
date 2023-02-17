@@ -20,6 +20,7 @@ namespace PickAndGo.Controllers
 
         public IActionResult Customize()
         {
+            // Receving Product ID from Main page
             IngredientsRepository ir = new IngredientsRepository(_db);
             IQueryable<IngredientListVM> vm = ir.BuildIngredientListVM();
 
