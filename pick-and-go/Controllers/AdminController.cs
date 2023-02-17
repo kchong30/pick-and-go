@@ -18,6 +18,8 @@ using System.Security.Principal;
 
 namespace PickAndGo.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class AdminController : Controller
     {
         private readonly PickAndGoContext _db;
