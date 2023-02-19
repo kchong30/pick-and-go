@@ -1,10 +1,26 @@
 ﻿
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+
+
+
+<script>
+    const dropdown = document.getElementById('pickupTime');
+
+    function handleDropdownChange() {
+      const selectedValue = dropdown.value;
+      console.log(selectedValue);
+      sessionStorage.setItem('pickupTime', selectedValue);
+    }
+
+    dropdown.addEventListener('change', handleDropdownChange);
+</script>
+
 <script>
     paypal.Button.render({
         env: 'sandbox', // Or ' production '
         style: { // You can customize your button here.
-            size: 'medium',
+            size: 'small',
             color: 'silver',
             shape: 'rect',
             label: 'checkout'
@@ -40,7 +56,7 @@
                             total:
                                 document.getElementById("totalAmount").innerHTML
                             , currency:
-                                document.getElementById("currency").innerHTML
+                                document.getElementById("currency").value
                         }
                     }]
                 }
