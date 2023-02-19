@@ -32,7 +32,7 @@
                     <td>@item.Value.productId</td>
                     <td>@item.Value.description</td>
                     <td><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
-                    <td><button>Duplicate</button></td>
+                    <td>@Html.ActionLink("Duplicate", "INDEX???", new { index = item.Index }, new { @class = "btn btn-primary" })</td>
                 </tr>
 
                <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show" aria-labelledby="@item.Value.productId">
@@ -54,6 +54,7 @@
     </table>
     @Html.Partial("PayPalJS")
     <div id="paypal-button"></div>
+ 
 </div>  <!--class="container"-->
 
 <hr />
@@ -76,13 +77,13 @@
                 // loop eace 20mins until 17
                 for (var j = roundedTime; j <= new DateTime(roundedTime.Year, roundedTime.Month, roundedTime.Day, 17, 0, 0); j = j.AddMinutes(20))
                 {
-                                        <option value="@j.ToString("yyyy-MM-ddTHH:mm:ss")">@j.ToString("h:mm tt")</option>
+                   <option value="@j.ToString("yyyy-MM-ddTHH:mm:ss")">@j.ToString("h:mm tt")</option>
                 }
             }
             // if the time is not between 9 to 17, show we are closed
             else
             {
-                            <option value="">Sorry, We are closed!</option>
+                <option value="">Sorry, We are closed!</option>
             }
         }
 </select>
