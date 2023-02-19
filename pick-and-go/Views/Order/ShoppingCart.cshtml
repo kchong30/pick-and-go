@@ -1,0 +1,81 @@
+﻿@using PickAndGo.ViewModels
+@model IEnumerable<ShoppingCartVM>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="shopping-title">
+    <h1>Shopping Cart</h1>
+</div>
+
+<div class="container">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Description</th>
+                <th>Ingredients</th>
+                <th>Subtotal</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
+            {
+                <tr>
+                    <td>@item.Value.productId</td>
+                    <td>@item.Value.description</td>
+                    <td class="col-md-6">
+                        <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
+                            View ingredients
+                        </button>
+                    </td>
+                    <td><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse" aria-labelledby="@item.Value.productId">
+
+                    <td class="accordion-detail accordion-body" colspan="6">
+                        <table class="accordion-table container">
+                            @foreach (var ingredient in item.Value.ingredient)
+                            {
+                                <tr class="row">
+                                    <td class="d-flex justify-content-center">@ingredient.description (x @ingredient.quantity)</td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+    @Html.Partial("PayPalJS")
+    <div id="paypal-button"></div>
+</div>  <!--class="container"-->
+
+<footer>
+    <span id="totalAmount">0</span><span id="currency"> CAD</span>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var totalAmountId = "#totalAmount";
+        var totalAmount = 0.00;
+        $('.amount').each(function () {
+            var thisAmount = $(this).html();
+            totalAmount += parseFloat(thisAmount);
+        });
+        $(totalAmountId).html(totalAmount.toFixed(2));
+    });
+</script>
