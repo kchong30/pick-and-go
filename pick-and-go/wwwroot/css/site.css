@@ -125,7 +125,32 @@ body {
     height: 40px;
     width: 100%;
 }
+<th class="col-1" >
 
 .radio-group input[type=radio] {
     transform: scale(1.8);
+}
+
+/* Order history styles */
+
+.no-padding {
+    padding: 0;
+}
+
+.cell-image {
+    width: 25px;
+}
+
+.cell-amount {
+    text-align: right;6
+}
+
+/* Favorites styles */
+
+.cell-image2 {
+    width: 20px;
+}
+
+.modal-a {
+    text-decoration: none;
 }

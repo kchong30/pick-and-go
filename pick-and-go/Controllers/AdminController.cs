@@ -76,10 +76,13 @@ namespace PickAndGo.Controllers
           
         }
 
-        public IActionResult IngredientsDetails(int id)
+        public IActionResult IngredientsDetails(int id, string message)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.ReturnIngredientById(id);
+
+            ViewData["Message"] = message;
+
             return View(vm);
         }
 
@@ -95,12 +98,16 @@ namespace PickAndGo.Controllers
         [HttpPost]
         public IActionResult IngredientsEdit(IngredientVM ingredientVM)
         {
+            string editMessage = "";
+
             IngredientsRepository iR = new IngredientsRepository(_db);
             if (ModelState.IsValid)
             {
-                iR.EditIngredient(ingredientVM);
+                editMessage = iR.EditIngredient(ingredientVM);
             }
-            return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredientVM.IngredientId });
+            return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredientVM.IngredientId,
+                                                                         message = editMessage
+            });
         }
 
         public IActionResult IngredientsDelete(int id)

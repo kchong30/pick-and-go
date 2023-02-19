@@ -81,6 +81,14 @@ namespace PickAndGo.Repositories
                          join p in _db.Products on l.ProductId equals p.ProductId
                          where (c.CustomerId.Equals(customerId))
                          orderby o.OrderDate descending
+                         let iSum = (from li in _db.LineIngredients
+                                     join i in _db.Ingredients on li.IngredientId equals i.IngredientId
+                                     where o.OrderId == li.OrderId && l.LineId == li.LineId
+                                     select (i.Price * li.Quantity)).Sum()
+                         let fCount = (from f in _db.Favorites where c.CustomerId == f.CustomerId &&
+                                                                     o.OrderId == f.OrderId &&
+                                                                     l.LineId == f.LineId
+                                       select o).Count()
                          select new OrderHistoryVM
                          {
                              OrderId = o.OrderId,
@@ -96,6 +104,8 @@ namespace PickAndGo.Repositories
                              Quantity = l.Quantity,
                              Price = p.BasePrice,
                              OrderValue = (decimal)o.OrderValue,
+                             LineValue = (decimal)(p.BasePrice + iSum),
+                             IsFavorite = fCount > 0 ? true : false,
                              Ingredients = (List<OrderIngredientVM>)
                                               (from li in _db.LineIngredients
                                                join i in _db.Ingredients on li.IngredientId equals i.IngredientId
