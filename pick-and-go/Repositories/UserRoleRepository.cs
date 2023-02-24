@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PickAndGo.Data;
 using PickAndGo.ViewModels;
+using System.Runtime.InteropServices;
 
 namespace PickAndGo.Repositories
 {
     public class UserRoleRepository
     {
         IServiceProvider serviceProvider;
+        ApplicationDbContext _aspContext;
 
-        public UserRoleRepository(IServiceProvider serviceProvider)
+
+
+        public UserRoleRepository(IServiceProvider serviceProvider, ApplicationDbContext aspcontext)
         {
             this.serviceProvider = serviceProvider;
+            this._aspContext = aspcontext;
         }
 
         public async Task<bool> AddUserRole(string email, string roleName)

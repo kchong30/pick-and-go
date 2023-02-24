@@ -16,12 +16,6 @@ namespace PickAndGo.Models
         {
         }
 
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; } = null!;
-        public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; } = null!;
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; } = null!;
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; } = null!;
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; } = null!;
-        public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
         public virtual DbSet<DietaryType> DietaryTypes { get; set; } = null!;
@@ -43,95 +37,6 @@ namespace PickAndGo.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AspNetRole>(entity =>
-            {
-                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
-                    .IsUnique()
-                    .HasFilter("([NormalizedName] IS NOT NULL)");
-
-                entity.Property(e => e.Name).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedName).HasMaxLength(256);
-            });
-
-            modelBuilder.Entity<AspNetRoleClaim>(entity =>
-            {
-                entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.AspNetRoleClaims)
-                    .HasForeignKey(d => d.RoleId);
-            });
-
-            modelBuilder.Entity<AspNetUser>(entity =>
-            {
-                entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
-
-                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
-                    .IsUnique()
-                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
-
-                entity.Property(e => e.Email).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
-
-                entity.Property(e => e.UserName).HasMaxLength(256);
-
-                entity.HasMany(d => d.Roles)
-                    .WithMany(p => p.Users)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "AspNetUserRole",
-                        l => l.HasOne<AspNetRole>().WithMany().HasForeignKey("RoleId"),
-                        r => r.HasOne<AspNetUser>().WithMany().HasForeignKey("UserId"),
-                        j =>
-                        {
-                            j.HasKey("UserId", "RoleId");
-
-                            j.ToTable("AspNetUserRoles");
-
-                            j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
-                        });
-            });
-
-            modelBuilder.Entity<AspNetUserClaim>(entity =>
-            {
-                entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserClaims)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUserLogin>(entity =>
-            {
-                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
-
-                entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
-
-                entity.Property(e => e.LoginProvider).HasMaxLength(128);
-
-                entity.Property(e => e.ProviderKey).HasMaxLength(128);
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserLogins)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUserToken>(entity =>
-            {
-                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
-
-                entity.Property(e => e.LoginProvider).HasMaxLength(128);
-
-                entity.Property(e => e.Name).HasMaxLength(128);
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserTokens)
-                    .HasForeignKey(d => d.UserId);
-            });
-
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.ToTable("Category");
@@ -204,7 +109,6 @@ namespace PickAndGo.Models
             {
                 entity.HasKey(e => e.DietaryId)
                     .HasName("PK__DietaryT__9B5E3E4C7A2F96F0");
-
                 entity.ToTable("DietaryType");
 
                 entity.Property(e => e.DietaryId)
@@ -245,13 +149,11 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Favorite__custom__2D12A970");
-
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Favorite__orderI__2E06CDA9");
-
                 entity.HasOne(d => d.OrderLine)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => new { d.OrderId, d.LineId })
@@ -290,7 +192,6 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Ingredien__categ__1EC48A19");
-
                 entity.HasMany(d => d.Dietaries)
                     .WithMany(p => p.Ingredients)
                     .UsingEntity<Dictionary<string, object>>(
@@ -332,13 +233,11 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.IngredientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__LineIngre__ingre__284DF453");
-
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.LineIngredients)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__LineIngre__order__2942188C");
-
                 entity.HasOne(d => d.OrderLine)
                     .WithMany(p => p.LineIngredients)
                     .HasForeignKey(d => new { d.OrderId, d.LineId })
@@ -350,7 +249,6 @@ namespace PickAndGo.Models
             {
                 entity.HasKey(e => e.OrderId)
                     .HasName("PK__OrderHea__0809337D1D31531E");
-
                 entity.ToTable("OrderHeader");
 
                 entity.Property(e => e.OrderId).HasColumnName("orderID");
@@ -432,7 +330,6 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__OrderLine__order__247D636F");
-
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderLines)
                     .HasForeignKey(d => d.ProductId)

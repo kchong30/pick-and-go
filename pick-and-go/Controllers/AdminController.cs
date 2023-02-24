@@ -16,7 +16,7 @@ using System.Security.Principal;
 
 namespace PickAndGo.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
 
     public class AdminController : Controller
     {
@@ -145,13 +145,35 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
-        public IActionResult Overview()
+        public IActionResult Overview(string currentDate, string submitBtn)
         {
             OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
             OrderHeaderVM ohVM = new OrderHeaderVM();
 
-            ohVM.Outstanding = ohRepo.GetAll().Item1;
-            ohVM.Completed = ohRepo.GetAll().Item2;
+            if (currentDate == null)
+            {
+                currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+
+                switch (submitBtn)
+                {
+                    case ">":
+                        currentDate = Convert.ToDateTime(currentDate).AddDays(1).ToString("yyyy-MM-dd");
+                        break;
+                    case "<":
+                        currentDate = Convert.ToDateTime(currentDate).AddDays(-1).ToString("yyyy-MM-dd");
+                        break;
+                    default:
+                        currentDate = currentDate.ToString();
+                        break;
+                }
+
+            ViewBag.currentTime = DateTime.Now.ToString("h:mm:s tt");
+
+            ohVM.Date = currentDate;
+            ohVM.Outstanding = ohRepo.GetOverview(ohVM.Date).Item1;
+            ohVM.Completed = ohRepo.GetOverview(ohVM.Date).Item2;
 
             return View(ohVM);
         }

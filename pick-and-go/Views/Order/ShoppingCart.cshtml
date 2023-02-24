@@ -1,0 +1,120 @@
+﻿@using PickAndGo.ViewModels
+@model IEnumerable<ShoppingCartVM>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="d-flex justify-content-center align-items-center">
+    <div>
+    <div class="shopping-title">
+        <h1>Shopping Cart</h1>
+    </div>
+
+    <div class="container" >
+        <table class="table" >
+
+            <thead>
+                <tr>
+                    <th ></th>
+                    <th ></th>
+                    <th ></th>
+                    <th ></th>
+                    <th ></th>
+                </tr>
+            </thead>
+            <tbody>
+                    @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
+                    {
+                        <tr>
+                                <td class="col-2">
+                                <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
+                                </button>
+                            </td>
+                                <td class="col-5" style="white-space: nowrap;">@item.Value.description</td>
+                                <td class="col-3"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
+                                <td class="col-2">@Html.ActionLink("Duplicate", "INDEX???", new { index = item.Index }, new { @class = "btn btn-primary" })</td>
+                        </tr>
+
+                       <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show" aria-labelledby="@item.Value.productId">
+
+                            <td class="accordion-detail accordion-body" colspan="4" >
+                                <table class="accordion-table container">
+                                    @foreach (var ingredient in item.Value.ingredient)
+                                    {
+                                            <tr class="row">
+                                                <td class="d-flex justify-content-center">@ingredient.description (x @ingredient.quantity)</td>
+                                            </tr>
+                                    }
+                                </table>
+                            </td>
+
+                        </tr>
+                    }
+            </tbody>
+        </table>
+    </div> 
+
+
+    <footer >
+
+        <div>
+            <label>Total: $</label>
+            <span id="totalAmount">0</span>
+            <input id="currency" hidden value="CAD" />
+        </div>
+        <br />
+        <div>
+            <label>Please choose Pickup time</label>
+            <br />
+            <select id="pickupTime" name="pickupTime">
+                    @{
+                        // Get the time after 20mins from current time
+                        var currentTime = DateTime.Now;
+                        var timeToAdd = new TimeSpan(0, 20, 0);
+                        var pickupTime = currentTime.Add(timeToAdd);
+
+                        // round up the time per 20mins
+                        var roundedTime = new DateTime(pickupTime.Year, pickupTime.Month, pickupTime.Day, pickupTime.Hour, (pickupTime.Minute / 20) * 20, 0);
+
+                        // set business hour (9-17) and create a dropdown list between the time
+                        if (roundedTime.Hour >= 9 && roundedTime.Hour < 17)
+                        {
+                            // loop eace 20mins until 17
+                            for (var j = roundedTime; j <= new DateTime(roundedTime.Year, roundedTime.Month, roundedTime.Day, 17, 0, 0); j = j.AddMinutes(20))
+                            {
+                                                   <option value="@j.ToString("yyyy-MM-ddTHH:mm:ss")">@j.ToString("h:mm tt")</option>
+                            }
+                        }
+                        // if the time is not between 9 to 17, show we are closed
+                        else
+                        {
+                                 <option value="">Sorry, We are closed!</option>
+                        }
+                    }
+            </select>
+
+            <br />
+
+                @Html.Partial("PayPalJS")
+                <div class="mt-3" id="paypal-button"></div>
+
+
+        </div>
+    </footer>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var totalAmountId = "#totalAmount";
+        var totalAmount = 0.00;
+        $('.amount').each(function () {
+            var thisAmount = $(this).html();
+            totalAmount += parseFloat(thisAmount);
+        });
+        $(totalAmountId).html(totalAmount.toFixed(2));
+    });
+</script>
+
