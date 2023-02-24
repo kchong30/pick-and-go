@@ -1,0 +1,27 @@
+﻿.create-account-card {
+    background-image: url(../images/create-account-background.jpg);
+    background-size: cover;
+    background-repeat:no-repeat;
+    background-position:center center;
+}
+
+
+.login-account-card {
+    background-image: url(../images/login-background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.guest-card {
+    background-image: url(../images/guest-card-background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.home-page-card-stack {
+    color:white;
+}
+
+
