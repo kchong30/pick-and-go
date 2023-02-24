@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PickAndGo.Areas.Identity.Pages.Account
 {
@@ -21,11 +22,14 @@ namespace PickAndGo.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private IServiceProvider _serviceProvider;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IServiceProvider serviceProvider)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -109,11 +113,20 @@ namespace PickAndGo.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var UserManager = _serviceProvider
+                    .GetRequiredService<UserManager<IdentityUser>>();
+                    var user = await UserManager.FindByEmailAsync(Input.Email);
+                    var roles = await UserManager.GetRolesAsync(user);
+                    if (roles.Contains("Customer"))
+                    {
+                        returnUrl = Url.Content("~/");
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
