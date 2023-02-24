@@ -8,10 +8,12 @@ namespace PickAndGo.Controllers
     public class OrderController : Controller
     {
         private readonly PickAndGoContext _db;
+        private readonly IConfiguration _configuration;
 
-        public OrderController(PickAndGoContext context)
+        public OrderController(PickAndGoContext context, IConfiguration configuration)
         {
             _db = context;
+            _configuration = configuration;
         }
 
         public IActionResult Index(ProductVM products)
@@ -37,12 +39,101 @@ namespace PickAndGo.Controllers
             return View(ocVm);
             }
 
-        public IActionResult History(int customerId)
+        public IActionResult History(int customerId, string message)
         {
-            OrderRepository or = new OrderRepository(_db);
+            if (message == null)
+            {
+                message = "";
+            }
+
+            OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
 
+            ViewData["Message"] = message;
+
             return View(vm);
+        }
+
+        public IActionResult Favorites(int customerId, string message)
+        {
+            if (message == null)
+            {
+                message = "";
+            }
+
+            FavoritesRepository fr = new FavoritesRepository(_db);
+            IQueryable<FavoritesVM> vm = fr.BuildFavoritesVM(customerId);
+
+            ViewData["Message"] = message;
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateFavorites(int custId, int orderId, int lineId, Boolean isFavorite,
+                                             string favoriteName, Boolean fromHistory)
+        {
+            var message = "";
+            FavoritesRepository fr = new FavoritesRepository(_db);
+
+            if (isFavorite)
+            {
+                message = fr.DeleteFavoritesRecord(custId, orderId, lineId);
+            }
+            else
+            {
+                message = fr.CreateFavoritesRecord(custId, orderId, lineId, favoriteName);
+            }
+
+            if (fromHistory)
+            {
+                return RedirectToAction("History", "Order", new
+                {
+                    customerId = custId,
+                    message = message
+                });
+            }
+            else
+            {
+                return RedirectToAction("Favorites", "Order", new
+                {
+                    customerId = custId,
+                    message = message
+                });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ChangeFavoritesName(int custId, int orderId, int lineId,
+                                                 string favoriteName)
+        {
+            var message = "";
+            FavoritesRepository fr = new FavoritesRepository(_db);
+
+            message = fr.ChangeFavoritesRecord(custId, orderId, lineId, favoriteName);
+
+            return RedirectToAction("Favorites", "Order", new
+            {
+                customerId = custId,
+                message = message
+            });
+        }
+
+        [HttpPost]
+        public IActionResult AddFavoriteToOrder(int custId, int orderId, int lineId)
+        {
+            var message = "";
+
+            // create session object for this product and add to cart object,
+            // redirect to shopping cart page?
+
+           
+
+            return RedirectToAction("Favorites", "Order", new
+            {
+                customerId = custId,
+                message = message
+            });
         }
     }
 }
