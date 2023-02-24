@@ -5,12 +5,16 @@
     const dropdown = document.getElementById('pickupTime');
 
     function handleDropdownChange() {
-      const selectedValue = dropdown.value;
-      console.log(selectedValue);
-      sessionStorage.setItem('pickupTime', selectedValue);
+        const selectedValue = dropdown.value;
+        console.log(selectedValue);
+        sessionStorage.setItem('pickupTime', selectedValue);
     }
 
     dropdown.addEventListener('change', handleDropdownChange);
+
+    // Set the pickupTime session storage variable to the initial value
+    const initialPickupTime = dropdown.value;
+    sessionStorage.setItem('pickupTime', initialPickupTime);
 </script>
 
 <script>
@@ -30,6 +34,22 @@
         commit: true, // Show a 'Pay Now' button
 
         payment: function (data, actions) {
+            var pickupTime = sessionStorage.getItem('pickupTime');
+
+            $.ajax({
+                type: "POST",
+                url: "/Order/StoreCart",
+                data: JSON.stringify({ PickupTime: pickupTime }),
+                contentType: "application/json",
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+            
             return actions.payment.create({
                 payment: {
                     transactions: [{
@@ -88,7 +108,7 @@
                 // You can now show a confirmation message to the customer
                 $.ajax({
                     type: "post",
-                    url: "/Home/PaySuccess",
+                    url: "/Order/PaySuccess",
                     data: JSON.stringify(dataObject),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -97,7 +117,7 @@
                     success: function (msg) {
                         console.log("Data: " + JSON.stringify(data));
                         window.location.href
-                            = "/Home/Confirmation?confirmationId=" + data.paymentID;
+                            = "/Order/Confirmation?confirmationId=" + data.paymentID;
                     },
                     //after fail
                     error: function (msg) {

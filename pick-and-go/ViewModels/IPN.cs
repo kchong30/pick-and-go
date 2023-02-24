@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication1.Models
+namespace PickAndGo.ViewModels
 {
     public class IPN
     {
