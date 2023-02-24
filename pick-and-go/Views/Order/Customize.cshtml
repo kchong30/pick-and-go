@@ -70,7 +70,7 @@
                                             <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>*@
 
                                             <form onchange="updateShoppingCart(event)">
-                                                <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" >
+                                                <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked >
                                                 <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">                                               
                                                 <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">                                              
                                             </form>
@@ -188,7 +188,13 @@
 
         // Uncheck radio button
         $('input:radio').each(function () {
-            $(this).prop('checked', false);
+            if($(this).val()=='none'){
+                console.log("HIHI")
+                $(this).prop('checked', true);
+            } else {
+                $(this).prop('checked', false);
+            }
+   
         })
 
 @*        initialSubSize();*@
