@@ -19,41 +19,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Overview">Overview</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Orders">Existing Orders</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Ingredients">Ingredients</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="CustomerList">Customers</a>
-                            </li>
-                            <li>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
-                            </li>
-                            <li>
-                                <a asp-area="" class="nav-link text-dark" asp-controller="UserRole" asp-action="Index">User Roles</a>
-                            </li>
-                        }
-                        @if (User.IsInRole("Customer")){
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="CustomerDetails">Profile</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Overview">Home</a>
                         </li>
-                            }
-                        @if (!User.IsInRole("Admin")){
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Start Order</a>
-                            </li>
-                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Orders">Orders</a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Ingredients">Ingredients</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Customize">Customize</a>
                         </li>

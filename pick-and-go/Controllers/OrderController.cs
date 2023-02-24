@@ -21,10 +21,21 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
-        public IActionResult Customize(int SelectedProductId)
+        public IActionResult Customize()
         {
-            return View();
-        }
+            // Receving Product ID from Main page
+            IngredientsRepository ir = new IngredientsRepository(_db);
+            IQueryable<IngredientListVM> iVm = ir.BuildIngredientListVM();
+
+            ProductRepository pr = new ProductRepository(_db);
+            IQueryable<ProductVM> pVm = pr.GetProducts();
+
+            OrderCustomizeVM ocVm = new OrderCustomizeVM();
+            ocVm.productVMs = pVm.ToList();
+            ocVm.ingredientListVMs = iVm.ToList();
+
+            return View(ocVm);
+            }
 
         public IActionResult History(int customerId)
         {
