@@ -203,6 +203,8 @@ namespace PickAndGo.Repositories
 //
             decimal orderTotal = 24.50m;
             int customerId = 4;
+            string firstName = "";
+            string lastName = "";
             DateTime pickupTime = DateTime.Now.AddHours(4);
             string paymentId = "QIHU8YP5O629416VT531928K";
             
@@ -233,44 +235,69 @@ namespace PickAndGo.Repositories
                 }
             };
 
-            var tuple = CreateOrderHeader(customerId, orderTotal, pickupTime, paymentId);
-
-            message = tuple.Item1;        
-            var orderId = tuple.Item2;
-
-            if (message == "")
+            using (var transaction = _db.Database.BeginTransaction())
             {
-                foreach (var product in products)
+                try
                 {
-                    var tuple2 = CreateOrderLine(orderId, product.productId);
+                    if (customerId == 0)
+                    {
+                        CustomerRepository cr = new CustomerRepository(_db);
+                        var tuple3 = cr.CreateRecord("", firstName, lastName, "");
 
-                    message = tuple2.Item1;
-                    var lineId = tuple2.Item2;
+                        message = tuple3.Item1;
+                        customerId = tuple3.Item2;
+                    }
 
                     if (message == "")
                     {
-                        foreach (var ingredient in product.ingredients)
+                        var tuple = CreateOrderHeader(customerId, orderTotal, pickupTime, paymentId);
+
+                        message = tuple.Item1;
+                        var orderId = tuple.Item2;
+
+                        if (message == "")
                         {
-                            message = CreateLineIngredient(orderId, lineId, ingredient.ingredientId,
-                                                           ingredient.quantity);
-                            if (message != "")
+                            foreach (var product in products)
                             {
-                                break;
+                                var tuple2 = CreateOrderLine(orderId, product.productId);
+
+                                message = tuple2.Item1;
+                                var lineId = tuple2.Item2;
+
+                                if (message == "")
+                                {
+                                    foreach (var ingredient in product.ingredients)
+                                    {
+                                        message = CreateLineIngredient(orderId, lineId, ingredient.ingredientId,
+                                                                       ingredient.quantity);
+                                        if (message != "")
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            if (message == "")
+                            {
+                                CustomerRepository cr = new CustomerRepository(_db);
+                                message = cr.UpdateCustomerRecord(customerId);
                             }
                         }
                     }
-                    else
-                    {
-                        break;
-                    }
+                    // Commit all the database updates within the transaction
+                    transaction.Commit();
                 }
-                if (message == "")
+                catch (Exception ex)
                 {
-                    CustomerRepository cr = new CustomerRepository(_db);
-                    message = cr.UpdateCustomerRecord(customerId);
+                    // Roll back the transaction if any update fails
+                    transaction.Rollback();
+                    throw ex;
                 }
             }
-
             return message;
         }
 

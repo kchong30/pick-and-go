@@ -237,7 +237,10 @@ namespace PickAndGo.Controllers
             // create session object for this product and add to cart object,
             // redirect to shopping cart page?
 
-           
+            
+            //
+            // testing purposes only
+            //
 
             return RedirectToAction("Favorites", "Order", new
             {
