@@ -80,6 +80,7 @@ CREATE TABLE OrderLine (
 	productID INT NOT NULL,
 	quantity INT,
 	lineStatus CHAR(1) NOT NULL,
+	price DECIMAL(9,2),
 	CONSTRAINT PK_OrderLine PRIMARY KEY (orderID,lineID),
 	FOREIGN KEY(orderID) REFERENCES OrderHeader(orderID),
 	FOREIGN KEY(productID) REFERENCES Product(productID));
@@ -89,6 +90,7 @@ CREATE TABLE LineIngredient (
 	lineID INT NOT NULL,
 	ingredientID INT NOT NULL,
 	quantity INT,
+	price DECIMAL(9,2),
 	CONSTRAINT PK_LineIngredient PRIMARY KEY (orderID,lineID,ingredientID),
 	FOREIGN KEY(ingredientID) REFERENCES Ingredient(ingredientID),
 	FOREIGN KEY(orderID) REFERENCES OrderHeader(orderID),

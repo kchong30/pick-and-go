@@ -25,6 +25,7 @@ namespace PickAndGo.Repositories
             newCustomer.LastName = lastName;
             newCustomer.PhoneNumber = phoneNumber;
             newCustomer.AdminUser = "N";
+            newCustomer.DateSignedUp = DateTime.Now;
 
             _db.Add(newCustomer);
             _db.SaveChanges();
@@ -59,6 +60,32 @@ namespace PickAndGo.Repositories
         {
             var customer = _db.Customers.Where(c => c.EmailAddress == email).FirstOrDefault();
             return customer;
+        }
+
+        public Customer GetCustomerRecord(int customerId)
+        {
+            var customer = _db.Customers.Where(c => c.CustomerId == customerId).FirstOrDefault();
+
+            return customer;
+        }
+
+        public string UpdateCustomerRecord(int customerId)
+        {
+            string editMessage = "";
+            Customer customer = GetCustomerRecord(customerId);
+            customer.DateLastOrdered = DateTime.Now;
+
+            try
+            {
+                _db.Customers.Update(customer);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                editMessage = ex.Message;
+            }
+
+            return editMessage;
         }
 
     }

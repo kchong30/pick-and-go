@@ -9,8 +9,6 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using NuGet.Protocol.Core.Types;
@@ -18,18 +16,20 @@ using System.Security.Principal;
 
 namespace PickAndGo.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
 
     public class AdminController : Controller
     {
         private readonly PickAndGoContext _db;
+        private readonly IConfiguration _configuration;
 
         public const string OUTSTANDING = "O";
         public const string COMPLETED = "C";
 
-        public AdminController(PickAndGoContext context)
+        public AdminController(PickAndGoContext context, IConfiguration configuration)
         {
             _db = context;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -76,10 +76,13 @@ namespace PickAndGo.Controllers
           
         }
 
-        public IActionResult IngredientsDetails(int id)
+        public IActionResult IngredientsDetails(int id, string message)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.ReturnIngredientById(id);
+
+            ViewData["Message"] = message;
+
             return View(vm);
         }
 
@@ -95,12 +98,16 @@ namespace PickAndGo.Controllers
         [HttpPost]
         public IActionResult IngredientsEdit(IngredientVM ingredientVM)
         {
+            string editMessage = "";
+
             IngredientsRepository iR = new IngredientsRepository(_db);
             if (ModelState.IsValid)
             {
-                iR.EditIngredient(ingredientVM);
+                editMessage = iR.EditIngredient(ingredientVM);
             }
-            return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredientVM.IngredientId });
+            return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredientVM.IngredientId,
+                                                                         message = editMessage
+            });
         }
 
         public IActionResult IngredientsDelete(int id)
@@ -138,13 +145,35 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
-        public IActionResult Overview()
+        public IActionResult Overview(string currentDate, string submitBtn)
         {
             OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
             OrderHeaderVM ohVM = new OrderHeaderVM();
 
-            ohVM.Outstanding = ohRepo.GetAll().Item1;
-            ohVM.Completed = ohRepo.GetAll().Item2;
+            if (currentDate == null)
+            {
+                currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+
+                switch (submitBtn)
+                {
+                    case ">":
+                        currentDate = Convert.ToDateTime(currentDate).AddDays(1).ToString("yyyy-MM-dd");
+                        break;
+                    case "<":
+                        currentDate = Convert.ToDateTime(currentDate).AddDays(-1).ToString("yyyy-MM-dd");
+                        break;
+                    default:
+                        currentDate = currentDate.ToString();
+                        break;
+                }
+
+            ViewBag.currentTime = DateTime.Now.ToString("h:mm:s tt");
+
+            ohVM.Date = currentDate;
+            ohVM.Outstanding = ohRepo.GetOverview(ohVM.Date).Item1;
+            ohVM.Completed = ohRepo.GetOverview(ohVM.Date).Item2;
 
             return View(ohVM);
         }
@@ -162,7 +191,7 @@ namespace PickAndGo.Controllers
             ViewData["CurrentNameSearch"] = "";
             ViewData["CurrentOrderSearch"] = "";
 
-            OrderRepository or = new OrderRepository(_db);
+            OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, "", "");
 
             ViewData["Message"] = message;
@@ -174,7 +203,7 @@ namespace PickAndGo.Controllers
         public IActionResult Orders(string searchName, string searchOrder, int orderId, int lineId,
                                     Boolean changeStatus)
         {
-            OrderRepository or = new OrderRepository(_db);
+            OrderRepository or = new OrderRepository(_db, _configuration);
 
             if (changeStatus)
             {

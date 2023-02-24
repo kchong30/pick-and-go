@@ -26,6 +26,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.RoleName)
                 </td>
+                <td>
+                    @Html.ActionLink("Remove Role", "Delete", new {email=@ViewBag.UserName, roleName=item.RoleName })
+                </td>
             </tr>
         }
     </tbody>

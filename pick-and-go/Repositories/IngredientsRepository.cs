@@ -98,17 +98,30 @@ namespace PickAndGo.Repositories
 
         public string EditIngredient(IngredientVM ingredientVM)
         {
-            string message = "";
-            _db.Update(new Ingredient
+            string editMessage = "";
+
+            try
             {
-                IngredientId = ingredientVM.IngredientId,
-                Description = ingredientVM.Description,
-                Price = ingredientVM.Price,
-                CategoryId = ingredientVM.CategoryId,
-                InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
-            }); ;
-            _db.SaveChanges();
-            return message;
+                _db.Update(new Ingredient
+                {
+                    IngredientId = ingredientVM.IngredientId,
+                    Description = ingredientVM.Description,
+                    Price = ingredientVM.Price,
+                    CategoryId = ingredientVM.CategoryId,
+                    InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
+                }); ;
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                editMessage = e.Message;
+            }
+
+            if (editMessage == "")
+            {
+                editMessage = $"Success editing ingredient {ingredientVM.Description} in category {ingredientVM.CategoryId}";
+            }
+            return editMessage;
         }
 
         public string DeleteIngredient(int ingredientId, string category)

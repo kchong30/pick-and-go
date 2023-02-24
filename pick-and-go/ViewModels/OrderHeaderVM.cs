@@ -4,5 +4,6 @@
     {
         public int Outstanding { get; set; }
         public int Completed { get; set; }
+        public string Date { get; set; }
     }
 }
