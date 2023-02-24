@@ -37,7 +37,7 @@ namespace PickAndGo.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server= DESKTOP-FE33CFA\\SQLEXPRESS;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True ");
+                optionsBuilder.UseSqlServer("Server= BELLE;Database=PickAndGo;Trusted_Connection=True; TrustServerCertificate=True ");
             }
         }
 
@@ -245,13 +245,11 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Favorite__custom__147C05D0");
-
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Favorite__orderI__15702A09");
-
                 entity.HasOne(d => d.OrderLine)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => new { d.OrderId, d.LineId })
@@ -290,7 +288,6 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Ingredien__categ__062DE679");
-
                 entity.HasMany(d => d.Dietaries)
                     .WithMany(p => p.Ingredients)
                     .UsingEntity<Dictionary<string, object>>(
@@ -332,13 +329,11 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.IngredientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__LineIngre__ingre__0FB750B3");
-
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.LineIngredients)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__LineIngre__order__10AB74EC");
-
                 entity.HasOne(d => d.OrderLine)
                     .WithMany(p => p.LineIngredients)
                     .HasForeignKey(d => new { d.OrderId, d.LineId })
@@ -350,7 +345,6 @@ namespace PickAndGo.Models
             {
                 entity.HasKey(e => e.OrderId)
                     .HasName("PK__OrderHea__0809337D43A4E9F8");
-
                 entity.ToTable("OrderHeader");
 
                 entity.Property(e => e.OrderId).HasColumnName("orderID");
@@ -375,20 +369,6 @@ namespace PickAndGo.Models
                 entity.Property(e => e.OrderValue)
                     .HasColumnType("decimal(9, 2)")
                     .HasColumnName("orderValue");
-
-                entity.Property(e => e.PaymentDate)
-                    .HasColumnType("date")
-                    .HasColumnName("paymentDate");
-
-                entity.Property(e => e.PaymentId)
-                    .HasMaxLength(40)
-                    .IsUnicode(false)
-                    .HasColumnName("paymentID");
-
-                entity.Property(e => e.PaymentType)
-                    .HasMaxLength(15)
-                    .IsUnicode(false)
-                    .HasColumnName("paymentType");
 
                 entity.Property(e => e.PickupTime)
                     .HasColumnType("datetime")
@@ -432,7 +412,6 @@ namespace PickAndGo.Models
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__OrderLine__order__0BE6BFCF");
-
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderLines)
                     .HasForeignKey(d => d.ProductId)
