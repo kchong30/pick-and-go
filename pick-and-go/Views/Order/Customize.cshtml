@@ -22,8 +22,8 @@
 
 <div class="container">
     <!-- Product Select :: Add Sessions Here -->
-    <!-- !! Receive select data from localStorage(session)-->
-    <select onchange="subSize(event)" id="sub-size">
+    <!-- !! Receive select data from sessionStorage(session)-->
+    <select onchange="changeProduct(event)" id="product">
         <option value="">-----Select sandwich size-----</option>
         @foreach (var product in Model.productVMs)
         {
@@ -31,8 +31,6 @@
         }
     </select>
     <!-- End of Select-->
-  
-
     <!-- Displaying Ingredients -->
     <div class="accordion border border-warning" id="customize">
         @foreach (var cat in Model.ingredientListVMs)
@@ -61,18 +59,18 @@
                                 if (ing.InStock == "Y")
                                 {
                                     <!-- Radio button for the breads, Everything else should be regular/extar btn with check box (radio as well)-->
-                                    <tr id="inin" class="inin">
+                                    <tr id="@ing.IngredientId-table" class="ingredientTable">
                                         <td class="ingredientId" hidden>@ing.IngredientId</td>
                                         <td class="description">@ing.Description</td>
                                         <td id="@ing.IngredientId-price" class="price">@ing.Price</td>
                                         <td>
-                                      @*      <button id="@ing.IngredientId-add" onclick="updateShoppingCart(event)">+</button>
-                                            <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>*@
+                                            @*      <button id="@ing.IngredientId-add" onclick="updateShoppingCart(event)">+</button>
+                                <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>*@
 
-                                            <form onchange="updateShoppingCart(event)">
-                                                <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked >
-                                                <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">                                               
-                                                <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">                                              
+                                            <form onchange="changeQuantity(event)">
+                                                <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
+                                                <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
+                                                <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
                                             </form>
 
                                         </td>
@@ -90,149 +88,187 @@
         }
     </div>
 </div>
- 
-<hr />
-<span id="sub-price">0</span> | <span id="total-ing">0</span> | <span id="total-amt">0</span>
-<span>Total : $</span> <span id="total">0</span> <!-- Add Sandwich price by default, changes with selection change-->
-<button onclick="addToCart()">Add to cart</button> <!-- Trigger to save in localStorage-->
-<!-- !! Reset radio button (select all to none)-->
-<button id="remove-all" onclick="removeAll(event)">Cancel Sub</button>
-<button id="empty-cart" onclick="emptyCart(event)">Empty Cart</button>
-<button>Proceed to Checkout</button>
 
+<hr />
+<span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
+<span>Total : $</span> <span id="total-price">0</span> <!-- Add Sandwich price by default, changes with selection change-->
+<button onclick="addToCart()">Add to Cart</button> <!-- Trigger to save in sessionStorage-->
+<!-- !! Reset radio button (select all to none)-->
+<button id="clear-selection" onclick="clearSelection(event)">Clear Selection</button>
+<button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
+<button id="checkout">Proceed to Checkout</button>
+<button onclick="validateForm()">Form Validation</button>
 <!-- Cart jQuery Script-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-    function quantityChange(event) {
-        console.log(event.target.value);
-    }
-
-
-    function addToCart() {
-        // Get item from localStorage
-        var oldCart = JSON.parse(localStorage.getItem('cart'))
-
-        if (oldCart == null) {
-            oldCart = [];
-        }
-        if (!(oldCart instanceof Array)) {
-            oldCart = [oldCart];
-        }
-
-        // Customized items
-        var ingredients = [];
-
-        $('.inin').each(function () {
-            var quantity = $(this).find('.quantity').html();
-            if (quantity > 0) {
-                var ingredient = {
-                    ingredientId: $(this).find('.ingredientId').html(),
-                    description: $(this).find('.description').html(),
-                    quantity: quantity,
-                    price: $(this).find('.price').html()
-                }
-                ingredients.push(ingredient)
-            }
-        })
-
-        // Save item into localStorage
-        var item = {
-            productId: $('#sub-size option:selected').val().split("-")[0],
-            ingredients: ingredients,
-            subTotal: $('#total').html()
-        }
-
-        console.log(item);
-
-        oldCart.push(item)
-        localStorage.setItem("cart", JSON.stringify(oldCart));
-        $('#cart-icon').text(oldCart.length);
-    }
-
-    // CLEAN CODEEEEEEE
+    /* Initial jQuery as Page Loaded */
     (function ($) {
         $(document).ready(function () {
-            initialSubSize();
-            var sum = parseFloat($('#sub-price').html()) + parseFloat($('#total-ing').html())
-            $('#total').text(sum)
+            setProduct();
         });
     })(jQuery);
 
-    function initialSubSize() {
-        var size = $('#sub-size option:selected').val();
-        subSize(size)
-    }
-
-    function subSize(event) {
-        var option;
-        if (!event.target) {
-            option = event;
-        } else {
-            option = event.target.value.split("-");
-        }
-        $("#sub-price").text(option[1]);
-
-        var sum = parseFloat($('#sub-price').html()) + parseFloat($('#total-ing').html())
-        $('#total').text(sum)
-    }
-
-    function removeAll(event) {
-        $('.quantity').each(function () {
-            $(this).text(0);
-        });
-
-        $('.amount').each(function () {
-            $(this).text(0);
-        });
-
-        // Uncheck radio button
-        $('input:radio').each(function () {
-            if($(this).val()=='none'){
-                console.log("HIHI")
-                $(this).prop('checked', true);
-            } else {
-                $(this).prop('checked', false);
+    /* Form Validation */
+    function validateForm() {
+        // add required table here
+        var validation = 0
+        $('#Breads input:radio').each(function () {
+            var value = $(this).val() // none
+            var check = $(this).is(':checked') // true
+            if (value == 'none' && check) {
+                validation++;
             }
-   
         })
 
-@*        initialSubSize();*@
-
-
-        $('#total-ing').text(0);
-        $('#total-amt').text(0);
-
-        var sum = parseFloat($('#sub-price').html());
-        $('#total').text(sum);
+        var length = $('#Breads form').length
+        if (length == validation) {
+            console.log("Validatin failed")
+            return false;
+        } else if ($("#product option:selected").val() == "") {
+            console.log("Select sandwich")
+            return false;
+        } else {
+            console.log("Validation okay!!")
+            return true;
+        }
 
     }
 
+    /* Get Product ID from Session and Set Product in Select option */
+    function setProduct() {
+        const cart = JSON.parse(sessionStorage.getItem("currentCart"));
+
+        if (cart) {
+            $("#product option").each(function () {
+                if ($(this).val().split("-")[0] == cart.productId) {
+                    $(this).attr("selected", "true");
+                }
+            });
+            sessionStorage.removeItem("currentCart");
+        }
+
+        var value = $("#product option:selected").val();
+        setProductPrice(value);
+    }
+
+    /* Handle onChange Select Product Menu */
+    function changeProduct(event) {
+        var value = event.target.value;
+        setProductPrice(value);
+    }
+
+    /* Set Total Price from selected option value */
+    function setProductPrice(value) {
+        // parse price from value
+        var productValue = value.split("-");
+        var productPrice = productValue[1];
+        $("#product-price").text(productPrice);
+
+        // display total price
+        var totalPrice =
+            parseFloat($("#product-price").html()) + parseFloat($("#ingredients-price").html());
+        $("#total-price").text(totalPrice);
+    }
+
+    /* Add to Cart */
+    function addToCart() {
+        if (!validateForm()) {
+            $(window).scrollTop(0);
+        } else {
+            // Get item from sessionStorage
+            var cart = JSON.parse(sessionStorage.getItem("cart"));
+
+            if (cart == null) {
+                cart = [];
+            }
+            if (!(cart instanceof Array)) {
+                cart = [cart];
+            }
+
+            // Customized item array
+            var ingredients = [];
+
+            $(".ingredientTable").each(function () {
+                var quantity = $(this).find(".quantity").html();
+                if (quantity > 0) {
+                    var ingredient = {
+                        ingredientId: $(this).find(".ingredientId").html(),
+                        description: $(this).find(".description").html(),
+                        quantity: quantity,
+                        price: $(this).find(".price").html(),
+                    };
+                    ingredients.push(ingredient);
+                }
+            });
+
+            // Save item into sessionStorage
+            var item = {
+                productId: $("#product option:selected").val().split("-")[0],
+                ingredients: ingredients,
+                subTotal: $("#total-price").html(),
+            };
+
+            cart.push(item);
+            sessionStorage.setItem("cart", JSON.stringify(cart));
+            $("#cart-icon").text(cart.length);
+        }
+    }
+
+    /* Clear Selection */
+    function clearSelection(event) {
+        // Uncheck radio button
+        $("input:radio").each(function () {
+            if ($(this).val() == "none") {
+                $(this).prop("checked", true);
+            } else {
+                $(this).prop("checked", false);
+            }
+        });
+
+        // Manually clear all sections
+
+        $(".quantity").each(function () {
+            $(this).text(0);
+        });
+
+        $(".amount").each(function () {
+            $(this).text(0);
+        });
+
+        $("#ingredients-price").text(0);
+
+        $("#total-amt").text(0);
+
+        var totalPrice = parseFloat($("#product-price").html());
+        $("#total-price").text(totalPrice);
+    }
+
+    /* Empty Cart */
     function emptyCart(event) {
-        $('#cart-icon').text(0);
-        //console.log($('input:radio[value="none"]'));
+        $("#cart-icon").text(0);
 
-        localStorage.clear();
+        sessionStorage.clear();
     }
 
-    // SHOPPING CART!!!!!
-    function updateShoppingCart(event) {
+    /* Update Quantity from Selection Menu */
+    function changeQuantity(event) {
         var clickedId = event.target.id;
-        var elementIdSplit = clickedId.split('-');
+        var elementIdSplit = clickedId.split("-");
         var id = elementIdSplit[0];
-        var action = elementIdSplit[1];
+        var quantityValue = elementIdSplit[1];
 
-        ChangeCart(id, action);
+        updateTotalPrice(id, quantityValue);
     }
 
-    function ChangeCart(id, action) {
+    function updateTotalPrice(id, quantityValue) {
         var itemPriceId = "#" + id + "-price";
         var cartQtyId = "#" + id + "-quantity";
         var cartAmtId = "#" + id + "-amount";
 
         var quantity = $(cartQtyId).html();
 
-        switch (action) {
+        switch (quantityValue) {
             case "none":
                 quantity = 0;
                 break;
@@ -248,29 +284,37 @@
 
         //Calculate new amount
         var amount = $(itemPriceId).html();
-
         var newAmount = (amount * quantity).toFixed(2);
 
         $(cartAmtId).text(newAmount);
 
-
         //Calculate totals
         var totalQuantity = 0;
-        $('.quantity').each(function () {
+        $(".quantity").each(function () {
             var thisQuantity = $(this).html();
             totalQuantity += parseInt(thisQuantity);
         });
-        $('#total-amt').text(totalQuantity);
+        $("#total-amt").text(totalQuantity);
 
-        var totalIngredient = 0;
-        $('.amount').each(function () {
+        var ingredientsPrice = 0;
+        $(".amount").each(function () {
             var thisAmount = $(this).html();
-            totalIngredient += parseFloat(thisAmount);
+            ingredientsPrice += parseFloat(thisAmount);
         });
 
-        $("#total-ing").text(totalIngredient.toFixed(2));
-        var sum = parseFloat($('#sub-price').html()) + parseFloat($('#total-ing').html())
-        $('#total').text(sum)
+        $("#ingredients-price").text(ingredientsPrice.toFixed(2));
+        var totalPrice =
+            parseFloat($("#product-price").html()) +
+            parseFloat($("#ingredients-price").html());
+        $("#total-price").text(totalPrice);
+    }
+
+    /* Checkout */
+    function checkout() {
+        if (!validateForm()) {
+            $(window).scrollTop(0);
+        }
+        // ajax : parse data
     }
 </script>
 <!-- End of Script-->
