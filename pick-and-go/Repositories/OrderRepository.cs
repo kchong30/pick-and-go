@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using PickAndGo.Models;
 using PickAndGo.ViewModels;
 using System.Data;
@@ -10,10 +12,12 @@ namespace PickAndGo.Repositories
     public class OrderRepository
     {
         private readonly PickAndGoContext _db;
+        private readonly IConfiguration _configuration;
 
-        public OrderRepository(PickAndGoContext context)
+        public OrderRepository(PickAndGoContext context, IConfiguration configuration)
         {
             _db = context;
+            _configuration = configuration;
         }
 
         public IQueryable<OrderListVM> BuildOrderListVM(string orderFilter, string searchName, string searchOrder)
@@ -38,7 +42,7 @@ namespace PickAndGo.Repositories
                              ProductId = l.ProductId,
                              Description = p.Description,
                              Quantity = l.Quantity,
-                             Price = p.BasePrice,
+                             Price = l.Price,
                              OrderValue = (decimal)o.OrderValue,
                              OrderStatus = o.OrderStatus,
                              LineStatus = l.LineStatus,
@@ -50,10 +54,10 @@ namespace PickAndGo.Repositories
                                                orderby o.OrderId, li.LineId
                                                select new OrderIngredientVM
                                                {
-                                                    IngredientId = li.IngredientId,
-                                                    IngDescription = i.Description,
-                                                    Quantity = li.Quantity,
-                                                    Price = i.Price
+                                                   IngredientId = li.IngredientId,
+                                                   IngDescription = i.Description,
+                                                   Quantity = li.Quantity,
+                                                   Price = li.Price
                                                }),
                          };
             if (searchName != null && searchName != "")
@@ -82,10 +86,10 @@ namespace PickAndGo.Repositories
                          where (c.CustomerId.Equals(customerId))
                          orderby o.OrderDate descending
                          let iSum = (from li in _db.LineIngredients
-                                     join i in _db.Ingredients on li.IngredientId equals i.IngredientId
                                      where o.OrderId == li.OrderId && l.LineId == li.LineId
-                                     select (i.Price * li.Quantity)).Sum()
-                         let fCount = (from f in _db.Favorites where c.CustomerId == f.CustomerId &&
+                                     select (li.Price * li.Quantity)).Sum()
+                         let fCount = (from f in _db.Favorites
+                                       where c.CustomerId == f.CustomerId &&
                                                                      o.OrderId == f.OrderId &&
                                                                      l.LineId == f.LineId
                                        select o).Count()
@@ -102,9 +106,9 @@ namespace PickAndGo.Repositories
                              ProductId = l.ProductId,
                              Description = p.Description,
                              Quantity = l.Quantity,
-                             Price = p.BasePrice,
+                             Price = l.Price,
                              OrderValue = (decimal)o.OrderValue,
-                             LineValue = (decimal)(p.BasePrice + iSum),
+                             LineValue = (decimal)(l.Price + iSum),
                              IsFavorite = fCount > 0 ? true : false,
                              Ingredients = (List<OrderIngredientVM>)
                                               (from li in _db.LineIngredients
@@ -116,8 +120,8 @@ namespace PickAndGo.Repositories
                                                    IngredientId = li.IngredientId,
                                                    IngDescription = i.Description,
                                                    Quantity = li.Quantity,
-                                                   Price = i.Price,
-                                                   IngValue = (decimal)(li.Quantity * i.Price)
+                                                   Price = li.Price,
+                                                   IngValue = (decimal)(li.Quantity * li.Price)
                                                }),
                          };
 
@@ -133,7 +137,7 @@ namespace PickAndGo.Repositories
 
         public OrderLine GetOrderLine(int orderId, int lineId)
         {
-            var orderLine = _db.OrderLines.Where(ol => ol.OrderId == orderId &&  
+            var orderLine = _db.OrderLines.Where(ol => ol.OrderId == orderId &&
                                                  ol.LineId == lineId).FirstOrDefault();
 
             return orderLine;
@@ -143,7 +147,7 @@ namespace PickAndGo.Repositories
         {
             string editMessage = "";
             OrderLine orderLine = GetOrderLine(orderId, lineId);
-            orderLine.LineStatus = orderStatus; 
+            orderLine.LineStatus = orderStatus;
 
             try
             {
@@ -172,7 +176,183 @@ namespace PickAndGo.Repositories
 
         public void UpdateOrderHeaderStatus(int orderId)
         {
-            _db.OrderHeaders.FromSqlInterpolated($"spUpdateOrderHeaderStatus {orderId}");
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            SqlConnection connection = new SqlConnection(connectionString);
+
+            SqlCommand command = new SqlCommand("spUpdateOrderHeaderStatus", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+
+            SqlParameter parameter = new SqlParameter("@OrderId", SqlDbType.Int);
+            parameter.Value = orderId;
+            command.Parameters.Add(parameter);
+
+            connection.Open();
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        public string CreateOrder()
+        {
+            string message = "";
+//
+// This is test data for testing the order create code
+// Once the interface with shopping cart is complete, it can be removed and a session
+// object containing the shopping cart details will be used instead 
+//
+            decimal orderTotal = 24.50m;
+            int customerId = 4;
+            DateTime pickupTime = DateTime.Now.AddHours(4);
+            string paymentId = "QIHU8YP5O629416VT531928K";
+            
+            var products = new[] {
+                new { productId = 2,
+                      ingredients = new[] {
+                          new { ingredientId = 18,
+                                quantity = 1},
+                          new { ingredientId = 1,
+                                quantity = 2},
+                          new { ingredientId = 16,
+                                quantity = 1},
+                          new { ingredientId = 2,
+                                quantity = 1}
+                      },
+                },
+                new { productId = 3,
+                      ingredients = new[] {
+                          new { ingredientId = 12,
+                                quantity = 1},
+                          new { ingredientId = 17,
+                                quantity = 1},
+                          new { ingredientId = 14,
+                                quantity = 1},
+                          new { ingredientId = 4,
+                                quantity = 1}
+                      },
+                }
+            };
+
+            var tuple = CreateOrderHeader(customerId, orderTotal, pickupTime, paymentId);
+
+            message = tuple.Item1;        
+            var orderId = tuple.Item2;
+
+            if (message == "")
+            {
+                foreach (var product in products)
+                {
+                    var tuple2 = CreateOrderLine(orderId, product.productId);
+
+                    message = tuple2.Item1;
+                    var lineId = tuple2.Item2;
+
+                    if (message == "")
+                    {
+                        foreach (var ingredient in product.ingredients)
+                        {
+                            message = CreateLineIngredient(orderId, lineId, ingredient.ingredientId,
+                                                           ingredient.quantity);
+                            if (message != "")
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (message == "")
+                {
+                    CustomerRepository cr = new CustomerRepository(_db);
+                    message = cr.UpdateCustomerRecord(customerId);
+                }
+            }
+
+            return message;
+        }
+
+        public Tuple<string, int> CreateOrderHeader(int customerId, decimal orderTotal, DateTime pickupTime,
+                                                    string paymentId)
+        {
+            string message = "";
+
+            OrderHeader orderHeader = new OrderHeader
+            {
+                CustomerId = customerId,
+                OrderDate = DateTime.Now,
+                OrderValue = orderTotal,
+                PickupTime = pickupTime,
+                OrderStatus = "O",
+                Currency = "CAD",
+                PaymentType = "Paypal",
+                PaymentId = paymentId,
+                PaymentDate = DateTime.Now
+            };
+
+            try
+            {
+                _db.OrderHeaders.Add(orderHeader);
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+            }
+
+            return new Tuple<string, int>(message, orderHeader.OrderId);
+        }
+
+        public Tuple<string, int> CreateOrderLine(int orderId, int productId)
+        {
+            string message = "";
+
+            OrderLine orderLine = new OrderLine
+            {
+                OrderId = orderId,
+                ProductId = productId,
+                Quantity = 1,
+                LineStatus = "O"
+            };
+
+            try
+            {
+                _db.OrderLines.Add(orderLine);
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+            }
+
+            return new Tuple<string, int>(message, orderLine.LineId);
+        }
+
+        public string CreateLineIngredient(int orderId, int lineId, int ingredientId, int quantity)
+        {
+            string message = "";
+
+            LineIngredient lineIngredient = new LineIngredient
+            {
+                OrderId = orderId,
+                LineId = lineId,
+                IngredientId = ingredientId,
+                Quantity = quantity
+            };
+
+            try
+            {
+                _db.LineIngredients.Add(lineIngredient);
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+            }
+
+            return message;
         }
     }
 }

@@ -8,10 +8,12 @@ namespace PickAndGo.Controllers
     public class OrderController : Controller
     {
         private readonly PickAndGoContext _db;
+        private readonly IConfiguration _configuration;
 
-        public OrderController(PickAndGoContext context)
+        public OrderController(PickAndGoContext context, IConfiguration configuration)
         {
             _db = context;
+            _configuration = configuration;
         }
 
         public IActionResult Index(ProductVM products)
@@ -33,7 +35,7 @@ namespace PickAndGo.Controllers
                 message = "";
             }
 
-            OrderRepository or = new OrderRepository(_db);
+            OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
 
             ViewData["Message"] = message;
@@ -110,6 +112,11 @@ namespace PickAndGo.Controllers
         public IActionResult AddFavoriteToOrder(int custId, int orderId, int lineId)
         {
             var message = "";
+
+            // create session object for this product and add to cart object,
+            // redirect to shopping cart page?
+
+           
 
             return RedirectToAction("Favorites", "Order", new
             {

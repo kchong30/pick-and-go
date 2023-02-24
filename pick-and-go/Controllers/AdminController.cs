@@ -9,8 +9,6 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using NuGet.Protocol.Core.Types;
@@ -23,13 +21,15 @@ namespace PickAndGo.Controllers
     public class AdminController : Controller
     {
         private readonly PickAndGoContext _db;
+        private readonly IConfiguration _configuration;
 
         public const string OUTSTANDING = "O";
         public const string COMPLETED = "C";
 
-        public AdminController(PickAndGoContext context)
+        public AdminController(PickAndGoContext context, IConfiguration configuration)
         {
             _db = context;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -169,7 +169,7 @@ namespace PickAndGo.Controllers
             ViewData["CurrentNameSearch"] = "";
             ViewData["CurrentOrderSearch"] = "";
 
-            OrderRepository or = new OrderRepository(_db);
+            OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, "", "");
 
             ViewData["Message"] = message;
@@ -181,7 +181,7 @@ namespace PickAndGo.Controllers
         public IActionResult Orders(string searchName, string searchOrder, int orderId, int lineId,
                                     Boolean changeStatus)
         {
-            OrderRepository or = new OrderRepository(_db);
+            OrderRepository or = new OrderRepository(_db, _configuration);
 
             if (changeStatus)
             {

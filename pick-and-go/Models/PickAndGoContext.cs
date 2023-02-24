@@ -186,8 +186,8 @@ namespace PickAndGo.Models
                     .WithMany(p => p.Customers)
                     .UsingEntity<Dictionary<string, object>>(
                         "CustomerDietaryType",
-                        l => l.HasOne<DietaryType>().WithMany().HasForeignKey("DietaryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Customer___dieta__731B1205"),
-                        r => r.HasOne<Customer>().WithMany().HasForeignKey("CustomerId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Customer___custo__7226EDCC"),
+                        l => l.HasOne<DietaryType>().WithMany().HasForeignKey("DietaryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Customer___dieta__1C1D2798"),
+                        r => r.HasOne<Customer>().WithMany().HasForeignKey("CustomerId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Customer___custo__1B29035F"),
                         j =>
                         {
                             j.HasKey("CustomerId", "DietaryId");
@@ -203,7 +203,7 @@ namespace PickAndGo.Models
             modelBuilder.Entity<DietaryType>(entity =>
             {
                 entity.HasKey(e => e.DietaryId)
-                    .HasName("PK__DietaryT__9B5E3E4C03561F59");
+                    .HasName("PK__DietaryT__9B5E3E4C49A4B521");
 
                 entity.ToTable("DietaryType");
 
@@ -244,19 +244,19 @@ namespace PickAndGo.Models
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Favorite__custom__6B79F03D");
+                    .HasConstraintName("FK__Favorite__custom__147C05D0");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Favorite__orderI__6C6E1476");
+                    .HasConstraintName("FK__Favorite__orderI__15702A09");
 
                 entity.HasOne(d => d.OrderLine)
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => new { d.OrderId, d.LineId })
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Favorite__6D6238AF");
+                    .HasConstraintName("FK__Favorite__16644E42");
             });
 
             modelBuilder.Entity<Ingredient>(entity =>
@@ -289,14 +289,14 @@ namespace PickAndGo.Models
                     .WithMany(p => p.Ingredients)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Ingredien__categ__5D2BD0E6");
+                    .HasConstraintName("FK__Ingredien__categ__062DE679");
 
                 entity.HasMany(d => d.Dietaries)
                     .WithMany(p => p.Ingredients)
                     .UsingEntity<Dictionary<string, object>>(
                         "IngredientDietaryType",
-                        l => l.HasOne<DietaryType>().WithMany().HasForeignKey("DietaryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Ingredien__dieta__76EBA2E9"),
-                        r => r.HasOne<Ingredient>().WithMany().HasForeignKey("IngredientId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Ingredien__ingre__75F77EB0"),
+                        l => l.HasOne<DietaryType>().WithMany().HasForeignKey("DietaryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Ingredien__dieta__1FEDB87C"),
+                        r => r.HasOne<Ingredient>().WithMany().HasForeignKey("IngredientId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Ingredien__ingre__1EF99443"),
                         j =>
                         {
                             j.HasKey("IngredientId", "DietaryId");
@@ -321,31 +321,35 @@ namespace PickAndGo.Models
 
                 entity.Property(e => e.IngredientId).HasColumnName("ingredientID");
 
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(9, 2)")
+                    .HasColumnName("price");
+
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
                 entity.HasOne(d => d.Ingredient)
                     .WithMany(p => p.LineIngredients)
                     .HasForeignKey(d => d.IngredientId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LineIngre__ingre__66B53B20");
+                    .HasConstraintName("FK__LineIngre__ingre__0FB750B3");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.LineIngredients)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LineIngre__order__67A95F59");
+                    .HasConstraintName("FK__LineIngre__order__10AB74EC");
 
                 entity.HasOne(d => d.OrderLine)
                     .WithMany(p => p.LineIngredients)
                     .HasForeignKey(d => new { d.OrderId, d.LineId })
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LineIngredient__689D8392");
+                    .HasConstraintName("FK__LineIngredient__119F9925");
             });
 
             modelBuilder.Entity<OrderHeader>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__OrderHea__0809337D852D03AF");
+                    .HasName("PK__OrderHea__0809337D43A4E9F8");
 
                 entity.ToTable("OrderHeader");
 
@@ -394,7 +398,7 @@ namespace PickAndGo.Models
                     .WithMany(p => p.OrderHeaders)
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderHead__custo__60083D91");
+                    .HasConstraintName("FK__OrderHead__custo__090A5324");
             });
 
             modelBuilder.Entity<OrderLine>(entity =>
@@ -415,6 +419,10 @@ namespace PickAndGo.Models
                     .HasColumnName("lineStatus")
                     .IsFixedLength();
 
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(9, 2)")
+                    .HasColumnName("price");
+
                 entity.Property(e => e.ProductId).HasColumnName("productID");
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
@@ -423,13 +431,13 @@ namespace PickAndGo.Models
                     .WithMany(p => p.OrderLines)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderLine__order__62E4AA3C");
+                    .HasConstraintName("FK__OrderLine__order__0BE6BFCF");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderLines)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderLine__produ__63D8CE75");
+                    .HasConstraintName("FK__OrderLine__produ__0CDAE408");
             });
 
             modelBuilder.Entity<Product>(entity =>

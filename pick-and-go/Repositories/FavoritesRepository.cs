@@ -24,7 +24,7 @@ namespace PickAndGo.Repositories
                          let iSum = (from li in _db.LineIngredients
                                      join i in _db.Ingredients on li.IngredientId equals i.IngredientId
                                      where f.OrderId == li.OrderId && l.LineId == li.LineId
-                                     select (i.Price * li.Quantity)).Sum()
+                                     select (li.Price * li.Quantity)).Sum()
 
                          select new FavoritesVM
                          {
@@ -40,8 +40,8 @@ namespace PickAndGo.Repositories
                              Description = p.Description,
                              FavoriteName = f.FavoriteName,
                              Quantity = l.Quantity,
-                             Price = p.BasePrice,
-                             LineValue = (decimal)(p.BasePrice + iSum),
+                             Price = l.Price,
+                             LineValue = (decimal)(l.Price + iSum),
                              Ingredients = (List<OrderIngredientVM>)
                                               (from li in _db.LineIngredients
                                                join i in _db.Ingredients on li.IngredientId equals i.IngredientId
@@ -52,8 +52,8 @@ namespace PickAndGo.Repositories
                                                    IngredientId = li.IngredientId,
                                                    IngDescription = i.Description,
                                                    Quantity = li.Quantity,
-                                                   Price = i.Price,
-                                                   IngValue = (decimal)(li.Quantity * i.Price)
+                                                   Price = li.Price,
+                                                   IngValue = (decimal)(li.Quantity * li.Price)
                                                }),
                          };
 
