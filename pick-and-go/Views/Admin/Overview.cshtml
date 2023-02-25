@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int outstanding = Model != null ? Model.Outstanding : 0;
     int completed = Model != null ? Model.Completed : 0;
+    decimal outstandingVal = Model != null ? Model.OutstandingVal : 0;
+    decimal completedVal = Model != null ? Model.CompletedVal : 0;
     string date = Model.Date;
 }
 
@@ -41,6 +43,14 @@
             </td>
             <td>
                 @completed
+            </td>
+        </tr>
+        <tr>
+            <td>
+                $ @outstandingVal
+            </td>
+            <td>
+                $ @completedVal
             </td>
         </tr>
     </tbody>
