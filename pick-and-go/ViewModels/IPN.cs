@@ -30,6 +30,8 @@ namespace PickAndGo.ViewModels
         public string paymentMethod { get; set; }
         public string paymentState { get; set; }
 
+        public string email { get; set; }
+
 
     }
 }

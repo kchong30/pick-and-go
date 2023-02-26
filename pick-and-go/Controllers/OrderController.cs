@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
-
+using NuGet.Protocol;
 
 namespace PickAndGo.Controllers
 {
@@ -43,7 +43,7 @@ namespace PickAndGo.Controllers
             ocVm.ingredientListVMs = iVm.ToList();
 
             return View(ocVm);
-            }
+        }
 
         public IActionResult History(int customerId, string message)
         {
@@ -60,103 +60,91 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
+
         public IActionResult ShoppingCart()
         {
-
-
-            // Retrieve JSON data
-                        string jsonData = @"[
-                {
-                    ""productId"": ""1"",
-                    ""description"": ""Small Sandwich"",
-                    ""ingredient"": [
-                        {
-                            ""ingredientId"": 2,
-                            ""description"": ""Wheat Bread"",
-                            ""quantity"": ""1""
-                        },
-                        {
-                            ""ingredientId"": 6,
-                            ""description"": ""Tomato"",
-                            ""quantity"": ""2""
-                        },
-                        {
-                            ""ingredientId"": 8,
-                            ""description"": ""Cucumber"",
-                            ""quantity"": ""1""
-                        }
-                    ],
-                    ""subtotal"": ""2.00""
-                },
-                {
-                    ""productId"": ""1"",
-                    ""description"": ""Large Sandwich"",
-                    ""ingredient"": [
-                        {
-                            ""ingredientId"": 1,
-                            ""description"": ""Italian Bread"",
-                            ""quantity"": ""1""
-                        },
-                        {
-                            ""ingredientId"": 5,
-                            ""description"": ""Ham"",
-                            ""quantity"": ""2""
-                        },
-                        {
-                            ""ingredientId"": 8,
-                            ""description"": ""Cucumber"",
-                            ""quantity"": ""2""
-                        }
-                    ],
-                    ""subtotal"": ""5.00""
-                }
-            ]";
-
-            // Deserialize JSON into C# object
             // Retrieve the session string value
-            string shoppingCart = HttpContext.Session.GetString("shoppingCart");
+            string jsonData = HttpContext.Session.GetString("shoppingCart");
+
+            // Pass it to VM for View
             List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
 
-            // Pass C# object to Razor view
-            return View(items);
+            // Check if the user is logged in or no
 
+            if (User.Identity.Name != null)
+            {
+                string email = User.Identity.Name;
+                CustomerRepository cR = new CustomerRepository(_db);
+                // get current user record from client
+                Customer customer = cR.ReturnCustomerByEmail(email);
+
+                //if (User.Identity.IsAuthenticated)
+                //{
+                    HttpContext.Session.SetString("firstName", customer.FirstName);
+                    HttpContext.Session.SetString("lastName", customer.LastName);
+                    HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+                //}
+            }
+            return View(items);
 
         }
 
         [HttpPost]
         public void StoreCart([FromBody] SessionVM data)
         {
-            HttpContext.Session.SetString("pickupTime", data.PickupTime);
-            //HttpContext.Session.SetString("shoppingCart", data.CartJson);
+            if (data.PickupTime != null)
+            {
+                HttpContext.Session.SetString("pickupTime", DateTime.Now.ToString());
+                //HttpContext.Session.SetString("pickupTime", data.PickupTime);
+            }
+            if (data.CartJson != null)
+            {
+                HttpContext.Session.SetString("shoppingCart", data.CartJson);
+            }
+
+            if (data.Email != null)
+            {
+                HttpContext.Session.SetString("email", data.Email);
+            }
         }
 
 
         // This method receives and stores
         // the Paypal transaction details.
         [HttpPost]
-        public JsonResult PaySuccess([FromBody] IPN iPN )
+        public JsonResult PaySuccess([FromBody] IPN iPN)
         {
             // Retrieve the session string value
             string pickupTime = HttpContext.Session.GetString("pickupTime");
-
             // Convert the string to a DateTime object
             DateTime dateTimeValue = DateTime.Parse(pickupTime);
 
+            // sandwich data
+            string sandwichJson = HttpContext.Session.GetString("shoppingCart");
 
-            // we do not create an IPN record, we will have order
-            // need to call Steph's code for creting order record
-            // need to pass customer Id and name as well
+            //// Pass it to VM for View?
+            //List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
+
+            string customerId = HttpContext.Session.GetString("customerId");
+            string firstName = HttpContext.Session.GetString("firstName");
+            string lastName = HttpContext.Session.GetString("lastName");
+            string email = iPN.email;
+
+            OrderRepository oR = new OrderRepository(_db, _configuration);
+
+            //oR.CreateOrderHeader(Convert.ToInt32(customerId), firstName, lastName, dataTimeValue, iPN.paymentID, iPN.amount,sandwichJson,email);
+
+            // create order header, line... etc...
 
             return Json(iPN);
         }
 
 
-        // Home page shows list of items.
-        // Item price is set through the ViewBag.
         public IActionResult Confirmation(string confirmationId)
         {
-            // show the payment success page? maybe?
+            // show the order confirm page
 
+            // place holder code
             var record =
             _db.OrderHeaders.Where(t => t.PaymentId == confirmationId).FirstOrDefault();
 
@@ -237,7 +225,7 @@ namespace PickAndGo.Controllers
             // create session object for this product and add to cart object,
             // redirect to shopping cart page?
 
-            
+
             //
             // testing purposes only
             //

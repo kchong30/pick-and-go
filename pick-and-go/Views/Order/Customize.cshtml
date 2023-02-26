@@ -96,7 +96,35 @@
 <!-- !! Reset radio button (select all to none)-->
 <button id="clear-selection" onclick="clearSelection(event)">Clear Selection</button>
 <button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
-<button id="checkout">Proceed to Checkout</button>
+<button id="checkout" onclick="checkOut(event)">Proceed to Checkout</button>
+<script>
+
+
+    function checkOut(event) {
+
+        var shoppingCart = sessionStorage.getItem('cart');
+        $.ajax({
+            type: "POST",
+            url: "/Order/StoreCart",
+            data: JSON.stringify({ CartJson: shoppingCart }),
+            contentType: "application/json",
+            success: function (response) {
+                window.location.href
+                    = "/Order/ShoppingCart";
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
+
+
+
+</script>
+
+
+
+
 <button onclick="validateForm()">Form Validation</button>
 <!-- Cart jQuery Script-->
 
