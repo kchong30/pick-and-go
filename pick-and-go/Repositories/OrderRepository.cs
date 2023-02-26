@@ -128,6 +128,46 @@ namespace PickAndGo.Repositories
             return vmList;
         }
 
+        public IQueryable<OrderTransactionVM> BuildOrderTransactionVM(string searchName, string searchOrder,
+                                                                      DateTime fromDate, DateTime toDate)
+        {
+            var vmList = from o in _db.OrderHeaders
+                         join c in _db.Customers on o.CustomerId equals c.CustomerId
+                         where o.OrderDate >= fromDate && o.OrderDate <= toDate
+                         orderby o.OrderDate descending
+                         select new OrderTransactionVM
+                         {
+                             OrderId = o.OrderId,
+                             CustomerId = o.CustomerId,
+                             FirstName = c.FirstName,
+                             LastName = c.LastName,
+                             FullName = c.FirstName + " " + c.LastName,
+                             Email = c.EmailAddress,
+                             OrderDate = ((DateTime)o.OrderDate).ToString("MM-dd-yyyy"),
+                             OrderValue = (decimal)o.OrderValue,
+                             Currency = o.Currency,
+                             PaymentType = o.PaymentType,
+                             PaymentId = o.PaymentId,   
+                             PaymentDate = ((DateTime)o.PaymentDate).ToString("MM-dd-yyyy"),
+                         };
+
+            if (searchName != null && searchName != "")
+            {
+                vmList = from v in vmList
+                         where v.FirstName.Contains(searchName) || v.LastName.Contains(searchName)
+                         select v;
+            }
+
+            if (searchOrder != null && searchOrder != "")
+            {
+                vmList = from v in vmList
+                         where v.OrderId.ToString() == searchOrder
+                         select v;
+            }
+
+            return vmList;
+        }
+
         public OrderHeader GetOrderHeader(int orderId)
         {
             var orderHeader = _db.OrderHeaders.Where(o => o.OrderId == orderId).FirstOrDefault();
@@ -201,36 +241,47 @@ namespace PickAndGo.Repositories
 // Once the interface with shopping cart is complete, it can be removed and a session
 // object containing the shopping cart details will be used instead 
 //
-            decimal orderTotal = 24.50m;
-            int customerId = 4;
-            string firstName = "";
-            string lastName = "";
+            decimal orderTotal = 12.00m;
+            int customerId = 0;
+            string email = "johnsmith@gmail.com";
+            string firstName = "John";
+            string lastName = "Smith";
             DateTime pickupTime = DateTime.Now.AddHours(4);
-            string paymentId = "QIHU8YP5O629416VT531928K";
+            string paymentId = "KO87HYP5O623709LF535528P";
             
             var products = new[] {
                 new { productId = 2,
+                      price = 2.00,
                       ingredients = new[] {
                           new { ingredientId = 18,
-                                quantity = 1},
+                                quantity = 1,
+                                price = 0.50},
                           new { ingredientId = 1,
-                                quantity = 2},
+                                quantity = 2,
+                                price = 2.00},
                           new { ingredientId = 16,
-                                quantity = 1},
+                                quantity = 1,
+                                price = 0.25},
                           new { ingredientId = 2,
-                                quantity = 1}
+                                quantity = 1,
+                                price = 0.50}
                       },
                 },
                 new { productId = 3,
+                      price = 1.00,
                       ingredients = new[] {
                           new { ingredientId = 12,
-                                quantity = 1},
+                                quantity = 1,
+                                price = 0.75},
                           new { ingredientId = 17,
-                                quantity = 1},
+                                quantity = 1,
+                                price = 2.00},
                           new { ingredientId = 14,
-                                quantity = 1},
+                                quantity = 1,
+                                price = 0.75},
                           new { ingredientId = 4,
-                                quantity = 1}
+                                quantity = 1,
+                                price = 0.25}
                       },
                 }
             };
@@ -242,7 +293,7 @@ namespace PickAndGo.Repositories
                     if (customerId == 0)
                     {
                         CustomerRepository cr = new CustomerRepository(_db);
-                        var tuple3 = cr.CreateRecord("", firstName, lastName, "");
+                        var tuple3 = cr.CreateRecord(email, firstName, lastName, "");
 
                         message = tuple3.Item1;
                         customerId = tuple3.Item2;

@@ -71,6 +71,10 @@ body {
     margin-top: 10px;
 }
 
+.order-search input[type="text"] {
+    width: 150px;
+}
+
 .order-filter #orderfilter {
     height: 31px;
 }
@@ -153,4 +157,15 @@ body {
 
 .modal-a {
     text-decoration: none;
+}
+
+/* Transactions styles */
+
+.date-filter {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.date-filter input[type="date"] {
+    width: 125px;
 }
