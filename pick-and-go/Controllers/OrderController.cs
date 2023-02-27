@@ -29,7 +29,7 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
-        public IActionResult Customize()
+        public IActionResult Customize(int SelectedProductId)
         {
             // Receving Product ID from Main page
             IngredientsRepository ir = new IngredientsRepository(_db);
@@ -42,6 +42,8 @@ namespace PickAndGo.Controllers
             ocVm.productVMs = pVm.ToList();
             ocVm.ingredientListVMs = iVm.ToList();
 
+            string aa = HttpContext.Session.GetString("cart");
+            ViewData["ProductId"] = SelectedProductId;
             return View(ocVm);
             }
 
@@ -60,7 +62,7 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
-        public IActionResult ShoppingCart()
+        public IActionResult ShoppingCart(string cart)
         {
 
 
@@ -114,6 +116,7 @@ namespace PickAndGo.Controllers
 
             // Deserialize JSON into C# object
             // Retrieve the session string value
+            
             string shoppingCart = HttpContext.Session.GetString("shoppingCart");
             List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
 
