@@ -39,14 +39,14 @@
                     
                     <td class="col-2">
                         @{
-                            string imageSource = "../images/redoutline-heart.png";
+                            string imageSource = "/images/redoutline-heart.png";
                             string modalLabel = "Add to favorites?";
                             string favoriteName = "";
                             Boolean askForName = true;
 
                             if (order.IsFavorite)
                             {
-                                imageSource = "../images/red-heart.png";
+                                imageSource = "/images/red-heart.png";
                                 modalLabel = "Remove from favorites?";
                                 askForName = false;
                             }

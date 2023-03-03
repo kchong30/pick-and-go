@@ -18,6 +18,10 @@ body {
     margin-bottom: 60px;
 }
 
+body .container {
+    padding:0;
+}
+
 /* General accordion styles */
 
 .accordion-button {
@@ -69,6 +73,10 @@ body {
     flex-direction: column;
     margin-left: 50px;
     margin-top: 10px;
+}
+
+.order-search input[type="text"] {
+    width: 150px;
 }
 
 .order-filter #orderfilter {
@@ -153,4 +161,15 @@ body {
 
 .modal-a {
     text-decoration: none;
+}
+
+/* Transactions styles */
+
+.date-filter {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.date-filter input[type="date"] {
+    width: 125px;
 }

@@ -22,14 +22,27 @@ namespace PickAndGo.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index(ProductVM products)
+        public IActionResult Index(ProductVM products, string nameInput)
         {
+            //If the user is a guest - set viewbag for greeting to nameInput (gathered from form at landing page).
+            //If logged in, get customer's first name - pass on for greeting.
+            if (!User.Identity.IsAuthenticated)
+            {
+                ViewBag.NameInput = nameInput;
+            } 
+            else
+            {
+                CustomerRepository cr = new CustomerRepository(_db);
+                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                ViewBag.NameInput = customer.FirstName;
+            }
+
             ProductRepository pr = new ProductRepository(_db);
             var vm = pr.GetProducts();
             return View(vm);
         }
 
-        public IActionResult Customize()
+        public IActionResult Customize(int SelectedProductId)
         {
             // Receving Product ID from Main page
             IngredientsRepository ir = new IngredientsRepository(_db);
@@ -42,6 +55,8 @@ namespace PickAndGo.Controllers
             ocVm.productVMs = pVm.ToList();
             ocVm.ingredientListVMs = iVm.ToList();
 
+            string aa = HttpContext.Session.GetString("cart");
+            ViewData["ProductId"] = SelectedProductId;
             return View(ocVm);
         }
 
@@ -61,12 +76,13 @@ namespace PickAndGo.Controllers
         }
 
 
-        public IActionResult ShoppingCart()
+        public IActionResult ShoppingCart(string cart)
         {
             // Retrieve the session string value
-            string jsonData = HttpContext.Session.GetString("shoppingCart");
-
             // Pass it to VM for View
+            
+            // string shoppingCart = HttpContext.Session.GetString("shoppingCart");
+
             List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
 
             // Check if the user is logged in or no

@@ -13,6 +13,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using NuGet.Protocol.Core.Types;
 using System.Security.Principal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PickAndGo.Controllers
 {
@@ -172,8 +173,13 @@ namespace PickAndGo.Controllers
             ViewBag.currentTime = DateTime.Now.ToString("h:mm:s tt");
 
             ohVM.Date = currentDate;
-            ohVM.Outstanding = ohRepo.GetOverview(ohVM.Date).Item1;
-            ohVM.Completed = ohRepo.GetOverview(ohVM.Date).Item2;
+            var tuple = ohRepo.GetOverviewCounts(ohVM.Date);
+            ohVM.Outstanding = tuple.Item1;
+            ohVM.Completed = tuple.Item2;
+
+            var tuple2 = ohRepo.GetOverviewValues(ohVM.Date);
+            ohVM.OutstandingVal = tuple2.Item1;
+            ohVM.CompletedVal = tuple2.Item2;
 
             return View(ohVM);
         }
@@ -225,6 +231,43 @@ namespace PickAndGo.Controllers
             ViewData["CurrentOrderSearch"] = searchOrder;
 
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
+
+            return View(vm);
+        }
+
+        public IActionResult Transactions()
+        {
+            DateTime fromDate = new DateTime(2022, 1, 1); 
+            DateTime toDate = DateTime.Today;
+
+            ViewData["CurrentFromDate"] = fromDate;
+            ViewData["CurrentToDate"] = toDate;
+
+            OrderRepository or = new OrderRepository(_db, _configuration);
+            IQueryable<OrderTransactionVM> vm = or.BuildOrderTransactionVM("", "", fromDate, toDate);
+
+            ViewData["CurrentNameSearch"] = "";
+            ViewData["CurrentOrderSearch"] = "";
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Transactions(string searchName, string searchOrder,
+                                          string fromDate, string toDate)
+        {
+            OrderRepository or = new OrderRepository(_db, _configuration);
+
+            DateTime fromDateValue = string.IsNullOrEmpty(fromDate) ? new DateTime(2022, 1, 1) : DateTime.Parse(fromDate);
+            DateTime toDateValue = string.IsNullOrEmpty(toDate) ? DateTime.Today : DateTime.Parse(toDate);
+
+            ViewData["CurrentNameSearch"] = searchName;
+            ViewData["CurrentOrderSearch"] = searchOrder;
+            ViewData["CurrentFromDate"] = fromDateValue;
+            ViewData["CurrentToDate"] = toDateValue;
+
+            IQueryable<OrderTransactionVM> vm = or.BuildOrderTransactionVM(searchName, searchOrder,
+                                                                           fromDateValue, toDateValue);
 
             return View(vm);
         }
