@@ -20,9 +20,11 @@ namespace PickAndGo.Controllers
         public IActionResult Index()
         {
             CustomerRepository cr = new CustomerRepository(_db);
-            var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
-            var customerId = customer.CustomerId.ToString();
-            HttpContext.Session.SetString("customerid", customerId);
+            if (User.Identity.IsAuthenticated) { 
+                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                var customerId = customer.CustomerId.ToString();
+                HttpContext.Session.SetString("customerid", customerId);
+            }
             return View();
         }
 
