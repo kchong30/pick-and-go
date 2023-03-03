@@ -27,11 +27,11 @@
                 <tr class-"no-padding">
                     <th class="col-1">
                         <a class="modal-a" asp-action="UpdateFavorites" asp-route-custId="@favorite.CustomerId" asp-route-orderId="@favorite.OrderId" asp-route-lineId="@favorite.LineId" asp-route-isFavorite=true asp-route-name="" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">
-                            <img class="cell-image" src="../images/red-heart.png" />
+                            <img class="cell-image" src="/images/red-heart.png" />
                         </a>
 
                         <a class="modal-a" asp-action="ChangeFavoritesName" asp-route-custId="@favorite.CustomerId" asp-route-orderId="@favorite.OrderId" asp-route-lineId="@favorite.LineId" asp-route-isFavorite=true asp-route-name="" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm2">
-                            <img class="cell-image2" src="../images/edit-icon.png" />
+                            <img class="cell-image2" src="/images/edit-icon.png" />
                         </a>
 
                         @using (Html.BeginForm("UpdateFavorites", "Order", new
