@@ -52,58 +52,67 @@ function setProductPrice(value) {
 }
 
 /* Add to Cart */
-function addToCart() {
-    if (!validateForm()) {
-        $(window).scrollTop(0);
-       // return false? 
+function addToCart(event) {
+    var subTotal;
+    var productId;
+    var description;
+
+    if ($("#customize-page")) {
+        if (!validateForm()) {
+            $(window).scrollTop(0);
+            return false
+        }
+        console.log("Custom Page!")
+        subTotal = $('#product-price').html();
+        productId = $("#product option:selected").val().split("-")[0];
+        description = $("#product option:selected").val().split("-")[2];
     } else {
-        console.log("Does it how this line when validation failed?")
-        // Get item from localStorage
-        var cart = JSON.parse(localStorage.getItem("cart"));
-
-        if (cart == null) {
-            cart = [];
-        }
-        if (!(cart instanceof Array)) {
-            cart = [cart];
-        }
-
-        // Customized item array
-        var ingredients = [];
-        var subTotal = 0; // product price me&steph
-
-        $(".ingredientTable").each(function () {
-            var quantity = $(this).find(".quantity").html();
-            if (quantity > 0) {
-                var ingredient = {
-                    ingredientId: $(this).find(".ingredientId").html(),
-                    description: $(this).find(".description").html(),
-                    quantity: quantity,
-                    price: $(this).find(".price").html(),
-                };
-                subTotal = quantity * ingredient.price + subTotal;
-                ingredients.push(ingredient);
-            }
-        });
-
-        
-        // Save item into localStorage
-        // me&steph?
-        var productId = 0;
-        var descriptiono = 0;
-
-        var item = {
-            productId: $("#product option:selected").val().split("-")[0],
-            description: $("#product option:selected").val().split("-")[2],
-            ingredients: ingredients,
-            subTotal: subTotal
-        };
-
-        cart.push(item);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        $("#cart-icon").text(cart.length);
-        clearSelection();
+        console.log("Fav Page")
+        subTotal = event.target.value.split("-")[2];
+        productId = event.target.value.split("-")[0];
+        description = event.target.value.split("-")[1];
     }
+
+    // Get item from localStorage
+    var cart = JSON.parse(localStorage.getItem("cart"));
+
+    if (cart == null) {
+        cart = [];
+    }
+    if (!(cart instanceof Array)) {
+        cart = [cart];
+    }
+
+    // Customized item array
+    var ingredients = [];
+
+    $(".ingredientTable").each(function () {
+        var quantity = $(this).find(".quantity").html();
+        if (quantity > 0) {
+            var ingredient = {
+                ingredientId: $(this).find(".ingredientId").html(),
+                description: $(this).find(".description").html(),
+                quantity: quantity,
+                price: $(this).find(".price").html(),
+            };
+            subTotal = quantity * ingredient.price + subTotal;
+            ingredients.push(ingredient);
+        }
+    });
+
+    var item = {
+        productId: productId,
+        description: description,
+        ingredients: ingredients,
+        subTotal: subTotal
+    };
+
+    cart.push(item);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    $("#cart-icon").text(cart.length);
+    clearSelection();
+
+    $("#message").text("This sandwich has been added to your shopping cart!")
 }
 
 /* Clear Selection */
