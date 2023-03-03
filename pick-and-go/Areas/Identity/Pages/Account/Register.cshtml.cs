@@ -165,7 +165,13 @@ namespace PickAndGo.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 CustomerRepository cr = new CustomerRepository(_db);
-                cr.CreateRecord(Input.Email, Input.FirstName, Input.LastName, Input.PhoneNumber);
+                var customer = cr.ReturnCustomerByEmail(Input.Email);
+
+                if (customer == null)
+                {
+                    cr.CreateRecord(Input.Email, Input.FirstName, Input.LastName, Input.PhoneNumber);
+                }
+
 
                 if (result.Succeeded)
                 {
