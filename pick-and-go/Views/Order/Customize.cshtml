@@ -22,12 +22,12 @@
 
 <div class="container">
     <!-- Product Select :: Add Sessions Here -->
-    <!-- !! Receive select data from sessionStorage(session)-->
+    <!-- !! Receive select data from localStorage(session)-->
     <select onchange="changeProduct(event)" id="product">
         <option value="">-----Select sandwich size-----</option>
         @foreach (var product in Model.productVMs)
         {
-            <option value="@product.ProductId-@product.BasePrice">@product.Description</option>
+            <option value="@product.ProductId-@product.BasePrice" selected="@(ViewBag.ProductId==@product.ProductId ? "selected" : null)">@product.Description</option>
         }
     </select>
     <!-- End of Select-->
@@ -92,11 +92,11 @@
 <hr />
 <span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
 <span>Total : $</span> <span id="total-price">0</span> <!-- Add Sandwich price by default, changes with selection change-->
-<button onclick="addToCart()">Add to Cart</button> <!-- Trigger to save in sessionStorage-->
+<button onclick="addToCart()">Add to Cart</button> <!-- Trigger to save in localStorage-->
 <!-- !! Reset radio button (select all to none)-->
 <button id="clear-selection" onclick="clearSelection(event)">Clear Selection</button>
 <button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
-<button id="checkout">Proceed to Checkout</button>
+<button id="checkout" onclick="checkout()">Proceed to Checkout</button>
 <button onclick="validateForm()">Form Validation</button>
 <!-- Cart jQuery Script-->
 
@@ -137,7 +137,7 @@
 
     /* Get Product ID from Session and Set Product in Select option */
     function setProduct() {
-        const cart = JSON.parse(sessionStorage.getItem("currentCart"));
+        const cart = JSON.parse(localStorage.getItem("currentCart"));
 
         if (cart) {
             $("#product option").each(function () {
@@ -145,7 +145,7 @@
                     $(this).attr("selected", "true");
                 }
             });
-            sessionStorage.removeItem("currentCart");
+            localStorage.removeItem("currentCart");
         }
 
         var value = $("#product option:selected").val();
@@ -176,8 +176,8 @@
         if (!validateForm()) {
             $(window).scrollTop(0);
         } else {
-            // Get item from sessionStorage
-            var cart = JSON.parse(sessionStorage.getItem("cart"));
+            // Get item from localStorage
+            var cart = JSON.parse(localStorage.getItem("cart"));
 
             if (cart == null) {
                 cart = [];
@@ -202,7 +202,7 @@
                 }
             });
 
-            // Save item into sessionStorage
+            // Save item into localStorage
             var item = {
                 productId: $("#product option:selected").val().split("-")[0],
                 ingredients: ingredients,
@@ -210,8 +210,10 @@
             };
 
             cart.push(item);
-            sessionStorage.setItem("cart", JSON.stringify(cart));
+            localStorage.setItem("cart", JSON.stringify(cart));
             $("#cart-icon").text(cart.length);
+
+            transferData();
         }
     }
 
@@ -248,7 +250,7 @@
     function emptyCart(event) {
         $("#cart-icon").text(0);
 
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     /* Update Quantity from Selection Menu */
@@ -311,10 +313,38 @@
 
     /* Checkout */
     function checkout() {
-        if (!validateForm()) {
-            $(window).scrollTop(0);
-        }
-        // ajax : parse data
+        // if data is empty, add to cart, or do not add to cart
+        //addToCart()
+        var cart = localStorage.getItem("cart");
+
+        console.log("hi")
+        console.log(cart)
+        $.ajax({
+            type: 'POST',
+            url: '/Order/ShoppingCart',
+            data: { cart: cart },
+            success: function () {
+                console.log('Data sent to server successfully.');
+            }
+        });
+
+        $(location).prop('href', '/order/shoppingcart')
     }
+
+    function transferData() {
+        var cart = localStorage.getItem("cart");
+
+        console.log("hi")
+        console.log(cart)
+        $.ajax({
+            type: 'POST',
+            url: '/Order/ShoppingCart',
+            data: { cart: cart },
+            success: function () {
+                console.log('Data sent to server successfully.');
+            }
+        });
+    }
+
 </script>
 <!-- End of Script-->
