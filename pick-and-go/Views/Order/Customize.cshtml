@@ -31,11 +31,12 @@
         }
     </select>
     <!-- End of Select-->
+
     <!-- Displaying Ingredients -->
-    <div class="accordion border border-warning" id="customize">
+    <div class="accordion" id="customize">
         @foreach (var cat in Model.ingredientListVMs)
         {
-            <div class="accordion-item border border-danger">
+            <div class="accordion-item">
                 <!-- Accordion Header : Catogory -->
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="true" aria-controls="@cat.CategoryId">
@@ -43,12 +44,12 @@
                     </button>
                 </h2>
                 <!-- Accordion Body : Ingredients, add show in the  class -->
-                <div id="@cat.CategoryId" class="accordion-collapse collapse border border-danger" aria-labelledby="@cat.CategoryId">
+                <div id="@cat.CategoryId" class="accordion-collapse collapse" aria-labelledby="@cat.CategoryId">
                     <div class="accordion-body">
                         <!-- Ingredients Table -->
-                        <table class="accordion-table container border border-danger d-flex">
+                        <table class="accordion-table container d-flex">
                             <tbody class="d-flex flex-column w-100">
-                                <tr class="border border-danger d-flex w-100  justify-content-between">
+                                <tr class="d-flex w-100  justify-content-between">
                                     <th class="w-25 ps-2">Description</th>
                                     <th class="w-25">Price</th>
                                     <th class="w-25 ps-3">Quantity</th>
@@ -83,8 +84,8 @@
                                                 </div>
                                             </form>
                                         </td>
-                                        <td id="@ing.IngredientId-quantity" class="quantity w-25" hidden>0</td>
-                                            <td id="@ing.IngredientId-amount " class="amount pe-2">0.00</td>
+                                        <td id="@ing.IngredientId-quantity" class="quantity w-25">0</td>
+                                            <td id="@ing.IngredientId-amount" class="amount pe-2">0.00</td>
                                     </tr>
                                 }
                             }
@@ -110,251 +111,9 @@
 <button onclick="validateForm()">Form Validation</button>
 <!-- Cart jQuery Script-->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-    /* Initial jQuery as Page Loaded */
-    (function ($) {
-        $(document).ready(function () {
-            setProduct();
-        });
-    })(jQuery);
 
-    /* Form Validation */
-    function validateForm() {
-        // add required table here
-        var validation = 0
-        $('#Breads input:radio').each(function () {
-            var value = $(this).val() // none
-            var check = $(this).is(':checked') // true
-            if (value == 'none' && check) {
-                validation++;
-            }
-        })
 
-        var length = $('#Breads form').length
-        if (length == validation) {
-            console.log("Validatin failed")
-            return false;
-        } else if ($("#product option:selected").val() == "") {
-            console.log("Select sandwich")
-            return false;
-        } else {
-            console.log("Validation okay!!")
-            return true;
-        }
-
-    }
-
-    /* Get Product ID from Session and Set Product in Select option */
-    function setProduct() {
-        const cart = JSON.parse(localStorage.getItem("currentCart"));
-
-        if (cart) {
-            $("#product option").each(function () {
-                if ($(this).val().split("-")[0] == cart.productId) {
-                    $(this).attr("selected", "true");
-                }
-            });
-            localStorage.removeItem("currentCart");
-        }
-
-        var value = $("#product option:selected").val();
-        setProductPrice(value);
-    }
-
-    /* Handle onChange Select Product Menu */
-    function changeProduct(event) {
-        var value = event.target.value;
-        setProductPrice(value);
-    }
-
-    /* Set Total Price from selected option value */
-    function setProductPrice(value) {
-        // parse price from value
-        var productValue = value.split("-");
-        var productPrice = productValue[1];
-        $("#product-price").text(productPrice);
-
-        // display total price
-        var totalPrice =
-            parseFloat($("#product-price").html()) + parseFloat($("#ingredients-price").html());
-        $("#total-price").text(totalPrice);
-    }
-
-    /* Add to Cart */
-    function addToCart() {
-        if (!validateForm()) {
-            $(window).scrollTop(0);
-        } else {
-            // Get item from localStorage
-            var cart = JSON.parse(localStorage.getItem("cart"));
-
-            if (cart == null) {
-                cart = [];
-            }
-            if (!(cart instanceof Array)) {
-                cart = [cart];
-            }
-
-            // Customized item array
-            var ingredients = [];
-
-            $(".ingredientTable").each(function () {
-                var quantity = $(this).find(".quantity").html();
-                if (quantity > 0) {
-                    var ingredient = {
-                        ingredientId: $(this).find(".ingredientId").html(),
-                        description: $(this).find(".description").html(),
-                        quantity: quantity,
-                        price: $(this).find(".price").html(),
-                    };
-                    ingredients.push(ingredient);
-                }
-            });
-
-            // Save item into localStorage
-            var item = {
-                productId: $("#product option:selected").val().split("-")[0],
-                ingredients: ingredients,
-                subTotal: $("#total-price").html(),
-            };
-
-            cart.push(item);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            $("#cart-icon").text(cart.length);
-
-            transferData();
-        }
-    }
-
-    /* Clear Selection */
-    function clearSelection(event) {
-        // Uncheck radio button
-        $("input:radio").each(function () {
-            if ($(this).val() == "none") {
-                $(this).prop("checked", true);
-            } else {
-                $(this).prop("checked", false);
-            }
-        });
-
-        // Manually clear all sections
-
-        $(".quantity").each(function () {
-            $(this).text(0);
-        });
-
-        $(".amount").each(function () {
-            $(this).text(0);
-        });
-
-        $("#ingredients-price").text(0);
-
-        $("#total-amt").text(0);
-
-        var totalPrice = parseFloat($("#product-price").html());
-        $("#total-price").text(totalPrice);
-    }
-
-    /* Empty Cart */
-    function emptyCart(event) {
-        $("#cart-icon").text(0);
-
-        localStorage.clear();
-    }
-
-    /* Update Quantity from Selection Menu */
-    function changeQuantity(event) {
-        var clickedId = event.target.id;
-        var elementIdSplit = clickedId.split("-");
-        var id = elementIdSplit[0];
-        var quantityValue = elementIdSplit[1];
-
-        updateTotalPrice(id, quantityValue);
-    }
-
-    function updateTotalPrice(id, quantityValue) {
-        var itemPriceId = "#" + id + "-price";
-        var cartQtyId = "#" + id + "-quantity";
-        var cartAmtId = "#" + id + "-amount";
-
-        var quantity = $(cartQtyId).html();
-
-        switch (quantityValue) {
-            case "none":
-                quantity = 0;
-                break;
-            case "reg":
-                quantity = 1;
-                break;
-            case "extra":
-                quantity = 2;
-                break;
-        }
-
-        $(cartQtyId).text(quantity);
-
-        //Calculate new amount
-        var amount = $(itemPriceId).html();
-        var newAmount = (amount * quantity).toFixed(2);
-
-        $(cartAmtId).text(newAmount);
-
-        //Calculate totals
-        var totalQuantity = 0;
-        $(".quantity").each(function () {
-            var thisQuantity = $(this).html();
-            totalQuantity += parseInt(thisQuantity);
-        });
-        $("#total-amt").text(totalQuantity);
-
-        var ingredientsPrice = 0;
-        $(".amount").each(function () {
-            var thisAmount = $(this).html();
-            ingredientsPrice += parseFloat(thisAmount);
-        });
-
-        $("#ingredients-price").text(ingredientsPrice.toFixed(2));
-        var totalPrice =
-            parseFloat($("#product-price").html()) +
-            parseFloat($("#ingredients-price").html());
-        $("#total-price").text(totalPrice);
-    }
-
-    /* Checkout */
-    function checkout() {
-        // if data is empty, add to cart, or do not add to cart
-        //addToCart()
-        var cart = localStorage.getItem("cart");
-
-        console.log("hi")
-        console.log(cart)
-        $.ajax({
-            type: 'POST',
-            url: '/Order/ShoppingCart',
-            data: { cart: cart },
-            success: function () {
-                console.log('Data sent to server successfully.');
-            }
-        });
-
-        $(location).prop('href', '/order/shoppingcart')
-    }
-
-    function transferData() {
-        var cart = localStorage.getItem("cart");
-
-        console.log("hi")
-        console.log(cart)
-        $.ajax({
-            type: 'POST',
-            url: '/Order/ShoppingCart',
-            data: { cart: cart },
-            success: function () {
-                console.log('Data sent to server successfully.');
-            }
-        });
-    }
-
-</script>
+</script>*@
 <!-- End of Script-->
