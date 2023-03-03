@@ -331,7 +331,8 @@
         var cart = localStorage.getItem("cart");
 
         // 
-                var shoppingCart = sessionStorage.getItem('cart');
+               // var shoppingCart = sessionStorage.getItem('cart');
+               var shoppingCart = cart;
                 $.ajax({
                     type: "POST",
                     url: "/Order/StoreCart",
@@ -346,7 +347,7 @@
                     }
                 });
             
-        $(location).prop('href', '/order/shoppingcart')
+       // $(location).prop('href', '/order/shoppingcart')
     }
 
     function transferData() {

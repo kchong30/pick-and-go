@@ -104,6 +104,7 @@ namespace PickAndGo.Controllers
 
         }
 
+
         [HttpPost]
         public void StoreCart([FromBody] SessionVM data)
         {
