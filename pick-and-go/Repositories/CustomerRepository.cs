@@ -2,6 +2,7 @@
 using PickAndGo.Data;
 using System.Linq;
 using PickAndGo.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace PickAndGo.Repositories
 {
@@ -70,6 +71,26 @@ namespace PickAndGo.Repositories
         {
             var customer = _db.Customers.Where(c => c.EmailAddress == email).FirstOrDefault();
             return customer;
+        }
+
+
+        public void EditCustomer(int id, EditCustomerVM customerVM)
+        {
+            CustomerRepository cR = new CustomerRepository(_db);
+
+
+            var vm = cR.ReturnCustomerById(id);
+
+            _db.Update(new Customer
+            {
+                CustomerId = vm.CustomerId,
+                LastName = customerVM.LastName,
+                FirstName = customerVM.FirstName,
+                EmailAddress = vm.EmailAddress,
+                PhoneNumber = customerVM.PhoneNumber,
+                AdminUser = "N"
+            });
+            _db.SaveChanges();
         }
 
         public Customer GetCustomerRecord(int customerId)
