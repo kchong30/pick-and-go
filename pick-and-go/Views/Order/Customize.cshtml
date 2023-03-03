@@ -19,6 +19,7 @@
 </button>
 
 <hr />
+<div id="customize-page"></div>
 
 <div class="container">
     <!-- Product Select :: Add Sessions Here -->
@@ -103,7 +104,7 @@
 <hr />
 <span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
 <span>Total : $</span> <span id="total-price">0</span> <!-- Add Sandwich price by default, changes with selection change-->
-<button onclick="addToCart()">Add to Cart</button> <!-- Trigger to save in localStorage-->
+<button onclick="addToCart()" value="">Add to Cart</button> <!-- Trigger to save in localStorage-->
 <!-- !! Reset radio button (select all to none)-->
 <button id="clear-selection" onclick="clearSelection(event)">Clear Selection</button>
 <button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
@@ -113,12 +114,8 @@
 <button onclick="validateForm()">Form Validation</button>
 <!-- Cart jQuery Script-->
 
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script>
-
-
-
-</script>*@
-<!-- End of Script-->
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/cart.js"></script>
+<script>
+</script>
+<!-- End of Script-->
