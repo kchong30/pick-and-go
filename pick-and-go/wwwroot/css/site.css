@@ -18,6 +18,10 @@ body {
     margin-bottom: 60px;
 }
 
+body .container {
+    padding:0;
+}
+
 /* General accordion styles */
 
 .accordion-button {
