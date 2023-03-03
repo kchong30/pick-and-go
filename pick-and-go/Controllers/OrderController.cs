@@ -60,12 +60,14 @@ namespace PickAndGo.Controllers
             return View(ocVm);
         }
 
-        public IActionResult History(int customerId, string message)
+        public IActionResult History(string message)
         {
             if (message == null)
             {
                 message = "";
             }
+
+            int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
 
             OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
@@ -168,12 +170,14 @@ namespace PickAndGo.Controllers
             return View("Confirmation", record);
         }
 
-        public IActionResult Favorites(int customerId, string message)
+        public IActionResult Favorites(string message)
         {
             if (message == null)
             {
                 message = "";
             }
+
+            int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
 
             FavoritesRepository fr = new FavoritesRepository(_db);
             IQueryable<FavoritesVM> vm = fr.BuildFavoritesVM(customerId);

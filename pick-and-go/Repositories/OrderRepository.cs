@@ -83,7 +83,7 @@ namespace PickAndGo.Repositories
                          join o in _db.OrderHeaders on l.OrderId equals o.OrderId
                          join c in _db.Customers on o.CustomerId equals c.CustomerId
                          join p in _db.Products on l.ProductId equals p.ProductId
-                         where (c.CustomerId.Equals(customerId))
+                         where (c.CustomerId.Equals(customerId) && o.OrderDate >= c.DateSignedUp)
                          orderby o.OrderDate descending
                          let iSum = (from li in _db.LineIngredients
                                      where o.OrderId == li.OrderId && l.LineId == li.LineId
