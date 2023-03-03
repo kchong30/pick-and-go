@@ -76,14 +76,13 @@ namespace PickAndGo.Controllers
         }
 
 
-        public IActionResult ShoppingCart(string cart)
+        public IActionResult ShoppingCart()
         {
             // Retrieve the session string value
-            // Pass it to VM for View
-            
-            // string shoppingCart = HttpContext.Session.GetString("shoppingCart");
+            string jsonData = HttpContext.Session.GetString("shoppingCart");
 
-            List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(cart);
+            // Pass it to VM for View
+            List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
 
             // Check if the user is logged in or no
 
@@ -96,9 +95,9 @@ namespace PickAndGo.Controllers
 
                 //if (User.Identity.IsAuthenticated)
                 //{
-                    HttpContext.Session.SetString("firstName", customer.FirstName);
-                    HttpContext.Session.SetString("lastName", customer.LastName);
-                    HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+                HttpContext.Session.SetString("firstName", customer.FirstName);
+                HttpContext.Session.SetString("lastName", customer.LastName);
+                HttpContext.Session.SetInt32("customerId", customer.CustomerId);
                 //}
             }
             return View(items);
