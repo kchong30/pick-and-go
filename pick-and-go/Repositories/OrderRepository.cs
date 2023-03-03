@@ -237,55 +237,6 @@ namespace PickAndGo.Repositories
         public string CreateOrder(int customerId, string firstName, string lastName, DateTime pickupTime, string paymentId, decimal orderTotal, string sandwichJson, string email)
         {
             string message = "";
-            //
-            // This is test data for testing the order create code
-            // Once the interface with shopping cart is complete, it can be removed and a session
-            // object containing the shopping cart details will be used instead 
-            //
-            //decimal orderTotal = 12.00m;
-            //int customerId = 0;
-            //string email = "johnsmith@gmail.com";
-            //string firstName = "John";
-            //string lastName = "Smith";
-            //DateTime pickupTime = DateTime.Now.AddHours(4);
-            //string paymentId = "KO87HYP5O623709LF535528P";
-
-            //var products = new[] {
-            //    new { productId = 2,
-            //          price = 2.00,
-            //          ingredients = new[] {
-            //              new { ingredientId = 18,
-            //                    quantity = 1,
-            //                    price = 0.50},
-            //              new { ingredientId = 1,
-            //                    quantity = 2,
-            //                    price = 2.00},
-            //              new { ingredientId = 16,
-            //                    quantity = 1,
-            //                    price = 0.25},
-            //              new { ingredientId = 2,
-            //                    quantity = 1,
-            //                    price = 0.50}
-            //          },
-            //    },
-            //    new { productId = 3,
-            //          price = 1.00,
-            //          ingredients = new[] {
-            //              new { ingredientId = 12,
-            //                    quantity = 1,
-            //                    price = 0.75},
-            //              new { ingredientId = 17,
-            //                    quantity = 1,
-            //                    price = 2.00},
-            //              new { ingredientId = 14,
-            //                    quantity = 1,
-            //                    price = 0.75},
-            //              new { ingredientId = 4,
-            //                    quantity = 1,
-            //                    price = 0.25}
-            //          },
-            //    }
-            //};
 
             List<ShoppingCartVM> products = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(sandwichJson);
             
@@ -294,16 +245,19 @@ namespace PickAndGo.Repositories
             {
                 try
                 {
+                    CustomerRepository cr = new CustomerRepository(_db);
                     if (customerId == 0)
                     {
-
-                        CustomerRepository cr = new CustomerRepository(_db);
                         var customer = cr.ReturnCustomerByEmail(email);
                         if (customer == null)
                         {
                             var tuple3 = cr.CreateRecord(email, firstName, lastName, "");
                             message = tuple3.Item1;
                             customerId = tuple3.Item2;
+                        }
+                        else
+                        {
+                            message = cr.UpdateCustomerSignUpDate(customerId);
                         }
                     }
 
@@ -342,7 +296,6 @@ namespace PickAndGo.Repositories
                             }
                             if (message == "")
                             {
-                                CustomerRepository cr = new CustomerRepository(_db);
                                 message = cr.UpdateCustomerRecord(customerId);
                             }
                         }
