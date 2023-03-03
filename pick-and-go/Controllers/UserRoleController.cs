@@ -34,7 +34,7 @@ namespace PickAndGo.Controllers
 
         public async Task<IActionResult> Detail(string userName)
         {
-            UserRoleRepository urr = new UserRoleRepository(_serviceProvider);
+            UserRoleRepository urr = new UserRoleRepository(_serviceProvider, _aspContext);
             var roles = await urr.GetUserRoles(userName);
             ViewBag.UserName = userName;
             return View(roles);
@@ -70,11 +70,18 @@ namespace PickAndGo.Controllers
             ViewBag.UserSelectList = userSelectList;
             return View();
         }
+        public async  Task<IActionResult> Delete(string email, string roleName)
+        {
+            UserRoleRepository urr = new UserRoleRepository(_serviceProvider, _aspContext);
+            var result = await urr.RemoveUserRole(email, roleName);
+            return RedirectToAction("Index", "UserRole");
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(UserRoleVM userRoleVM)
         {
-            UserRoleRepository urr = new UserRoleRepository(_serviceProvider);
+            UserRoleRepository urr = new UserRoleRepository(_serviceProvider, _aspContext);
 
             if (ModelState.IsValid)
             {

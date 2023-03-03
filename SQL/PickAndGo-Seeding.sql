@@ -55,118 +55,118 @@ INSERT INTO Ingredient (description, price, categoryID, inStock)
                         VALUES('Ciabatta Bun', 0.50, 'Breads', 'Y');
 
 INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
-                         VALUES(2, '2022-11-15', 5.00, '2022-11-15 05:30:00 PM', 'C', 'CAD', 'Paypal', 'MPNU4QQ9N277425VE022403S', '2022-11-15 04:13:00 PM');
+                         VALUES(2, '2022-11-15', 12.50, '2022-11-15 05:30:00 PM', 'C', 'CAD', 'Paypal', 'MPNU4QQ9N277425VE022403S', '2022-11-15 04:13:00 PM');
 INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
-                         VALUES(1, '2022-12-02', 7.25, '2022-12-02 02:45:00 PM', 'O', 'CAD', 'Paypal', 'DSPU4YD8N357407VE036207P', '2022-12-02 01:09:00 PM');
+                         VALUES(1, '2022-12-02', 12.00, '2022-12-02 02:45:00 PM', 'O', 'CAD', 'Paypal', 'DSPU4YD8N357407VE036207P', '2022-12-02 01:09:00 PM');
 INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
-                         VALUES(2, '2022-12-04', 6.25, '2022-12-04 07:06:00 PM', 'O', 'CAD', 'Paypal', 'EJIO4FL9N248485FR092409W', '2022-12-04 06:32:00 PM');
+                         VALUES(2, '2022-12-04', 16.25, '2022-12-04 07:06:00 PM', 'O', 'CAD', 'Paypal', 'EJIO4FL9N248485FR092409W', '2022-12-04 06:32:00 PM');
 INSERT INTO OrderHeader (customerID, orderDate, orderValue, pickupTime, orderStatus, currency, paymentType, paymentID, paymentDate)
-                         VALUES(1, '2022-12-05', 8.50, '2022-12-05 10:15:00 PM', 'O', 'CAD', 'Paypal', 'SKYN7QRAJ290725QD65495T', '2022-12-05 08:09:00 PM');
+                         VALUES(1, '2022-12-05', 10.00, '2022-12-05 10:15:00 PM', 'O', 'CAD', 'Paypal', 'SKYN7QRAJ290725QD65495T', '2022-12-05 08:09:00 PM');
 
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(1, 3, 1, 'C');
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(1, 2, 1, 'C');
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(1, 3, 1, 'C', 3.00);
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(1, 2, 1, 'C', 2.00);
 
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(2, 3, 1, 'O');
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(2, 1, 1, 'O');
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(2, 3, 1, 'O', 1.00);
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(2, 1, 1, 'O', 3.00);
 
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(3, 2, 1, 'O');
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(3, 1, 1, 'O');
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(3, 2, 1, 'O', 2.00);
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(3, 1, 1, 'O', 3.00);
 
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(4, 3, 1, 'O');
-INSERT INTO OrderLine (orderID, productID, quantity, lineStatus)
-                       VALUES(4, 3, 1, 'O');
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(4, 3, 1, 'O', 1.00);
+INSERT INTO OrderLine (orderID, productID, quantity, lineStatus, price)
+                       VALUES(4, 3, 1, 'O', 1.00);
 
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 1, 12, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 1, 1, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 1, 2, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 1, 16, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 1, 12, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 1, 1, 1, 2.00);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 1, 2, 1, 0.50);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 1, 16, 1, 0.25);
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 2, 11, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 2, 14, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 2, 9, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 2, 8, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(1, 2, 17, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 2, 11, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 2, 14, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 2, 9, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 2, 8, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(1, 2, 17, 1, 2.00);
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 3, 11, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 3, 2, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 3, 6, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 3, 5, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 3, 11, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 3, 2, 1, 0.50);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 3, 6, 1, 2.00);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 3, 5, 1, 0.50);
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 4, 10, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 4, 17, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 4, 13, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 4, 16, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 4, 2, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(2, 4, 4, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 4, 10, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 4, 17, 1, 2.00);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 4, 13, 1, 0.50);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 4, 16, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 4, 2, 1, 0.50);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(2, 4, 4, 1, 0.25);
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 5, 12, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 5, 9, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 5, 1, 2);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 5, 8, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 5, 12, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 5, 9, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 5, 1, 2, 2.00);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 5, 8, 1, 0.25);
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 11, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 9, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 1, 2);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 8, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(3, 6, 14, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 6, 11, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 6, 9, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 6, 1, 2, 2.00);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 6, 8, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(3, 6, 14, 1, 0.75);
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 12, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 7, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 2, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 8, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 7, 3, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 7, 12, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 7, 7, 1, 2.50);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 7, 2, 1, 0.50);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 7, 8, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 7, 3, 1, 0.50);
 
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 10, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 8, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 6, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 15, 1);
-INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity)
-                            VALUES(4, 8, 4, 1);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 8, 10, 1, 0.75);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 8, 8, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 8, 6, 1, 2.00);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 8, 15, 1, 0.25);
+INSERT INTO LineIngredient (orderID, lineID, ingredientID, quantity, price)
+                            VALUES(4, 8, 4, 1, 0.25);
 
 
 							

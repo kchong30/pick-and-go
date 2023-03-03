@@ -21,23 +21,24 @@ namespace PickAndGo.Repositories
                          select new IngredientListVM
                          {
                              CategoryId = c.CategoryId,
-                             Ingredients = (List<IngredientVM>)(from i in _db.Ingredients
-                                                                where c.CategoryId == i.CategoryId
-                                                                orderby i.CategoryId
-                                                                let oCount = (from l in _db.LineIngredients
-                                                                                join ol in _db.OrderLines on l.LineId equals ol.LineId
-                                                                                where l.IngredientId == i.IngredientId &&
-                                                                                      ol.LineStatus == "O" select l).Count()
-                                                                select new IngredientVM
-                                                                {
-                                                                    CategoryId = c.CategoryId,
-                                                                    IngredientId = i.IngredientId,
-                                                                    Description = i.Description,
-                                                                    Price = i.Price,
-                                                                    InStock = i.InStock,
-                                                                    OutstandingOrders = (oCount > 0) ? true : false,
-                                                                    InStockIcon = (i.InStock == "Y") ? "check.svg" : "x.svg",
-                                                                }),
+                             Ingredients = (List<IngredientVM>)
+                                              (from i in _db.Ingredients
+                                               where c.CategoryId == i.CategoryId
+                                               orderby i.CategoryId
+                                               let oCount = (from l in _db.LineIngredients
+                                                             join ol in _db.OrderLines on l.LineId equals ol.LineId
+                                                             where l.IngredientId == i.IngredientId &&
+                                                                   ol.LineStatus == "O" select l).Count()
+                                                             select new IngredientVM
+                                                             {
+                                                                CategoryId = c.CategoryId,
+                                                                IngredientId = i.IngredientId,
+                                                                Description = i.Description,
+                                                                Price = i.Price,
+                                                                InStock = i.InStock,
+                                                                OutstandingOrders = (oCount > 0) ? true : false,
+                                                                InStockIcon = (i.InStock == "Y") ? "check.svg" : "x.svg",
+                                                             }),
                          };
 
             return vmList;
@@ -63,7 +64,7 @@ namespace PickAndGo.Repositories
         {
 
             var vm = ReturnAllIngredients().Where(c => c.IngredientId == ingredientId).FirstOrDefault();
-
+            vm.InStockIcon = (vm.InStock == "Y") ? "check.svg" : "x.svg";
             return vm;
         }
 
@@ -73,19 +74,54 @@ namespace PickAndGo.Repositories
             return ingredient;
         }
 
+        public IngredientVM BuildIngredientVM(int ingredientId)
+        {
+            var ingredient = GetIngredientRecord(ingredientId);
+            IngredientVM vm = new IngredientVM();
+            if (ingredientId == 0)
+            {
+                vm.Description = "";
+                vm.Price = 0;
+                vm.CategoryId = "";
+                vm.IngredientInStock = true;
+            }
+            else
+            {
+                vm.IngredientId = ingredient.IngredientId;
+                vm.Description = ingredient.Description;
+                vm.Price = ingredient.Price;
+                vm.CategoryId = ingredient.CategoryId;
+                vm.IngredientInStock = ingredient.InStock == "Y" ? true : false;
+            }
+            return vm;
+        }
+
         public string EditIngredient(IngredientVM ingredientVM)
         {
-            string message = "";
-            _db.Update(new Ingredient
+            string editMessage = "";
+
+            try
             {
-                IngredientId = ingredientVM.IngredientId,
-                Description = ingredientVM.Description,
-                Price = ingredientVM.Price,
-                CategoryId = ingredientVM.CategoryId,
-                InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
-            }); ;
-            _db.SaveChanges();
-            return message;
+                _db.Update(new Ingredient
+                {
+                    IngredientId = ingredientVM.IngredientId,
+                    Description = ingredientVM.Description,
+                    Price = ingredientVM.Price,
+                    CategoryId = ingredientVM.CategoryId,
+                    InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
+                }); ;
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                editMessage = e.Message;
+            }
+
+            if (editMessage == "")
+            {
+                editMessage = $"Success editing ingredient {ingredientVM.Description} in category {ingredientVM.CategoryId}";
+            }
+            return editMessage;
         }
 
         public string DeleteIngredient(int ingredientId, string category)
@@ -110,6 +146,32 @@ namespace PickAndGo.Repositories
                                 $"from category {category}.";
             }
             return deleteMessage;
+        }
+
+        public string CreateIngredient(IngredientVM ingredientVM)
+        {
+            string message = "";
+            try
+            {
+                _db.Ingredients.Add(new Ingredient
+                {
+                    Description = ingredientVM.Description,
+                    Price = ingredientVM.Price,
+                    CategoryId = ingredientVM.CategoryId,
+                    InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
+                });
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+            }
+            if (message == "")
+            {
+                message = $"** Ingredient {ingredientVM.Description} has been added " +
+                               $"to category {ingredientVM.CategoryId}.";
+            }
+            return message;
         }
     }
 }

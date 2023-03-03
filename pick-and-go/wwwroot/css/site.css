@@ -18,6 +18,10 @@ body {
     margin-bottom: 60px;
 }
 
+body .container {
+    padding:0;
+}
+
 /* General accordion styles */
 
 .accordion-button {
@@ -69,6 +73,10 @@ body {
     flex-direction: column;
     margin-left: 50px;
     margin-top: 10px;
+}
+
+.order-search input[type="text"] {
+    width: 150px;
 }
 
 .order-filter #orderfilter {
@@ -125,7 +133,43 @@ body {
     height: 40px;
     width: 100%;
 }
+<th class="col-1" >
 
 .radio-group input[type=radio] {
     transform: scale(1.8);
+}
+
+/* Order history styles */
+
+.no-padding {
+    padding: 0;
+}
+
+.cell-image {
+    width: 25px;
+}
+
+.cell-amount {
+    text-align: right;6
+}
+
+/* Favorites styles */
+
+.cell-image2 {
+    width: 20px;
+}
+
+.modal-a {
+    text-decoration: none;
+}
+
+/* Transactions styles */
+
+.date-filter {
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.date-filter input[type="date"] {
+    width: 125px;
 }

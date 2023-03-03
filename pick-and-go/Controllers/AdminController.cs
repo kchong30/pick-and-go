@@ -9,27 +9,28 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using NuGet.Protocol.Core.Types;
 using System.Security.Principal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PickAndGo.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
 
     public class AdminController : Controller
     {
         private readonly PickAndGoContext _db;
+        private readonly IConfiguration _configuration;
 
         public const string OUTSTANDING = "O";
         public const string COMPLETED = "C";
 
-        public AdminController(PickAndGoContext context)
+        public AdminController(PickAndGoContext context, IConfiguration configuration)
         {
             _db = context;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -54,60 +55,42 @@ namespace PickAndGo.Controllers
 
         public IActionResult IngredientsCreate()
         {
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            var vm = iR.BuildIngredientVM(0);
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
             return View();
         }
 
         [HttpPost]
-        public IActionResult IngredientsCreate(Ingredient ingredient)
+        public IActionResult IngredientsCreate(IngredientVM ingredient)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _db.Ingredients.Add(new Ingredient
-                    {
-                        Description = ingredient.Description,
-                        Price = ingredient.Price,
-                        CategoryId = ingredient.CategoryId,
-                        InStock = ingredient.InStock
-                    });
-                    _db.SaveChanges();
+            string addMessage = "";
 
-                    var addMessage = $"** Ingredient {ingredient.Description} has been added " +
-                                      $"to category {ingredient.CategoryId}.";
-
-                    return RedirectToAction("Ingredients", "Admin", new { message = addMessage });
-                }
-            }
-            catch
+            IngredientsRepository iR = new IngredientsRepository(_db);
+            if (ModelState.IsValid)
             {
-                return View();
+                addMessage = iR.CreateIngredient(ingredient);
             }
 
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
-            return View(ingredient);
+            return RedirectToAction("Ingredients", "Admin", new { message = addMessage });
+          
         }
 
-        public IActionResult IngredientsDetails(int id)
+        public IActionResult IngredientsDetails(int id, string message)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.ReturnIngredientById(id);
-            vm.InStockIcon = (vm.InStock == "Y") ? "check.svg" : "x.svg";
+
+            ViewData["Message"] = message;
+
             return View(vm);
         }
 
         public IActionResult IngredientsEdit(int id)
         {
             IngredientsRepository iR = new IngredientsRepository(_db);
-            var i = iR.GetIngredientRecord(id);
-
-            IngredientVM vm = new IngredientVM();
-            vm.IngredientId = i.IngredientId;
-            vm.Description = i.Description;
-            vm.Price = i.Price;
-            vm.CategoryId = i.CategoryId;
-            vm.IngredientInStock = i.InStock == "Y" ? true : false;
+            var vm = iR.BuildIngredientVM(id);
 
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
             return View(vm);
@@ -116,12 +99,16 @@ namespace PickAndGo.Controllers
         [HttpPost]
         public IActionResult IngredientsEdit(IngredientVM ingredientVM)
         {
+            string editMessage = "";
+
             IngredientsRepository iR = new IngredientsRepository(_db);
             if (ModelState.IsValid)
             {
-                iR.EditIngredient(ingredientVM);
+                editMessage = iR.EditIngredient(ingredientVM);
             }
-            return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredientVM.IngredientId });
+            return RedirectToAction("IngredientsDetails", "Admin", new { id = ingredientVM.IngredientId,
+                                                                         message = editMessage
+            });
         }
 
         public IActionResult IngredientsDelete(int id)
@@ -159,13 +146,40 @@ namespace PickAndGo.Controllers
             return View(vm);
         }
 
-        public IActionResult Overview()
+        public IActionResult Overview(string currentDate, string submitBtn)
         {
             OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
             OrderHeaderVM ohVM = new OrderHeaderVM();
 
-            ohVM.Outstanding = ohRepo.GetAll().Item1;
-            ohVM.Completed = ohRepo.GetAll().Item2;
+            if (currentDate == null)
+            {
+                currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else
+
+                switch (submitBtn)
+                {
+                    case ">":
+                        currentDate = Convert.ToDateTime(currentDate).AddDays(1).ToString("yyyy-MM-dd");
+                        break;
+                    case "<":
+                        currentDate = Convert.ToDateTime(currentDate).AddDays(-1).ToString("yyyy-MM-dd");
+                        break;
+                    default:
+                        currentDate = currentDate.ToString();
+                        break;
+                }
+
+            ViewBag.currentTime = DateTime.Now.ToString("h:mm:s tt");
+
+            ohVM.Date = currentDate;
+            var tuple = ohRepo.GetOverviewCounts(ohVM.Date);
+            ohVM.Outstanding = tuple.Item1;
+            ohVM.Completed = tuple.Item2;
+
+            var tuple2 = ohRepo.GetOverviewValues(ohVM.Date);
+            ohVM.OutstandingVal = tuple2.Item1;
+            ohVM.CompletedVal = tuple2.Item2;
 
             return View(ohVM);
         }
@@ -183,7 +197,7 @@ namespace PickAndGo.Controllers
             ViewData["CurrentNameSearch"] = "";
             ViewData["CurrentOrderSearch"] = "";
 
-            OrderRepository or = new OrderRepository(_db);
+            OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, "", "");
 
             ViewData["Message"] = message;
@@ -195,7 +209,7 @@ namespace PickAndGo.Controllers
         public IActionResult Orders(string searchName, string searchOrder, int orderId, int lineId,
                                     Boolean changeStatus)
         {
-            OrderRepository or = new OrderRepository(_db);
+            OrderRepository or = new OrderRepository(_db, _configuration);
 
             if (changeStatus)
             {
@@ -217,6 +231,43 @@ namespace PickAndGo.Controllers
             ViewData["CurrentOrderSearch"] = searchOrder;
 
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
+
+            return View(vm);
+        }
+
+        public IActionResult Transactions()
+        {
+            DateTime fromDate = new DateTime(2022, 1, 1); 
+            DateTime toDate = DateTime.Today;
+
+            ViewData["CurrentFromDate"] = fromDate;
+            ViewData["CurrentToDate"] = toDate;
+
+            OrderRepository or = new OrderRepository(_db, _configuration);
+            IQueryable<OrderTransactionVM> vm = or.BuildOrderTransactionVM("", "", fromDate, toDate);
+
+            ViewData["CurrentNameSearch"] = "";
+            ViewData["CurrentOrderSearch"] = "";
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Transactions(string searchName, string searchOrder,
+                                          string fromDate, string toDate)
+        {
+            OrderRepository or = new OrderRepository(_db, _configuration);
+
+            DateTime fromDateValue = string.IsNullOrEmpty(fromDate) ? new DateTime(2022, 1, 1) : DateTime.Parse(fromDate);
+            DateTime toDateValue = string.IsNullOrEmpty(toDate) ? DateTime.Today : DateTime.Parse(toDate);
+
+            ViewData["CurrentNameSearch"] = searchName;
+            ViewData["CurrentOrderSearch"] = searchOrder;
+            ViewData["CurrentFromDate"] = fromDateValue;
+            ViewData["CurrentToDate"] = toDateValue;
+
+            IQueryable<OrderTransactionVM> vm = or.BuildOrderTransactionVM(searchName, searchOrder,
+                                                                           fromDateValue, toDateValue);
 
             return View(vm);
         }

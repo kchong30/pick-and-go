@@ -4,7 +4,38 @@
 
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home-page-card-stack text-center d-flex flex-column w-100 h-100 align-items-stretch">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class= "create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+            <h1>Don't Have An Account?</h1>
+            <p>Sign up to easily re-order your favourites</p>
+            <a class="btn btn-dark" href="#" role="button">Create Account</a>
+        </div>
+        <div class="login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+            <h1>Have An Account?</h1>
+            <a class="btn btn-dark" href="#" role="button">Login</a>
+        </div>
+        <div class="guest-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+            <h1>Continue as Guest?</h1>
+            <p>We just need a name to take your order!</p>
+            @using (Html.BeginForm("Index", "Order", FormMethod.Post))
+            {
+                <label for="nameInput">Enter your name:</label>
+                <input type="text" id="nameInput" name="nameInput" />
+                <button type="submit">Submit</button>
+            }
+        </div>
+    }else{
+    <div class="create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+        <h1>Feeling Hungry?</h1>
+        <p>Let's Start An Order!</p>
+        <a class="btn btn-dark" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
+    </div>
+    <div class="login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+        <h1>Craving something familiar?</h1>
+        <p>Let's Check Out Your Favorite Hits!</p>
+        <a class="btn btn-dark" asp-controller="Order" asp-action="Favorites" role="button">My Favorites</a>
+    </div>
+    }
 </div>

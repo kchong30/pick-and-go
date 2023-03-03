@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PickAndGo.Data;
 using PickAndGo.Models;
 using PickAndGo.Repositories;
@@ -23,7 +24,7 @@ namespace PickAndGo.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         public IActionResult CustomerDetails()
         {
             CustomerRepository cR = new CustomerRepository(_db);

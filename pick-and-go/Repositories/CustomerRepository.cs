@@ -18,7 +18,7 @@ namespace PickAndGo.Repositories
         }
 
         //Note - Since we're only having 1 hard coded admin in the data base, new customers added will have property AdminUser set to N for NO.
-        public void CreateRecord(string email, string firstName, string lastName, string phoneNumber)
+        public Tuple<string, int> CreateRecord(string email, string firstName, string lastName, string phoneNumber)
         {
             Customer newCustomer = new Customer();
             newCustomer.EmailAddress = email;
@@ -26,9 +26,20 @@ namespace PickAndGo.Repositories
             newCustomer.LastName = lastName;
             newCustomer.PhoneNumber = phoneNumber;
             newCustomer.AdminUser = "N";
+            newCustomer.DateSignedUp = DateTime.Now;
 
-            _db.Add(newCustomer);
-            _db.SaveChanges();
+            string message = "";
+            try
+            {
+                _db.Add(newCustomer);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }
+
+            return new Tuple<string, int>(message, newCustomer.CustomerId);
         }
 
         public IEnumerable<CustomerVM> ReturnAllCustomers()
@@ -62,6 +73,7 @@ namespace PickAndGo.Repositories
             return customer;
         }
 
+
         public void EditCustomer(int id, EditCustomerVM customerVM)
         {
             CustomerRepository cR = new CustomerRepository(_db);
@@ -80,5 +92,32 @@ namespace PickAndGo.Repositories
             });
             _db.SaveChanges();
         }
+
+        public Customer GetCustomerRecord(int customerId)
+        {
+            var customer = _db.Customers.Where(c => c.CustomerId == customerId).FirstOrDefault();
+
+            return customer;
+        }
+
+        public string UpdateCustomerRecord(int customerId)
+        {
+            string editMessage = "";
+            Customer customer = GetCustomerRecord(customerId);
+            customer.DateLastOrdered = DateTime.Now;
+
+            try
+            {
+                _db.Customers.Update(customer);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                editMessage = ex.Message;
+            }
+
+            return editMessage;
+        }
+
     }
 }
