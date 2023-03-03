@@ -55,7 +55,9 @@ function setProductPrice(value) {
 function addToCart() {
     if (!validateForm()) {
         $(window).scrollTop(0);
+       // return false? 
     } else {
+        console.log("Does it how this line when validation failed?")
         // Get item from localStorage
         var cart = JSON.parse(localStorage.getItem("cart"));
 
@@ -68,6 +70,7 @@ function addToCart() {
 
         // Customized item array
         var ingredients = [];
+        var subTotal = 0; // product price me&steph
 
         $(".ingredientTable").each(function () {
             var quantity = $(this).find(".quantity").html();
@@ -78,26 +81,33 @@ function addToCart() {
                     quantity: quantity,
                     price: $(this).find(".price").html(),
                 };
+                subTotal = quantity * ingredient.price + subTotal;
                 ingredients.push(ingredient);
             }
         });
 
+        
         // Save item into localStorage
+        // me&steph?
+        var productId = 0;
+        var descriptiono = 0;
+
         var item = {
             productId: $("#product option:selected").val().split("-")[0],
             description: $("#product option:selected").val().split("-")[2],
             ingredients: ingredients,
-            subTotal: $("#total-price").html(),
+            subTotal: subTotal
         };
 
         cart.push(item);
         localStorage.setItem("cart", JSON.stringify(cart));
         $("#cart-icon").text(cart.length);
+        clearSelection();
     }
 }
 
 /* Clear Selection */
-function clearSelection(event) {
+function clearSelection() {
     // Uncheck radio button
     $("input:radio").each(function () {
         if ($(this).val() == "none") {
@@ -191,21 +201,29 @@ function updateTotalPrice(id, quantityValue) {
 }
 
 /* Checkout */
-function checkout() {
+function checkout(event) {
+
+    // if data is empty, add to cart, or do not add to cart
+
     var cart = localStorage.getItem("cart");
 
-    console.log("hi")
-    console.log(cart)
+    // 
+    // var shoppingCart = sessionStorage.getItem('cart');
+    var shoppingCart = cart;
     $.ajax({
-        type: 'POST',
-        url: '/Order/ShoppingCart',
-        data: { cart: cart },
-        success: function () {
-            console.log('Data sent to server successfully.');
+        type: "POST",
+        url: "/Order/StoreCart",
+        data: JSON.stringify({ CartJson: shoppingCart }),
+        contentType: "application/json",
+        success: function (response) {
+            window.location.href
+                = "/Order/ShoppingCart";
+        },
+        error: function (response) {
+            console.log(response);
         }
     });
 
-    $(location).prop('href', '/order/shoppingcart')
 }
 
 //function transferData() {
