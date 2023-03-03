@@ -27,7 +27,7 @@
         <option value="">-----Select sandwich size-----</option>
         @foreach (var product in Model.productVMs)
         {
-            <option value="@product.ProductId-@product.BasePrice" selected="@(ViewBag.ProductId==@product.ProductId ? "selected" : null)">@product.Description</option>
+            <option value="@product.ProductId-@product.BasePrice-@product.Description" selected="@(ViewBag.ProductId==@product.ProductId ? "selected" : null)">@product.Description</option>
         }
     </select>
     <!-- End of Select-->

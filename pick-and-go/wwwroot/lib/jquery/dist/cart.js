@@ -1,9 +1,11 @@
 ﻿/* Initial jQuery as Page Loaded */
-//(function ($) {
-//    $(document).ready(function () {
-//        setProduct();
-//    });
-//})(jQuery);
+(function ($) {
+    $(document).ready(function () {
+        var cart = JSON.parse(localStorage.getItem("cart"));
+        $("#cart-icon").text(cart.length);
+    });
+})(jQuery);
+
 
 /* Form Validation */
 function validateForm() {
@@ -19,10 +21,10 @@ function validateForm() {
 
     var length = $('#Breads form').length
     if (length == validation) {
-        console.log("Validatin failed")
+        console.log("Select Bread!")
         return false;
     } else if ($("#product option:selected").val() == "") {
-        console.log("Select sandwich")
+        console.log("Select Sandwich Size!")
         return false;
     } else {
         console.log("Validation okay!!")
@@ -83,6 +85,7 @@ function addToCart() {
         // Save item into localStorage
         var item = {
             productId: $("#product option:selected").val().split("-")[0],
+            description: $("#product option:selected").val().split("-")[2],
             ingredients: ingredients,
             subTotal: $("#total-price").html(),
         };
@@ -123,9 +126,8 @@ function clearSelection(event) {
 }
 
 /* Empty Cart */
-function emptyCart(event) {
+function emptyCart() {
     $("#cart-icon").text(0);
-
     localStorage.clear();
 }
 
@@ -208,9 +210,6 @@ function checkout() {
 
 //function transferData() {
 //    var cart = localStorage.getItem("cart");
-
-//    console.log("hi")
-//    console.log(cart)
 //    $.ajax({
 //        type: 'POST',
 //        url: '/Order/ShoppingCart',
