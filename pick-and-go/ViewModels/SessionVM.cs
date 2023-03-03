@@ -1,4 +1,4 @@
-﻿using DataAnnotationsExtensions;
+﻿
 
 namespace PickAndGo.ViewModels
 {
@@ -7,7 +7,7 @@ namespace PickAndGo.ViewModels
         public string? PickupTime { get; set; }
         public string? CartJson { get; set; }
         
-        [Email]
+  
         public string? Email { get; set; }
     }
 }

@@ -83,7 +83,7 @@ namespace PickAndGo.Controllers
             
             // string shoppingCart = HttpContext.Session.GetString("shoppingCart");
 
-            List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
+            List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(cart);
 
             // Check if the user is logged in or no
 
