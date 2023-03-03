@@ -8,6 +8,7 @@ using System;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
+using Newtonsoft.Json.Linq;
 
 namespace PickAndGo.Controllers
 {
@@ -36,6 +37,8 @@ namespace PickAndGo.Controllers
                 var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
                 ViewBag.NameInput = customer.FirstName;
             }
+            // set sessionstring for ordering part
+            HttpContext.Session.SetString("firstName", nameInput);
 
             ProductRepository pr = new ProductRepository(_db);
             var vm = pr.GetProducts();
@@ -98,6 +101,7 @@ namespace PickAndGo.Controllers
                 HttpContext.Session.SetString("firstName", customer.FirstName);
                 HttpContext.Session.SetString("lastName", customer.LastName);
                 HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+
                 //}
             }
             return View(items);
@@ -131,24 +135,27 @@ namespace PickAndGo.Controllers
         public JsonResult PaySuccess([FromBody] IPN iPN)
         {
             // Retrieve the session string value
-            string pickupTime = HttpContext.Session.GetString("pickupTime");
+            string pickupTimeString = HttpContext.Session.GetString("pickupTime");
             // Convert the string to a DateTime object
-            DateTime dateTimeValue = DateTime.Parse(pickupTime);
-
-            // sandwich data
+            DateTime pickupTime = DateTime.Parse(pickupTimeString);
+          
             string sandwichJson = HttpContext.Session.GetString("shoppingCart");
 
             //// Pass it to VM for View?
             //List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
-
-            string customerId = HttpContext.Session.GetString("customerId");
+            int customerId = HttpContext.Session.GetInt32("customerId") ?? 0;
             string firstName = HttpContext.Session.GetString("firstName");
             string lastName = HttpContext.Session.GetString("lastName");
-            string email = iPN.email;
+            string email = iPN.email; // this is from the user input not from paypal data
 
             OrderRepository oR = new OrderRepository(_db, _configuration);
 
-            //oR.CreateOrderHeader(Convert.ToInt32(customerId), firstName, lastName, dataTimeValue, iPN.paymentID, iPN.amount,sandwichJson,email);
+            decimal orderTotal = decimal.Parse(iPN.amount);
+            if (User.Identity.Name != null)
+            {
+                email = User.Identity.Name;
+            }
+                oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID, orderTotal,sandwichJson,email);
 
             // create order header, line... etc...
 
@@ -163,8 +170,6 @@ namespace PickAndGo.Controllers
             // place holder code
             var record =
             _db.OrderHeaders.Where(t => t.PaymentId == confirmationId).FirstOrDefault();
-
-
             return View("Confirmation", record);
         }
 
