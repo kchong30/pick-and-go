@@ -242,25 +242,5 @@ namespace PickAndGo.Controllers
                 message = message
             });
         }
-
-        [HttpPost]
-        public IActionResult AddFavoriteToOrder(int custId, int orderId, int lineId)
-        {
-            var message = "";
-
-            // create session object for this product and add to cart object,
-            // redirect to shopping cart page?
-
-
-            //
-            // testing purposes only
-            //
-
-            return RedirectToAction("Favorites", "Order", new
-            {
-                customerId = custId,
-                message = message
-            });
-        }
     }
 }

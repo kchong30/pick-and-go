@@ -17,6 +17,7 @@ namespace PickAndGo.ViewModels
         public string Description { get; set; }
         public string FavoriteName { get; set; }
         public int? Quantity { get; set; }
+        public decimal? CurrentPrice { get; set; }
         public decimal? Price { get; set; }
         public decimal LineValue { get; set; }
         public List<OrderIngredientVM> Ingredients { get; set; }
