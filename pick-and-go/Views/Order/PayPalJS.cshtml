@@ -1,7 +1,7 @@
 ﻿
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
-<script>
+@*<script>
     const dropdown = document.getElementById('pickupTime');
 
     function handleDropdownChange() {
@@ -15,8 +15,7 @@
     // Set the pickupTime session storage variable to the initial value
     const initialPickupTime = dropdown.value;
     sessionStorage.setItem('pickupTime', initialPickupTime);
-</script>
-
+</script>*@
 <script>
     paypal.Button.render({
         env: 'sandbox', // Or ' production '
@@ -34,12 +33,12 @@
         commit: true, // Show a 'Pay Now' button
 
         payment: function (data, actions) {
-            var pickupTime = sessionStorage.getItem('pickupTime');
+            //var pickupTime = sessionStorage.getItem('pickupTime');
 
             $.ajax({
                 type: "POST",
                 url: "/Order/StoreCart",
-                data: JSON.stringify({ PickupTime: pickupTime }),
+                data: JSON.stringify({ PickupTime: $('#pickupTime').val(), Email: $('#email').val() }),
                 contentType: "application/json",
                 success: function (response) {
                     console.log(response);
@@ -49,7 +48,6 @@
                 }
             });
 
-            
             return actions.payment.create({
                 payment: {
                     transactions: [{
@@ -85,6 +83,9 @@
                 console.log(payment);
                 //alert("This JSON is from Paypal: " + JSON.stringify(payment));
                 console.log("-------------------------------------")
+
+                var email = $('#email').val();
+
                 var dataObject = {
                     "cart": payment.cart,
                     "intent": payment.intent,
@@ -101,7 +102,8 @@
                     "payerStatus": payment.payer.status,
                     "amount": payment.transactions[0].amount.total,
                     "currency": payment.transactions[0].amount.currency,
-                    "custom": payment.transactions[0].custom
+                    "custom": payment.transactions[0].custom,
+                    "email" : email
                 }
 
                 // The payment is complete!
