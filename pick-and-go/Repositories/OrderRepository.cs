@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PickAndGo.Models;
 using PickAndGo.ViewModels;
 using System.Data;
@@ -83,7 +84,7 @@ namespace PickAndGo.Repositories
                          join o in _db.OrderHeaders on l.OrderId equals o.OrderId
                          join c in _db.Customers on o.CustomerId equals c.CustomerId
                          join p in _db.Products on l.ProductId equals p.ProductId
-                         where (c.CustomerId.Equals(customerId))
+                         where (c.CustomerId.Equals(customerId) && o.OrderDate >= c.DateSignedUp)
                          orderby o.OrderDate descending
                          let iSum = (from li in _db.LineIngredients
                                      where o.OrderId == li.OrderId && l.LineId == li.LineId
@@ -233,75 +234,36 @@ namespace PickAndGo.Repositories
             connection.Close();
         }
 
-        public string CreateOrder()
+        public string CreateOrder(int customerId, string firstName, string lastName, DateTime pickupTime, string paymentId, decimal orderTotal, string sandwichJson, string email)
         {
             string message = "";
-//
-// This is test data for testing the order create code
-// Once the interface with shopping cart is complete, it can be removed and a session
-// object containing the shopping cart details will be used instead 
-//
-            decimal orderTotal = 12.00m;
-            int customerId = 0;
-            string email = "johnsmith@gmail.com";
-            string firstName = "John";
-            string lastName = "Smith";
-            DateTime pickupTime = DateTime.Now.AddHours(4);
-            string paymentId = "KO87HYP5O623709LF535528P";
+
+            List<ShoppingCartVM> products = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(sandwichJson);
             
-            var products = new[] {
-                new { productId = 2,
-                      price = 2.00,
-                      ingredients = new[] {
-                          new { ingredientId = 18,
-                                quantity = 1,
-                                price = 0.50},
-                          new { ingredientId = 1,
-                                quantity = 2,
-                                price = 2.00},
-                          new { ingredientId = 16,
-                                quantity = 1,
-                                price = 0.25},
-                          new { ingredientId = 2,
-                                quantity = 1,
-                                price = 0.50}
-                      },
-                },
-                new { productId = 3,
-                      price = 1.00,
-                      ingredients = new[] {
-                          new { ingredientId = 12,
-                                quantity = 1,
-                                price = 0.75},
-                          new { ingredientId = 17,
-                                quantity = 1,
-                                price = 2.00},
-                          new { ingredientId = 14,
-                                quantity = 1,
-                                price = 0.75},
-                          new { ingredientId = 4,
-                                quantity = 1,
-                                price = 0.25}
-                      },
-                }
-            };
 
             using (var transaction = _db.Database.BeginTransaction())
             {
                 try
                 {
+                    CustomerRepository cr = new CustomerRepository(_db);
                     if (customerId == 0)
                     {
-                        CustomerRepository cr = new CustomerRepository(_db);
-                        var tuple3 = cr.CreateRecord(email, firstName, lastName, "");
-
-                        message = tuple3.Item1;
-                        customerId = tuple3.Item2;
+                        var customer = cr.ReturnCustomerByEmail(email);
+                        if (customer == null)
+                        {
+                            var tuple3 = cr.CreateRecord(email, firstName, lastName, "");
+                            message = tuple3.Item1;
+                            customerId = tuple3.Item2;
+                        }
+                        else
+                        {
+                            message = cr.UpdateCustomerSignUpDate(customerId);
+                        }
                     }
 
                     if (message == "")
                     {
-                        var tuple = CreateOrderHeader(customerId, orderTotal, pickupTime, paymentId);
+                        var tuple = CreateOrderHeader(customerId, firstName, orderTotal, pickupTime, paymentId);
 
                         message = tuple.Item1;
                         var orderId = tuple.Item2;
@@ -310,7 +272,7 @@ namespace PickAndGo.Repositories
                         {
                             foreach (var product in products)
                             {
-                                var tuple2 = CreateOrderLine(orderId, product.productId);
+                                var tuple2 = CreateOrderLine(orderId, Convert.ToInt32(product.productId));
 
                                 message = tuple2.Item1;
                                 var lineId = tuple2.Item2;
@@ -320,7 +282,7 @@ namespace PickAndGo.Repositories
                                     foreach (var ingredient in product.ingredients)
                                     {
                                         message = CreateLineIngredient(orderId, lineId, ingredient.ingredientId,
-                                                                       ingredient.quantity);
+                                                                       Convert.ToInt32(ingredient.quantity));
                                         if (message != "")
                                         {
                                             break;
@@ -334,7 +296,6 @@ namespace PickAndGo.Repositories
                             }
                             if (message == "")
                             {
-                                CustomerRepository cr = new CustomerRepository(_db);
                                 message = cr.UpdateCustomerRecord(customerId);
                             }
                         }
@@ -352,7 +313,7 @@ namespace PickAndGo.Repositories
             return message;
         }
 
-        public Tuple<string, int> CreateOrderHeader(int customerId, decimal orderTotal, DateTime pickupTime,
+        public Tuple<string, int> CreateOrderHeader(int customerId, string? firstName, decimal orderTotal, DateTime pickupTime,
                                                     string paymentId)
         {
             string message = "";

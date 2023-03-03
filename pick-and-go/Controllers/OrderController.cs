@@ -8,6 +8,7 @@ using System;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
+using Newtonsoft.Json.Linq;
 
 namespace PickAndGo.Controllers
 {
@@ -29,13 +30,16 @@ namespace PickAndGo.Controllers
             if (!User.Identity.IsAuthenticated)
             {
                 ViewBag.NameInput = nameInput;
-            } 
+                HttpContext.Session.SetString("firstName", nameInput);
+            }
             else
             {
                 CustomerRepository cr = new CustomerRepository(_db);
                 var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
                 ViewBag.NameInput = customer.FirstName;
+                HttpContext.Session.SetString("firstName", customer.FirstName);
             }
+  
 
             ProductRepository pr = new ProductRepository(_db);
             var vm = pr.GetProducts();
@@ -60,12 +64,14 @@ namespace PickAndGo.Controllers
             return View(ocVm);
         }
 
-        public IActionResult History(int customerId, string message)
+        public IActionResult History(string message)
         {
             if (message == null)
             {
                 message = "";
             }
+
+            int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
 
             OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
@@ -98,6 +104,7 @@ namespace PickAndGo.Controllers
                 HttpContext.Session.SetString("firstName", customer.FirstName);
                 HttpContext.Session.SetString("lastName", customer.LastName);
                 HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+
                 //}
             }
             return View(items);
@@ -131,24 +138,27 @@ namespace PickAndGo.Controllers
         public JsonResult PaySuccess([FromBody] IPN iPN)
         {
             // Retrieve the session string value
-            string pickupTime = HttpContext.Session.GetString("pickupTime");
+            string pickupTimeString = HttpContext.Session.GetString("pickupTime");
             // Convert the string to a DateTime object
-            DateTime dateTimeValue = DateTime.Parse(pickupTime);
-
-            // sandwich data
+            DateTime pickupTime = DateTime.Parse(pickupTimeString);
+          
             string sandwichJson = HttpContext.Session.GetString("shoppingCart");
 
             //// Pass it to VM for View?
             //List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
-
-            string customerId = HttpContext.Session.GetString("customerId");
+            int customerId = HttpContext.Session.GetInt32("customerId") ?? 0;
             string firstName = HttpContext.Session.GetString("firstName");
             string lastName = HttpContext.Session.GetString("lastName");
-            string email = iPN.email;
+            string email = iPN.email; // this is from the user input not from paypal data
 
             OrderRepository oR = new OrderRepository(_db, _configuration);
 
-            //oR.CreateOrderHeader(Convert.ToInt32(customerId), firstName, lastName, dataTimeValue, iPN.paymentID, iPN.amount,sandwichJson,email);
+            decimal orderTotal = decimal.Parse(iPN.amount);
+            if (User.Identity.Name != null)
+            {
+                email = User.Identity.Name;
+            }
+                oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID, orderTotal,sandwichJson,email);
 
             // create order header, line... etc...
 
@@ -163,17 +173,17 @@ namespace PickAndGo.Controllers
             // place holder code
             var record =
             _db.OrderHeaders.Where(t => t.PaymentId == confirmationId).FirstOrDefault();
-
-
             return View("Confirmation", record);
         }
 
-        public IActionResult Favorites(int customerId, string message)
+        public IActionResult Favorites(string message)
         {
             if (message == null)
             {
                 message = "";
             }
+
+            int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
 
             FavoritesRepository fr = new FavoritesRepository(_db);
             IQueryable<FavoritesVM> vm = fr.BuildFavoritesVM(customerId);
@@ -225,26 +235,6 @@ namespace PickAndGo.Controllers
             FavoritesRepository fr = new FavoritesRepository(_db);
 
             message = fr.ChangeFavoritesRecord(custId, orderId, lineId, favoriteName);
-
-            return RedirectToAction("Favorites", "Order", new
-            {
-                customerId = custId,
-                message = message
-            });
-        }
-
-        [HttpPost]
-        public IActionResult AddFavoriteToOrder(int custId, int orderId, int lineId)
-        {
-            var message = "";
-
-            // create session object for this product and add to cart object,
-            // redirect to shopping cart page?
-
-
-            //
-            // testing purposes only
-            //
 
             return RedirectToAction("Favorites", "Order", new
             {

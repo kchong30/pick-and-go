@@ -122,20 +122,15 @@
 
                     </th>
                     <th class="col-2" colspan="2">Name: @favorite.FavoriteName</th>
-                    <th class="col-4">
-                        <form asp-action="AddFavoriteToOrder" asp-route-custId="@favorite.CustomerId" asp-route-orderId="@favorite.OrderId" asp-route-lineId="@favorite.LineId">
-                            <div class="form-group">
-                                <input type="submit" value="Add to Order" class="btn btn-primary btn-sm" />
-                            </div>
-                        </form>
+                    <th class="col-4 add-button">
+                        <button class="btn btn-primary btn-sm" onclick="addToCart()" value=@favorite.ProductId-@favorite.Description-@favorite.CurrentPrice>Add to Order</button>
                     </th>
                 </tr>
             </thead>
- 
+
             <tbody class="accordion" id="PickAndGoAccordion">
 
                 <tr class-"no-padding">
-                    
                     <td class="col-2"></td>
                     <td class="col-6">@favorite.Description</td>
                     <td class="col-3"></td>
@@ -153,15 +148,19 @@
                             <tr>
                                 <td class="col-2"></td>
                                 <td class="col-6">Base sandwich price</td>
-                                <td class="col-2 cell-amount">@String.Format("${0:0.00}", favorite.Price)</td>
+                                <td class="col-2 cell-amount">@String.Format("${0:0.00}", favorite.CurrentPrice)</td>
                                 <td class="col-2"></td>
                             </tr>
 
                             @foreach (var line in favorite.Ingredients)
                             {
-                                <tr>
+                                <tr class="ingredientTable">
+                                    <td class="ingredientId" hidden>@line.IngredientId</td>
+                                    <td class="quantity" hidden>@line.Quantity</td>
+                                    <td class="price" hidden>@line.CurrentPrice</td>
+
                                     <td class="col-2"></td>
-                                    <td class="col-6">@line.IngDescription</td>
+                                    <td class="col-6 description">@line.IngDescription</td>
                                     <td class="col-2 cell-amount">@String.Format("${0:0.00}", line.IngValue)</td>
                                     <td class="col-2"></td>
                                 </tr>
@@ -176,5 +175,8 @@
         }
     </table>
 </div>  <!--class="container"-->
+<div class="message" id="message"></div>
 @ViewBag.Message
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js%22%3E</script>
+<script src="~/lib/jquery/dist/cart.js"></script>
 

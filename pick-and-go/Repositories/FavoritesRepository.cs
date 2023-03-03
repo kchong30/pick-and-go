@@ -41,6 +41,7 @@ namespace PickAndGo.Repositories
                              FavoriteName = f.FavoriteName,
                              Quantity = l.Quantity,
                              Price = l.Price,
+                             CurrentPrice = p.BasePrice,
                              LineValue = (decimal)(l.Price + iSum),
                              Ingredients = (List<OrderIngredientVM>)
                                               (from li in _db.LineIngredients
@@ -53,6 +54,7 @@ namespace PickAndGo.Repositories
                                                    IngDescription = i.Description,
                                                    Quantity = li.Quantity,
                                                    Price = li.Price,
+                                                   CurrentPrice = i.Price,
                                                    IngValue = (decimal)(li.Quantity * li.Price)
                                                }),
                          };

@@ -119,5 +119,24 @@ namespace PickAndGo.Repositories
             return editMessage;
         }
 
+        public string UpdateCustomerSignUpDate(int customerId)
+        {
+            string editMessage = "";
+            Customer customer = GetCustomerRecord(customerId);
+            customer.DateSignedUp = DateTime.Now;
+
+            try
+            {
+                _db.Customers.Update(customer);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                editMessage = ex.Message;
+            }
+
+            return editMessage;
+        }
+
     }
 }

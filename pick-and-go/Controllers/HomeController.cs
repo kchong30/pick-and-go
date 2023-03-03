@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PickAndGo.Data;
 using PickAndGo.Models;
+using PickAndGo.Repositories;
 using System.Diagnostics;
 
 namespace PickAndGo.Controllers
@@ -18,6 +19,12 @@ namespace PickAndGo.Controllers
 
         public IActionResult Index()
         {
+            CustomerRepository cr = new CustomerRepository(_db);
+            if (User.Identity.IsAuthenticated) { 
+                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                var customerId = customer.CustomerId.ToString();
+                HttpContext.Session.SetString("customerid", customerId);
+            }
             return View();
         }
 

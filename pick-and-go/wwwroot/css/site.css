@@ -163,6 +163,10 @@ body .container {
     text-decoration: none;
 }
 
+.add-button {
+    min-width: 150px;
+}
+
 /* Transactions styles */
 
 .date-filter {
