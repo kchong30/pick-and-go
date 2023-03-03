@@ -30,15 +30,16 @@ namespace PickAndGo.Controllers
             if (!User.Identity.IsAuthenticated)
             {
                 ViewBag.NameInput = nameInput;
-            } 
+                HttpContext.Session.SetString("firstName", nameInput);
+            }
             else
             {
                 CustomerRepository cr = new CustomerRepository(_db);
                 var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
                 ViewBag.NameInput = customer.FirstName;
+                HttpContext.Session.SetString("firstName", customer.FirstName);
             }
-            // set sessionstring for ordering part
-            HttpContext.Session.SetString("firstName", nameInput);
+  
 
             ProductRepository pr = new ProductRepository(_db);
             var vm = pr.GetProducts();
