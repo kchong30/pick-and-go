@@ -324,22 +324,28 @@
     }
 
     /* Checkout */
-    function checkout() {
+    function checkOut(event) {
+
         // if data is empty, add to cart, or do not add to cart
         //addToCart()
         var cart = localStorage.getItem("cart");
 
-        console.log("hi")
-        console.log(cart)
-        $.ajax({
-            type: 'POST',
-            url: '/Order/ShoppingCart',
-            data: { cart: cart },
-            success: function () {
-                console.log('Data sent to server successfully.');
+        // 
+                var shoppingCart = sessionStorage.getItem('cart');
+                $.ajax({
+                    type: "POST",
+                    url: "/Order/StoreCart",
+                    data: JSON.stringify({ CartJson: shoppingCart }),
+                    contentType: "application/json",
+                    success: function (response) {
+                        window.location.href
+                            = "/Order/ShoppingCart";
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
             }
-        });
-
         $(location).prop('href', '/order/shoppingcart')
     }
 
