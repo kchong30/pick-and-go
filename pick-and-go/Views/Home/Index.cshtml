@@ -9,7 +9,7 @@
     {
         <div class= "create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
             <h1>Don't Have An Account?</h1>
-            <p>Join to help you remember your favourites</p>
+            <p>Sign up to easily re-order your favourites</p>
             <a class="btn btn-dark" href="#" role="button">Create Account</a>
         </div>
         <div class="login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
@@ -17,8 +17,8 @@
             <a class="btn btn-dark" href="#" role="button">Login</a>
         </div>
         <div class="guest-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
-            <h1>Did You Want To Proceed as Guest?</h1>
-            <p>Just need a name to take the order!</p>
+            <h1>Continue as Guest?</h1>
+            <p>We just need a name to take your order!</p>
             @using (Html.BeginForm("Index", "Order", FormMethod.Post))
             {
                 <label for="nameInput">Enter your name:</label>
@@ -29,12 +29,12 @@
     }else{
     <div class="create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
         <h1>Feeling Hungry?</h1>
-        <p>Lets Start An Order!</p>
+        <p>Let's Start An Order!</p>
         <a class="btn btn-dark" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
     </div>
     <div class="login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
         <h1>Craving something familiar?</h1>
-        <p>Lets Check Out Your Favorite Hits!</p>
+        <p>Let's Check Out Your Favorite Hits!</p>
         <a class="btn btn-dark" asp-controller="Order" asp-action="Favorites" role="button">My Favorites</a>
     </div>
     }
