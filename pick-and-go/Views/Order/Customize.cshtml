@@ -22,12 +22,12 @@
 
 <div class="container">
     <!-- Product Select :: Add Sessions Here -->
-    <!-- !! Receive select data from sessionStorage(session)-->
+    <!-- !! Receive select data from localStorage(session)-->
     <select onchange="changeProduct(event)" id="product">
         <option value="">-----Select sandwich size-----</option>
         @foreach (var product in Model.productVMs)
         {
-            <option value="@product.ProductId-@product.BasePrice">@product.Description</option>
+            <option value="@product.ProductId-@product.BasePrice" selected="@(ViewBag.ProductId==@product.ProductId ? "selected" : null)">@product.Description</option>
         }
     </select>
     <!-- End of Select-->
@@ -46,39 +46,49 @@
                 <div id="@cat.CategoryId" class="accordion-collapse collapse border border-danger" aria-labelledby="@cat.CategoryId">
                     <div class="accordion-body">
                         <!-- Ingredients Table -->
-                        <table class="accordion-table container border border-danger">
-                            <tr class="border border-danger">
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>None - Reg - Extra</th>
-                                <th> </th>
-                            </tr>
+                        <table class="accordion-table container border border-danger d-flex">
+                            <tbody class="d-flex flex-column w-100">
+                                <tr class="border border-danger d-flex w-100  justify-content-between">
+                                    <th class="w-25 ps-2">Description</th>
+                                    <th class="w-25">Price</th>
+                                    <th class="w-25 ps-3">Quantity</th>
+                                    <th> </th>
+                                </tr>
                             @foreach (var ing in cat.Ingredients)
                             {
                                 @* Ingredient not displayed when out of stock *@
                                 if (ing.InStock == "Y")
                                 {
                                     <!-- Radio button for the breads, Everything else should be regular/extar btn with check box (radio as well)-->
-                                    <tr id="@ing.IngredientId-table" class="ingredientTable">
-                                        <td class="ingredientId" hidden>@ing.IngredientId</td>
-                                        <td class="description">@ing.Description</td>
-                                        <td id="@ing.IngredientId-price" class="price">@ing.Price</td>
-                                        <td>
+                                        <tr id="@ing.IngredientId-table" class="ingredientTable d-flex w-100 justify-content-between my-3">
+                                        <td class="ingredientId w-25" hidden>@ing.IngredientId</td>
+                                        <td class="description w-25 ps-2">@ing.Description</td>
+                                        <td id="@ing.IngredientId-price" class="price w-25 ps-3">@ing.Price</td>
+                                        <td class="w-25 d-flex align-content-center">
                                             @*      <button id="@ing.IngredientId-add" onclick="updateShoppingCart(event)">+</button>
                                 <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>*@
 
-                                            <form onchange="changeQuantity(event)">
-                                                <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
-                                                <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
-                                                <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
+                                            <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
+                                                <div class="d-flex flex-column m-1">
+                                                    <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
+                                                    <label for="@ing.IngredientId-none" class="me-1">None</label>
+                                                </div>
+                                                <div class="d-flex flex-column m-1">
+                                                    <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
+                                                    <label for="@ing.IngredientId-reg" class="me-1">Reg</label>
+                                                </div>
+                                                <div class="d-flex flex-column m-1">
+                                                    <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
+                                                    <label for="@ing.IngredientId-extra" class="me-1">Extra</label>
+                                                </div>
                                             </form>
-
                                         </td>
-                                        <td id="@ing.IngredientId-quantity" class="quantity" hidden>0</td>
-                                        <td id="@ing.IngredientId-amount" class="amount">0</td>
+                                        <td id="@ing.IngredientId-quantity" class="quantity w-25" hidden>0</td>
+                                            <td id="@ing.IngredientId-amount " class="amount pe-2">0.00</td>
                                     </tr>
                                 }
                             }
+                            </tbody>
                         </table>
                         <!-- End of Ingredients table-->
                     </div>
@@ -92,11 +102,11 @@
 <hr />
 <span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
 <span>Total : $</span> <span id="total-price">0</span> <!-- Add Sandwich price by default, changes with selection change-->
-<button onclick="addToCart()">Add to Cart</button> <!-- Trigger to save in sessionStorage-->
+<button onclick="addToCart()">Add to Cart</button> <!-- Trigger to save in localStorage-->
 <!-- !! Reset radio button (select all to none)-->
 <button id="clear-selection" onclick="clearSelection(event)">Clear Selection</button>
 <button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
-<button id="checkout">Proceed to Checkout</button>
+<button id="checkout" onclick="checkout()">Proceed to Checkout</button>
 <button onclick="validateForm()">Form Validation</button>
 <!-- Cart jQuery Script-->
 
@@ -137,7 +147,7 @@
 
     /* Get Product ID from Session and Set Product in Select option */
     function setProduct() {
-        const cart = JSON.parse(sessionStorage.getItem("currentCart"));
+        const cart = JSON.parse(localStorage.getItem("currentCart"));
 
         if (cart) {
             $("#product option").each(function () {
@@ -145,7 +155,7 @@
                     $(this).attr("selected", "true");
                 }
             });
-            sessionStorage.removeItem("currentCart");
+            localStorage.removeItem("currentCart");
         }
 
         var value = $("#product option:selected").val();
@@ -176,8 +186,8 @@
         if (!validateForm()) {
             $(window).scrollTop(0);
         } else {
-            // Get item from sessionStorage
-            var cart = JSON.parse(sessionStorage.getItem("cart"));
+            // Get item from localStorage
+            var cart = JSON.parse(localStorage.getItem("cart"));
 
             if (cart == null) {
                 cart = [];
@@ -202,7 +212,7 @@
                 }
             });
 
-            // Save item into sessionStorage
+            // Save item into localStorage
             var item = {
                 productId: $("#product option:selected").val().split("-")[0],
                 ingredients: ingredients,
@@ -210,8 +220,10 @@
             };
 
             cart.push(item);
-            sessionStorage.setItem("cart", JSON.stringify(cart));
+            localStorage.setItem("cart", JSON.stringify(cart));
             $("#cart-icon").text(cart.length);
+
+            transferData();
         }
     }
 
@@ -248,7 +260,7 @@
     function emptyCart(event) {
         $("#cart-icon").text(0);
 
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     /* Update Quantity from Selection Menu */
@@ -311,10 +323,38 @@
 
     /* Checkout */
     function checkout() {
-        if (!validateForm()) {
-            $(window).scrollTop(0);
-        }
-        // ajax : parse data
+        // if data is empty, add to cart, or do not add to cart
+        //addToCart()
+        var cart = localStorage.getItem("cart");
+
+        console.log("hi")
+        console.log(cart)
+        $.ajax({
+            type: 'POST',
+            url: '/Order/ShoppingCart',
+            data: { cart: cart },
+            success: function () {
+                console.log('Data sent to server successfully.');
+            }
+        });
+
+        $(location).prop('href', '/order/shoppingcart')
     }
+
+    function transferData() {
+        var cart = localStorage.getItem("cart");
+
+        console.log("hi")
+        console.log(cart)
+        $.ajax({
+            type: 'POST',
+            url: '/Order/ShoppingCart',
+            data: { cart: cart },
+            success: function () {
+                console.log('Data sent to server successfully.');
+            }
+        });
+    }
+
 </script>
 <!-- End of Script-->
