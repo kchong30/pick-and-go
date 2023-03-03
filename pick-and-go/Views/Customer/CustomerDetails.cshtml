@@ -31,7 +31,10 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.CustomerId">Edit</a> |
+
+    <a asp-action="CustomerEdit" asp-route-id="@Model?.CustomerId">Edit</a> |
     <a asp-controller="Order" asp-action="History" asp-route-customerId="@Model?.CustomerId">Order History</a> |
+    <a asp-controller="Order" asp-action="Favorites" asp-route-customerId="@Model?.CustomerId">Favouites</a> |
     <a asp-controller= "Home" asp-action="Index">Back Home</a>
+
 </div>

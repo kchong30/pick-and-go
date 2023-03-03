@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using PickAndGo.Data;
 using PickAndGo.Repositories;
 using PickAndGo.Models;
+using static PickAndGo.Services.ReCAPTCHA;
 
 namespace PickAndGo.Areas.Identity.Pages.Account
 {
@@ -32,6 +33,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IConfiguration _configuration;
         private readonly PickAndGoContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
 
@@ -42,6 +44,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
+            IConfiguration configuration,
             PickAndGoContext context,
             RoleManager<IdentityRole> roleManager)
         {
@@ -51,6 +54,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _configuration = configuration;
             _db = context;
             _roleManager = roleManager;
         }
@@ -130,6 +134,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -138,6 +143,19 @@ namespace PickAndGo.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            string captchaResponse = Request.Form["g-Recaptcha-Response"];
+            string secret = _configuration["Recaptcha:SecretKey"];
+            ReCaptchaValidationResult resultCaptcha =
+                ReCaptchaValidator.IsValid(secret, captchaResponse);
+
+            // Invalidate the form if the captcha is invalid.
+            if (!resultCaptcha.Success)
+            {
+                ModelState.AddModelError(string.Empty,
+                    "The ReCaptcha is invalid.");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
