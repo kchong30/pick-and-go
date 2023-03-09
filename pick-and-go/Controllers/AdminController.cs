@@ -142,8 +142,6 @@ namespace PickAndGo.Controllers
         {
             CustomerRepository cR = new CustomerRepository(_db);
             var vm = cR.ReturnCustomerById(customerId);
-            vm.SignedUp = vm.DateSignedUp?.ToString("MM/dd/yyyy");
-            vm.LastOrdered = vm.DateLastOrdered?.ToString("MM/dd/yyyy");
 
             return View(vm);
         }

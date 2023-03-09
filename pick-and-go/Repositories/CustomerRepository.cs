@@ -64,6 +64,8 @@ namespace PickAndGo.Repositories
         public CustomerVM ReturnCustomerById(int customerId)
         {
             var vm = ReturnAllCustomers().Where(c => c.CustomerId == customerId).FirstOrDefault();
+            vm.SignedUp = vm.DateSignedUp?.ToString("MM/dd/yyyy");
+            vm.LastOrdered = vm.DateLastOrdered?.ToString("MM/dd/yyyy");
 
             return vm;
         }
