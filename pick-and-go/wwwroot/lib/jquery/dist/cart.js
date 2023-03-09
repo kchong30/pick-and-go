@@ -1,9 +1,9 @@
 ﻿/* Initial jQuery as Page Loaded */
 (function ($) {
-    $(document).ready(function () {
-        var cart = JSON.parse(localStorage.getItem("cart"));
-        $("#cart-icon").text(cart.length);
-    });
+    //$(document).ready(function () {
+    //    var cart = JSON.parse(localStorage.getItem("cart"));
+    //    $("#cart-icon").text(cart.length);
+    //});
 })(jQuery);
 
 
@@ -58,7 +58,6 @@ function addToCart(event) {
     var description;
 
     if ($("#customize-page").html()) {
-        console.log("Custom Page!")
         if (!validateForm()) {
             $(window).scrollTop(0);
             return false
@@ -72,8 +71,7 @@ function addToCart(event) {
         if (event) {
             subTotal = event.target.value.split("-")[2];
             productId = event.target.value.split("-")[0];
-            description = event.target.value.split("-")[1];
-        }
+            description = event.target.value.split("-")[1]; }
 
     }
 

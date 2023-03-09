@@ -114,7 +114,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                editMessage = e.Message;
+                editMessage = "An error occurred while updating the ingredient in the database." +
+                              " Please try again later." + " " + e.Message;
             }
 
             if (editMessage == "")
@@ -136,8 +137,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                deleteMessage = e.Message + " " + "The ingredient may not exist or "
-                                                + "there could be a foreign key restriction.";
+                deleteMessage = "The ingredient may not exist or " +
+                                "there could be a foreign key restriction." + " " + e.Message;
             }
 
             if (deleteMessage == "")
@@ -164,7 +165,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = "An error occurred while adding the ingredient to the database." +
+                          " Please try again later." + " " + e.Message;
             }
             if (message == "")
             {

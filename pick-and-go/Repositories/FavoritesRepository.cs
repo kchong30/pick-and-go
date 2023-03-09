@@ -82,8 +82,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                deleteMessage = e.Message + " " + "The favorite may not exist or "
-                                                + "there could be a foreign key restriction.";
+                deleteMessage = "The favourite may not exist or " +
+                                "there could be a foreign key restriction." + " " + e.Message;
             }
             return deleteMessage;
         }
@@ -104,7 +104,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = "An error occurred while adding the favourite to the database." +
+                          " Please try again later." + " " + e.Message;
             }
             return message;
         }
@@ -121,9 +122,10 @@ namespace PickAndGo.Repositories
                 _db.Favorites.Update(favorite);
                 _db.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                message = ex.Message;
+                message = "An error occurred while updating the favourite in the database." +
+                          " Please try again later." + " " + e.Message;
             }
 
             return message;
