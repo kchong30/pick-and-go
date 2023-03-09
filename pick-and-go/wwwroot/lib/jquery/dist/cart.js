@@ -1,9 +1,9 @@
 ﻿/* Initial jQuery as Page Loaded */
 (function ($) {
-    $(document).ready(function () {
-        var cart = JSON.parse(localStorage.getItem("cart"));
-        $("#cart-icon").text(cart.length);
-    });
+    //$(document).ready(function () {
+    //    var cart = JSON.parse(localStorage.getItem("cart"));
+    //    $("#cart-icon").text(cart.length);
+    //});
 })(jQuery);
 
 
@@ -57,7 +57,7 @@ function addToCart(event) {
     var productId;
     var description;
 
-    if ($("#customize-page")) {
+    if ($("#customize-page").html()) {
         if (!validateForm()) {
             $(window).scrollTop(0);
             return false
@@ -68,9 +68,11 @@ function addToCart(event) {
         description = $("#product option:selected").val().split("-")[2];
     } else {
         console.log("Fav Page")
-        subTotal = event.target.value.split("-")[2];
-        productId = event.target.value.split("-")[0];
-        description = event.target.value.split("-")[1];
+        if (event) {
+            subTotal = event.target.value.split("-")[2];
+            productId = event.target.value.split("-")[0];
+            description = event.target.value.split("-")[1]; }
+
     }
 
     // Get item from localStorage

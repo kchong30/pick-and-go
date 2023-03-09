@@ -22,6 +22,7 @@ using PickAndGo.Data;
 using PickAndGo.Repositories;
 using PickAndGo.Models;
 using static PickAndGo.Services.ReCAPTCHA;
+using PickAndGo.ViewModels;
 
 namespace PickAndGo.Areas.Identity.Pages.Account
 {
@@ -167,11 +168,22 @@ namespace PickAndGo.Areas.Identity.Pages.Account
                 CustomerRepository cr = new CustomerRepository(_db);
                 var customer = cr.ReturnCustomerByEmail(Input.Email);
 
+                var message = "";
                 if (customer == null)
                 {
-                    cr.CreateRecord(Input.Email, Input.FirstName, Input.LastName, Input.PhoneNumber);
+                    var tuple = cr.CreateRecord(Input.Email, Input.FirstName, Input.LastName, Input.PhoneNumber);
+                    message = tuple.Item1;
+                }
+                else
+                {
+                    message = cr.UpdateCustomerSignUpDate(customer.CustomerId);
                 }
 
+                if (message != "")
+                {
+                    // do something - not sure what to do if identity framework creates the user 
+                    // successfully but our database update fails
+                }
 
                 if (result.Succeeded)
                 {

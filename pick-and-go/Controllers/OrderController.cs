@@ -64,14 +64,17 @@ namespace PickAndGo.Controllers
             return View(ocVm);
         }
 
-        public IActionResult History(string message)
+        public IActionResult History(string message, int customerId)
         {
             if (message == null)
             {
                 message = "";
             }
 
-            int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
+            if (customerId == 0)
+            {
+                customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
+            }
 
             OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
@@ -137,6 +140,7 @@ namespace PickAndGo.Controllers
         [HttpPost]
         public JsonResult PaySuccess([FromBody] IPN iPN)
         {
+            var message = "";
             // Retrieve the session string value
             string pickupTimeString = HttpContext.Session.GetString("pickupTime");
             // Convert the string to a DateTime object
@@ -158,9 +162,10 @@ namespace PickAndGo.Controllers
             {
                 email = User.Identity.Name;
             }
-                oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID, orderTotal,sandwichJson,email);
+                message = oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID,
+                                         orderTotal,sandwichJson,email);
 
-            // create order header, line... etc...
+            ViewData["Message"] = message;
 
             return Json(iPN);
         }

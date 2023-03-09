@@ -195,9 +195,10 @@ namespace PickAndGo.Repositories
                 _db.OrderLines.Update(orderLine);
                 _db.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                editMessage = ex.Message;
+                editMessage = "An error occurred while updating the order line status in the database." +
+                              " Please try again later." + " " + e.Message;
             }
 
             if (editMessage == "")
@@ -206,9 +207,10 @@ namespace PickAndGo.Repositories
                 {
                     UpdateOrderHeaderStatus(orderId);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    editMessage = ex.Message;
+                    editMessage = "An error occurred while updating the order header status in the database." +
+                                  " Please try again later." + " " + e.Message;
                 }
             }
 
@@ -338,7 +340,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = "An error occurred while creating the order header in the database." +
+                          " Please try again later." + " " + e.Message;
             }
 
             return new Tuple<string, int>(message, orderHeader.OrderId);
@@ -363,7 +366,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = "An error occurred while creating the order line in the database." +
+                          " Please try again later." + " " + e.Message;
             }
 
             return new Tuple<string, int>(message, orderLine.LineId);
@@ -388,7 +392,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = "An error occurred while creating the order line ingredient in the database." +
+                          " Please try again later." + " " + e.Message;
             }
 
             return message;
