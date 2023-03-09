@@ -62,7 +62,7 @@ function addToCart(event) {
             $(window).scrollTop(0);
             return false
         }
-        console.log("Custom Page!")
+  
         subTotal = $('#product-price').html();
         productId = $("#product option:selected").val().split("-")[0];
         description = $("#product option:selected").val().split("-")[2];
