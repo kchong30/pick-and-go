@@ -31,8 +31,6 @@ namespace PickAndGo.Controllers
 
             int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
             var vm = cR.ReturnCustomerById(customerId);
-            vm.SignedUp = vm.DateSignedUp?.ToString("MM/dd/yyyy");
-            vm.LastOrdered = vm.DateLastOrdered?.ToString("MM/dd/yyyy");
 
             ViewData["Message"] = message;
             return View(vm);
