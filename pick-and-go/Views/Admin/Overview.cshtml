@@ -8,10 +8,14 @@
     decimal outstandingVal = Model != null ? Model.OutstandingVal : 0;
     decimal completedVal = Model != null ? Model.CompletedVal : 0;
     string date = Model.Date;
+    int accounts = Model != null ? Model.Accounts : 0;
+    int guests = Model != null ? Model.Guests : 0;
 }
 
 
 <h1>Overview</h1>
+
+<h3>Orders</h3>
 
 <form asp-controller="Admin" asp-action="Overview" method="get">
     <input type="submit" name="submitBtn" value="<" />
@@ -24,6 +28,10 @@
 
 
 <table class="table">
+    <colgroup>
+        <col style="width: 25%;">
+        <col style="width: 25%;">
+    </colgroup>
     <thead>
         <tr>
             <th>
@@ -32,8 +40,6 @@
             <th>
                 Completed
             </th>
-
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -55,3 +61,34 @@
         </tr>
     </tbody>
 </table>
+
+<h3>Customers</h3>
+
+<table class="table">
+    <colgroup>
+        <col style="width: 25%;">
+        <col style="width: 25%;">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>
+                Account Holders
+            </th>
+            <th>
+                Guests
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @accounts
+            </td>
+            <td>
+                @guests
+            </td>
+        </tr>
+    </tbody>
+</table>
+

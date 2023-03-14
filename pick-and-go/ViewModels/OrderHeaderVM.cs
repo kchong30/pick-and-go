@@ -7,5 +7,7 @@
         public decimal OutstandingVal { get; set; }
         public decimal CompletedVal { get; set; }
         public string Date { get; set; }
+        public int Accounts { get; set; }
+        public int Guests { get; set; }
     }
 }

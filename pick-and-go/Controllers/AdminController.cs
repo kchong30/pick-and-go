@@ -181,6 +181,11 @@ namespace PickAndGo.Controllers
             ohVM.OutstandingVal = tuple2.Item1;
             ohVM.CompletedVal = tuple2.Item2;
 
+            CustomerRepository cr = new CustomerRepository(_db);
+            var tuple3 = cr.GetOverviewCustomers();
+            ohVM.Accounts = tuple3.Item1;
+            ohVM.Guests = tuple3.Item2;
+
             return View(ohVM);
         }
 
