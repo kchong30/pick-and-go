@@ -171,14 +171,14 @@ namespace PickAndGo.Controllers
             message = oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID,
                                      orderTotal, sandwichJson, email);
 
-/*            var response = await _emailService.SendConfirmationEmail(new ConfirmationEmailModel
+            var response = _emailService.SendConfirmationEmail(new ConfirmationEmailModel
             {
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
                 PickUpTime = pickupTimeString
-            }) ;
-*/
+            });
+
             ViewData["Message"] = message;
 
             return Json(iPN);
