@@ -176,8 +176,10 @@ namespace PickAndGo.Controllers
             // show the order confirm page
 
             // place holder code
-            var record =
-            _db.OrderHeaders.Where(t => t.PaymentId == confirmationId).FirstOrDefault();
+
+            OrderRepository or = new OrderRepository(_db, _configuration);
+            var record = or.GetConfirmationInfo(confirmationId);
+            
             return View("Confirmation", record);
         }
 

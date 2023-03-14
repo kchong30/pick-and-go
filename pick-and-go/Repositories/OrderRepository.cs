@@ -148,7 +148,7 @@ namespace PickAndGo.Repositories
                              OrderValue = (decimal)o.OrderValue,
                              Currency = o.Currency,
                              PaymentType = o.PaymentType,
-                             PaymentId = o.PaymentId,   
+                             PaymentId = o.PaymentId,
                              PaymentDate = ((DateTime)o.PaymentDate).ToString("MM-dd-yyyy"),
                          };
 
@@ -241,7 +241,7 @@ namespace PickAndGo.Repositories
             string message = "";
 
             List<ShoppingCartVM> products = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(sandwichJson);
-            
+
 
             using (var transaction = _db.Database.BeginTransaction())
             {
@@ -397,6 +397,11 @@ namespace PickAndGo.Repositories
             }
 
             return message;
+        }
+
+        public OrderHeader GetConfirmationInfo(string confirmationId)
+        {
+            return _db.OrderHeaders.Where(t => t.PaymentId == confirmationId).FirstOrDefault();
         }
     }
 }
