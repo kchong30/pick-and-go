@@ -60,17 +60,6 @@ function addToCart(event) {
     var productId;
     var description;
 
-    var buttonValue = $("#addToCartButton").val();
-
-    // Split the value into its constituent parts
-    var parts = buttonValue.split("-");
-
-    // Extract the product ID, description, and current price from the parts array
-    productId = parts[0];
-    description = parts[1];
-    subTotal = parts[2];
-
-
     if ($("#customize-page").html()) {
         if (!validateForm()) {
             $(window).scrollTop(0);
@@ -82,12 +71,14 @@ function addToCart(event) {
         description = $("#product option:selected").val().split("-")[2];
     } else {
         console.log("Fav Page")
-        if (event) {
-            subTotal = event.target.value.split("-")[2];
-            productId = event.target.value.split("-")[0];
-            description = event.target.value.split("-")[1];
-        }
 
+            var buttonValue = $("#addToCartButton").val();
+            var parts = buttonValue.split("-");
+
+            // Extract the product ID, description, and current price from the parts array
+            productId = parts[0];
+            description = parts[1];
+            subTotal = parts[2];
     }
 
     // Get item from localStorage
