@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace PickAndGo.Controllers
 {
@@ -70,6 +71,30 @@ namespace PickAndGo.Controllers
             return View(ocVm);
         }
 
+        public IActionResult EditCustomize(int Index)
+        {
+            // Receving Product ID from Main page
+            IngredientsRepository ir = new IngredientsRepository(_db);
+            IQueryable<IngredientListVM> iVm = ir.BuildIngredientListVM();
+
+            ProductRepository pr = new ProductRepository(_db);
+            IQueryable<ProductVM> pVm = pr.GetProducts();
+
+            OrderCustomizeVM ocVm = new OrderCustomizeVM();
+            ocVm.productVMs = pVm.ToList();
+            ocVm.ingredientListVMs = iVm.ToList();
+
+            string cartItem = HttpContext.Session.GetString("shoppingCart");
+            var json = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(cartItem);
+
+            // localStorage delete
+            // Session Variable delete
+
+            //ViewData["ProductId"] = SelectedProductId;
+            ViewData["cartItem"] = json[0];
+
+            return View(ocVm);
+        }
         public IActionResult History(string message, int customerId)
         {
             if (message == null)

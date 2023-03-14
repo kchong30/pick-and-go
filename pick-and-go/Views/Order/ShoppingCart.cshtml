@@ -43,7 +43,8 @@
                                 <button class="btn btn-primary" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
                             </td>
                             <td class="col-2">
-                                <button class="btn btn-primary" id="btnEdit" OnClick="editSandwich(@item.Index)">Edit</button>
+                                <button class="btn btn-primary" id="btnEdit" OnClick="EditCustomize(@item.Index)">Edit</button>
+                                <a class="nav-link text-dark" asp-route-index="@item.Index" asp-area ="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
                             </td>
                         </tr>
 
