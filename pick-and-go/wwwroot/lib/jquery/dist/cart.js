@@ -66,6 +66,9 @@ function addToCart(event) {
         subTotal = $('#product-price').html();
         productId = $("#product option:selected").val().split("-")[0];
         description = $("#product option:selected").val().split("-")[2];
+
+        console.log("This is Customer Page")
+        console.log(subTotal, productId, description)
     } else {
         console.log("Fav Page")
         if (event) {
