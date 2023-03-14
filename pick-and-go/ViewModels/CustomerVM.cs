@@ -13,7 +13,9 @@ namespace PickAndGo.ViewModels
         public string? PhoneNumber { get; set; }
         public string AdminUser { get; set; } = null!;
         public DateTime? DateSignedUp { get; set; }
+        public string? SignedUp { get; set; }
         public DateTime? DateLastOrdered { get; set; }
+        public string? LastOrdered { get; set; }
         public virtual ICollection<OrderHeader> OrderHeaders { get; set; }
 
         public int? NumbersOfOrders { get; set; }

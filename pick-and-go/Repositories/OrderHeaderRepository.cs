@@ -1,6 +1,7 @@
 ﻿using PickAndGo.Models;
 using PickAndGo.ViewModels;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace PickAndGo.Repositories
 {
@@ -13,32 +14,45 @@ namespace PickAndGo.Repositories
             _db = context;
         }
 
-        public Tuple<int, int> GetOverviewCounts(string date)
+        public OverviewVM GetOverviewCounts(string date)
         {
-            int outstanding = _db.OrderHeaders
+            var vm = new OverviewVM
+            {
+                ViewDate = date,
+                Outstanding = _db.OrderHeaders
                                 .Where(oh => oh.OrderDate.ToString() == date)
                                 .Where(oh => oh.OrderStatus == "O")
-                                .Select(oh => oh.OrderStatus).Count();
-            int completed = _db.OrderHeaders
+                                .Select(oh => oh.OrderStatus).Count(),
+                Completed = _db.OrderHeaders
                                 .Where(oh => oh.OrderDate.ToString() == date)
                                 .Where(oh => oh.OrderStatus == "C")
-                                .Select(oh => oh.OrderStatus).Count();
-
-            return Tuple.Create(outstanding, completed);
-        }
-
-        public Tuple<decimal, decimal> GetOverviewValues(string date)
-        {
-            decimal outstandingVal = (decimal)_db.OrderHeaders
+                                .Select(oh => oh.OrderStatus).Count(),
+                OutstandingVal = (decimal)_db.OrderHeaders
                                     .Where(oh => oh.OrderDate.ToString() == date)
                                     .Where(oh => oh.OrderStatus == "O")
-                                    .Select(oh => oh.OrderValue ?? 0).Sum();
-            decimal completedVal = (decimal)_db.OrderHeaders
+                                    .Select(oh => oh.OrderValue ?? 0).Sum(),
+                CompletedVal = (decimal)_db.OrderHeaders
                                     .Where(oh => oh.OrderDate.ToString() == date)
                                     .Where(oh => oh.OrderStatus == "C")
-                                    .Select(oh => oh.OrderValue ?? 0).Sum();
+                                    .Select(oh => oh.OrderValue ?? 0).Sum(),
+                Accounts = _db.Customers
+                              .Where(c => c.DateSignedUp != null)
+                              .Select(c => c.CustomerId).Count(),
+                Guests = _db.Customers
+                              .Where(c => c.DateSignedUp == null)
+                              .Select(oh => oh.CustomerId).Count(),
+                //Ingredients = (from i in _db.Ingredients
+                 
+                // where i.InStock == "N"
+                // orderby i.CategoryId, i.Description
+                // select new IngredientVM
+                // {
+                //     Description = i.Description,
+                //     CategoryId = i.CategoryId
+                // }),
+            };
 
-            return Tuple.Create(outstandingVal, completedVal);
+            return vm;
         }
     }
 }

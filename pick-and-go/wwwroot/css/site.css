@@ -15,7 +15,7 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
+    min-height: 100%;
 }
 
 body .container {
@@ -23,6 +23,10 @@ body .container {
 }
 
 /* General accordion styles */
+
+.accordion-body {
+    min-height: 100%;
+}
 
 .accordion-button {
     border-style: none;
@@ -116,6 +120,11 @@ body .container {
     height: 1.5em;
     width: 1.5em;
     margin-left: 20px;
+}
+
+.ingredient-image {
+    width: 80px;
+    height: 80px;
 }
 
 /* Order selection styles */

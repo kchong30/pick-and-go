@@ -17,7 +17,6 @@ namespace PickAndGo.Repositories
             _db = context;
         }
 
-        //Note - Since we're only having 1 hard coded admin in the data base, new customers added will have property AdminUser set to N for NO.
         public Tuple<string, int> CreateRecord(string email, string firstName, string lastName, string phoneNumber)
         {
             Customer newCustomer = new Customer();
@@ -36,7 +35,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception ex)
             {
-                message = ex.Message;
+                message = "An error occurred while adding the customer to the database." +
+                          " Please try again later." + " " + ex.Message;
             }
 
             return new Tuple<string, int>(message, newCustomer.CustomerId);
@@ -51,6 +51,7 @@ namespace PickAndGo.Repositories
                          CustomerId = c.CustomerId,
                          EmailAddress = c.EmailAddress,
                          DateLastOrdered = c.DateLastOrdered,
+                         DateSignedUp = c.DateSignedUp,
                          FirstName = c.FirstName,
                          LastName = c.LastName,
                          PhoneNumber = c.PhoneNumber,
@@ -63,6 +64,8 @@ namespace PickAndGo.Repositories
         public CustomerVM ReturnCustomerById(int customerId)
         {
             var vm = ReturnAllCustomers().Where(c => c.CustomerId == customerId).FirstOrDefault();
+            vm.SignedUp = vm.DateSignedUp?.ToString("MM/dd/yyyy");
+            vm.LastOrdered = vm.DateLastOrdered?.ToString("MM/dd/yyyy");
 
             return vm;
         }
@@ -73,24 +76,40 @@ namespace PickAndGo.Repositories
             return customer;
         }
 
-
-        public void EditCustomer(int id, EditCustomerVM customerVM)
+        public string EditCustomer(int id, EditCustomerVM customerVM)
         {
-            CustomerRepository cR = new CustomerRepository(_db);
+            string editMessage = "";
 
+            CustomerRepository cR = new CustomerRepository(_db);
 
             var vm = cR.ReturnCustomerById(id);
 
-            _db.Update(new Customer
+            try
             {
-                CustomerId = vm.CustomerId,
-                LastName = customerVM.LastName,
-                FirstName = customerVM.FirstName,
-                EmailAddress = vm.EmailAddress,
-                PhoneNumber = customerVM.PhoneNumber,
-                AdminUser = "N"
-            });
-            _db.SaveChanges();
+                _db.Update(new Customer
+                {
+                    CustomerId = vm.CustomerId,
+                    LastName = customerVM.LastName,
+                    FirstName = customerVM.FirstName,
+                    EmailAddress = vm.EmailAddress,
+                    PhoneNumber = customerVM.PhoneNumber,
+                    DateLastOrdered = vm.DateLastOrdered,
+                    DateSignedUp = vm.DateSignedUp,
+                    AdminUser = "N"
+                });
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                editMessage = "An error occurred while updating the customer in the database." +
+                              " Please try again later." + " " + e.Message;
+            }
+
+            if (editMessage == "")
+            {
+                editMessage = "Your profile has been updated";
+            }
+            return editMessage;
         }
 
         public Customer GetCustomerRecord(int customerId)
@@ -113,7 +132,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception ex)
             {
-                editMessage = ex.Message;
+                editMessage = "An error occurred while updating the customer in the database." +
+                              " Please try again later." + " " + ex.Message;
             }
 
             return editMessage;
@@ -132,7 +152,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception ex)
             {
-                editMessage = ex.Message;
+                editMessage = "An error occurred while updating the customer in the database." +
+                              " Please try again later." + " " + ex.Message;
             }
 
             return editMessage;
