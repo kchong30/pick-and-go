@@ -37,6 +37,11 @@
                 @Html.CheckBoxFor(model => model.IngredientInStock)
             </div>
             <div class="form-group">
+                <label asp-for="IngredientImage" class="control-label">Image URL</label>
+                <input asp-for="IngredientImage" class="form-control" />
+                <span asp-validation-for="IngredientImage"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -44,7 +49,7 @@
 </div>
 
 <div>
-    <a asp-action="IngredientsIndex">Back to List</a>
+    <a asp-action="Ingredients">Back to List</a>
 </div>
 
 @section Scripts {
