@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PickAndGo.Models;
 using PickAndGo.Repositories;
 using PickAndGo.ViewModels;
+using PickAndGo.Services;
 using System.Net.NetworkInformation;
 using System;
 using Newtonsoft.Json;
@@ -16,11 +17,14 @@ namespace PickAndGo.Controllers
     {
         private readonly PickAndGoContext _db;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public OrderController(PickAndGoContext context, IConfiguration configuration)
+
+        public OrderController(PickAndGoContext context, IConfiguration configuration, IEmailService emailService)
         {
             _db = context;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public IActionResult Index(ProductVM products, string nameInput)
@@ -145,7 +149,7 @@ namespace PickAndGo.Controllers
             string pickupTimeString = HttpContext.Session.GetString("pickupTime");
             // Convert the string to a DateTime object
             DateTime pickupTime = DateTime.Parse(pickupTimeString);
-          
+
             string sandwichJson = HttpContext.Session.GetString("shoppingCart");
 
             //// Pass it to VM for View?
@@ -162,14 +166,21 @@ namespace PickAndGo.Controllers
             {
                 email = User.Identity.Name;
             }
-                message = oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID,
-                                         orderTotal,sandwichJson,email);
+            message = oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID,
+                                     orderTotal, sandwichJson, email);
 
+/*            var response = await _emailService.SendConfirmationEmail(new ConfirmationEmailModel
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PickUpTime = pickupTimeString
+            }) ;
+*/
             ViewData["Message"] = message;
 
             return Json(iPN);
         }
-
 
         public IActionResult Confirmation(string confirmationId)
         {
