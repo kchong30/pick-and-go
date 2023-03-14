@@ -126,8 +126,7 @@ namespace PickAndGo.Controllers
         {
             if (data.PickupTime != null)
             {
-                HttpContext.Session.SetString("pickupTime", DateTime.Now.ToString());
-                //HttpContext.Session.SetString("pickupTime", data.PickupTime);
+                HttpContext.Session.SetString("pickupTime", data.PickupTime);
             }
             if (data.CartJson != null)
             {
