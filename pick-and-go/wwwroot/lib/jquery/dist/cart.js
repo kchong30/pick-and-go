@@ -1,9 +1,11 @@
 ﻿/* Initial jQuery as Page Loaded */
 (function ($) {
-    //$(document).ready(function () {
-    //    var cart = JSON.parse(localStorage.getItem("cart"));
-    //    $("#cart-icon").text(cart.length);
-    //});
+    $(document).ready(function () {
+        var cart = JSON.parse(localStorage.getItem("cart"));
+        $("#cart-icon").text(cart.length);
+        var pp = $("#product option:selected").val();
+        setProductPrice(pp);
+    });
 })(jQuery);
 
 
@@ -42,6 +44,7 @@ function changeProduct(event) {
 function setProductPrice(value) {
     // parse price from value
     var productValue = value.split("-");
+    console.log(productValue)
     var productPrice = productValue[1];
     $("#product-price").text(productPrice);
 
@@ -95,9 +98,9 @@ function addToCart(event) {
                 ingredientId: $(this).find(".ingredientId").html(),
                 description: $(this).find(".description").html(),
                 quantity: quantity,
-                price: $(this).find(".price").html(),
+                price: parseFloat($(this).find(".price").html()),
             };
-            subTotal = quantity * ingredient.price + subTotal;
+            subTotal = quantity * ingredient.price + parseFloat(subTotal);
             ingredients.push(ingredient);
         }
     });
