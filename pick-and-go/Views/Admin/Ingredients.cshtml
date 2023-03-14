@@ -53,22 +53,32 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th>Description</th>
                                     <th>Price</th>
                                     <th>In Stock</th>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                             }
                             @foreach (var ing in cat.Ingredients)
-                            {   
+                            {
                                 <tr>
                                     <td></td>
                                     <td></td>
+                                    <td>
+                                        @if (ing.IngredientImage != "" && ing.IngredientImage != null)
+                                        {
+                                            <img class="ingredient-image" src=@ing.IngredientImage alt=@ing.Description>
+                                        }
+                                        else
+                                        {
+                                            <img class="ingredient-image" src="~/images/empty-image.png">
+                                        }
+                                    </td>
                                     <td class="celldesc">@ing.Description</td>
                                     <td>@ing.Price</td>
-                                    <td><img class="stock-icon" src="../images/@ing.InStockIcon"/></td>
+                                    <td><img class="stock-icon" src="~/images/@ing.InStockIcon"/></td>
                                     <td>
                                         <a asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a> |
                                         <a asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a> |

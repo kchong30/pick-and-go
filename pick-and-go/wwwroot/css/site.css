@@ -122,6 +122,11 @@ body .container {
     margin-left: 20px;
 }
 
+.ingredient-image {
+    width: 80px;
+    height: 80px;
+}
+
 /* Order selection styles */
 
 .sandwich-image {
