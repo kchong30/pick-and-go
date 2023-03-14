@@ -1,4 +1,4 @@
-﻿@model PickAndGo.ViewModels.OrderHeaderVM
+﻿@model PickAndGo.ViewModels.OverviewVM
 
 @{
     ViewData["Title"] = "Overview";
@@ -7,7 +7,7 @@
     int completed = Model != null ? Model.Completed : 0;
     decimal outstandingVal = Model != null ? Model.OutstandingVal : 0;
     decimal completedVal = Model != null ? Model.CompletedVal : 0;
-    string date = Model.Date;
+    string viewDate = Model.ViewDate;
     int accounts = Model != null ? Model.Accounts : 0;
     int guests = Model != null ? Model.Guests : 0;
 }
@@ -15,13 +15,13 @@
 
 <h1>Overview</h1>
 
-<h3>Orders</h3>
+<h4>Orders</h4>
 
 <form asp-controller="Admin" asp-action="Overview" method="get">
     <input type="submit" name="submitBtn" value="<" />
-    <input type="date" name="currentDate" value="@date" required />
+    <input type="date" name="currentDate" value="@viewDate" required />
     <input type="submit" name="submitBtn" value="Go" />
-    <input type="submit" name="submitBtn" value=">" @(Convert.ToDateTime(date).CompareTo(DateTime.Now.Date) < 0  ? "" : "disabled") />
+    <input type="submit" name="submitBtn" value=">" @(Convert.ToDateTime(viewDate).CompareTo(DateTime.Now.Date) < 0  ? "" : "disabled") />
 </form>
 
 <p>Last Update: @ViewData["CurrentTime"]</p>
@@ -62,7 +62,7 @@
     </tbody>
 </table>
 
-<h3>Customers</h3>
+<h4>Customers</h4>
 
 <table class="table">
     <colgroup>
@@ -87,6 +87,36 @@
             </td>
             <td>
                 @guests
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Ingredients - Out of Stock</h4>
+
+<table class="table">
+    <colgroup>
+        <col style="width: 25%;">
+        <col style="width: 25%;">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>
+                Category
+            </th>
+            <th>
+                Description
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                
+            </td>
+            <td>
+                
             </td>
         </tr>
     </tbody>

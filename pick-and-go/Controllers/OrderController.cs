@@ -31,20 +31,22 @@ namespace PickAndGo.Controllers
         {
             //If the user is a guest - set viewbag for greeting to nameInput (gathered from form at landing page).
             //If logged in, get customer's first name - pass on for greeting.
-            if (!User.Identity.IsAuthenticated)
+            if (HttpContext.Session.GetString("firstName") == null)
             {
-                ViewBag.NameInput = nameInput;
-                HttpContext.Session.SetString("firstName", nameInput);
-            }
-            else
-            {
-                CustomerRepository cr = new CustomerRepository(_db);
-                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
-                ViewBag.NameInput = customer.FirstName;
-                HttpContext.Session.SetString("firstName", customer.FirstName);
-            }
-  
+                if (!User.Identity.IsAuthenticated)
+                {
+                    ViewBag.NameInput = nameInput;
+                    HttpContext.Session.SetString("firstName", nameInput);
+                }
+                else
+                {
+                    CustomerRepository cr = new CustomerRepository(_db);
+                    var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                    ViewBag.NameInput = customer.FirstName;
+                    HttpContext.Session.SetString("firstName", customer.FirstName);
+                }
 
+            }
             ProductRepository pr = new ProductRepository(_db);
             var vm = pr.GetProducts();
             return View(vm);
