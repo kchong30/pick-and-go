@@ -38,6 +38,9 @@
                             <td class="col-5" style="white-space: nowrap;">@item.Value.description</td>
                             <td class="col-3"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
                             <td class="col-2">@Html.ActionLink("Duplicate", "Customize", "Order", new { index = item.Index }, new { @class = "btn btn-primary" })</td>
+                            <td class="col-2">
+                                <asp:Button ID="btnRemove" Text="Remove" OnClick="removeSandwich(@item.Index)" />
+                            </td>
                         </tr>
 
                         <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show" aria-labelledby="@item.Value.productId">

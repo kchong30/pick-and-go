@@ -240,6 +240,30 @@ function checkout(event) {
 
 }
 
+/* remove sandwich */
+function removeSandwich(index) {
+
+    var cart = localStorage.getItem("cart");
+
+    cart.splice(index, 1);
+
+    var shoppingCart = cart;
+    $.ajax({
+        type: "POST",
+        url: "/Order/StoreCart",
+        data: JSON.stringify({ CartJson: shoppingCart }),
+        contentType: "application/json",
+        success: function (response) {
+            window.location.href
+                = "/Order/ShoppingCart";
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+
+}
+
 //function transferData() {
 //    var cart = localStorage.getItem("cart");
 //    $.ajax({
