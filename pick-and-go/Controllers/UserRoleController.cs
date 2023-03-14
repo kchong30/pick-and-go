@@ -8,7 +8,6 @@ using PickAndGo.ViewModels;
 
 namespace PickAndGo.Controllers
 {
-
 /*    [Authorize(Roles = "Admin")]
 */    public class UserRoleController : Controller
     {

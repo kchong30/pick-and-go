@@ -4,73 +4,82 @@
     ViewData["Title"] = "CustomerDetails";
     
 }
+<head>
+    <link rel="stylesheet" href="~/css/Erik.css" asp-append-version="true" />
+</head>
 
-<h1>Customer Profile</h1>
-
+<body>
+    <div class="main-container">
+        <div class="header-titles">
+            <h1>Customer Profile</h1>
+            <div class="header-name">
+                <h3>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h3>
+            </div>
+        </div>
+        <dl class="row">
+            <dt class="col-sm-2 title-name">
+                Full Name
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt class="col-sm-2 title-name">
+                Email Address
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EmailAddress)
+            </dd>
+            <dt class="col-sm-2 title-name">
+                Phone Number
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+            @if (Model.DateLastOrdered == null)
+            {
+                <dt class="col-sm-2 title-name">
+                    Last Ordered On
+                </dt>
+                <dd class="col-sm-10">
+                    You Have Not Ordered Anything Yet!
+                </dd>
+            }
+            else
+            {
+                <dt class="col-sm-2 title-name">
+                    Last Ordered On
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateLastOrdered)
+                </dd>
+            }
+            @if (Model.DateSignedUp == null)
+            {
+                <dt class="col-sm-2 title-name">
+                    Date Signed Up
+                </dt>
+                <dd class="col-sm-10">
+                    You Did Not Sign Up Yet!
+                </dd>
+            }
+            else
+            {
+                <dt class="col-sm-2 title-name">
+                    Date Signed Up
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateSignedUp)
+                </dd>
+            }
+        </dl>
+    </div>
+</body>
 <div>
-    <h4>Customer</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Full Name
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            Email Address
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmailAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            Phone Number
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        @if (Model.DateLastOrdered == null)  {
-            <dt class="col-sm-2">
-                Last Ordered On
-            </dt>
-            <dd class="col-sm-10">
-                You Have Not Ordered Anything Yet!
-            </dd>
-        } else
-        {
-            <dt class="col-sm-2">
-                Last Ordered On
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.LastOrdered)
-            </dd>
-        }
-        @if (Model.DateSignedUp == null)
-        {
-            <dt class="col-sm-2">
-                Date Signed Up
-            </dt>
-            <dd class="col-sm-10">
-                You Have Not Signed Up Yet!
-            </dd>
-        }
-        else
-        {
-            <dt class="col-sm-2">
-                Date Signed Up
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.SignedUp)
-            </dd>
-        }
-    </dl>
-</div>
-<div>
 
-    <a asp-action="CustomerEdit" asp-route-id="@Model?.CustomerId">Edit</a> |
-    <a asp-controller="Order" asp-action="History" asp-route-customerId="@Model?.CustomerId">Order History</a> |
-    <a asp-controller="Order" asp-action="Favorites" asp-route-customerId="@Model?.CustomerId">Favourites</a> |
-    <a asp-controller= "Home" asp-action="Index">Back Home</a>
+    <a class="details-button" asp-action="CustomerEdit" asp-route-id="@Model?.CustomerId">Edit</a> 
+    <a class="details-button" asp-controller="Order" asp-action="History" asp-route-customerId="@Model?.CustomerId">Order History</a> 
+    <a class="details-button" asp-controller="Order" asp-action="Favorites" asp-route-customerId="@Model?.CustomerId">Favourites</a> 
+    <a class="details-button" asp-controller="Home" asp-action="Index">Back Home</a>
 
 </div>
 @ViewBag.Message

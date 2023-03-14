@@ -4,7 +4,14 @@
 
 }
 
-<div class="home-page-card-stack text-center d-flex flex-column w-100 h-100 align-items-stretch">
+
+<style>
+    .custom-min-height {
+        min-height: 100vh;
+    }
+</style>
+
+<div class="home-page-card-stack text-center d-flex flex-column w-100 h-300 align-items-stretch min-height-md custom-min-height">
     @if (!User.Identity.IsAuthenticated)
     {
         <div class= "create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
