@@ -41,10 +41,15 @@ namespace PickAndGo.Repositories
                 Guests = _db.Customers
                               .Where(c => c.DateSignedUp == null)
                               .Select(oh => oh.CustomerId).Count(),
-                Ingredients = (List<IngredientVM>)_db.Ingredients
-                                .Where(i => i.InStock == "N")
-                                .OrderBy(i => i.CategoryId)
-                                .ThenBy(i => i.Description)                                
+                //Ingredients = (from i in _db.Ingredients
+                 
+                // where i.InStock == "N"
+                // orderby i.CategoryId, i.Description
+                // select new IngredientVM
+                // {
+                //     Description = i.Description,
+                //     CategoryId = i.CategoryId
+                // }),
             };
 
             return vm;
