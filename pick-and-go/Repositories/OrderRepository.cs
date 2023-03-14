@@ -84,7 +84,7 @@ namespace PickAndGo.Repositories
                          join o in _db.OrderHeaders on l.OrderId equals o.OrderId
                          join c in _db.Customers on o.CustomerId equals c.CustomerId
                          join p in _db.Products on l.ProductId equals p.ProductId
-                         where (c.CustomerId.Equals(customerId) && o.OrderDate >= c.DateSignedUp)
+                         where (c.CustomerId.Equals(customerId) /*&& o.OrderDate >= c.DateSignedUp*/)
                          orderby o.OrderDate descending
                          let iSum = (from li in _db.LineIngredients
                                      where o.OrderId == li.OrderId && l.LineId == li.LineId
@@ -274,7 +274,7 @@ namespace PickAndGo.Repositories
                         {
                             foreach (var product in products)
                             {
-                                var tuple2 = CreateOrderLine(orderId, Convert.ToInt32(product.productId));
+                                var tuple2 = CreateOrderLine(orderId, Convert.ToInt32(product.productId), Convert.ToDecimal(product.subtotal));
 
                                 message = tuple2.Item1;
                                 var lineId = tuple2.Item2;
@@ -284,7 +284,7 @@ namespace PickAndGo.Repositories
                                     foreach (var ingredient in product.ingredients)
                                     {
                                         message = CreateLineIngredient(orderId, lineId, ingredient.ingredientId,
-                                                                       Convert.ToInt32(ingredient.quantity));
+                                                                       Convert.ToInt32(ingredient.quantity), Convert.ToDecimal(ingredient.price));
                                         if (message != "")
                                         {
                                             break;
@@ -347,7 +347,7 @@ namespace PickAndGo.Repositories
             return new Tuple<string, int>(message, orderHeader.OrderId);
         }
 
-        public Tuple<string, int> CreateOrderLine(int orderId, int productId)
+        public Tuple<string, int> CreateOrderLine(int orderId, int productId, decimal price)
         {
             string message = "";
 
@@ -356,7 +356,8 @@ namespace PickAndGo.Repositories
                 OrderId = orderId,
                 ProductId = productId,
                 Quantity = 1,
-                LineStatus = "O"
+                LineStatus = "O",
+                Price = price
             };
 
             try
@@ -373,7 +374,7 @@ namespace PickAndGo.Repositories
             return new Tuple<string, int>(message, orderLine.LineId);
         }
 
-        public string CreateLineIngredient(int orderId, int lineId, int ingredientId, int quantity)
+        public string CreateLineIngredient(int orderId, int lineId, int ingredientId, int quantity, decimal price)
         {
             string message = "";
 
@@ -382,7 +383,8 @@ namespace PickAndGo.Repositories
                 OrderId = orderId,
                 LineId = lineId,
                 IngredientId = ingredientId,
-                Quantity = quantity
+                Quantity = quantity,
+                Price = price
             };
 
             try
