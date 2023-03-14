@@ -12,7 +12,7 @@
 <div class="d-flex justify-content-center align-items-center">
     <div>
         <div class="shopping-title">
-            <h1>@customerId Shopping Cart</h1>
+            <h1>Shopping Cart</h1>
         </div>
 
         <div class="container" >
@@ -25,6 +25,7 @@
                         <th ></th>
                         <th ></th>
                         <th ></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +40,7 @@
                             <td class="col-3"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
                             <td class="col-2">@Html.ActionLink("Duplicate", "Customize", "Order", new { index = item.Index }, new { @class = "btn btn-primary" })</td>
                             <td class="col-2">
-                                <asp:Button ID="btnRemove" Text="Remove" OnClick="removeSandwich(@item.Index)" />
+                                <button ID="btnRemove" Text="Remove" OnClick="removeSandwich(@item.Index)" />
                             </td>
                         </tr>
 
@@ -185,6 +186,7 @@
     });
 </script>
 
+<script src="~/lib/jquery/dist/cart.js"></script>
 
 
 

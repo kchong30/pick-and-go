@@ -117,9 +117,12 @@
 
                     //after success
                     success: function (msg) {
+                        emptyCart();
                         console.log("Data: " + JSON.stringify(data));
                         window.location.href
                             = "/Order/Confirmation?confirmationId=" + data.paymentID;
+
+
                     },
                     //after fail
                     error: function (msg) {
@@ -137,3 +140,6 @@
 
 
 </script>
+
+
+<script src="~/lib/jquery/dist/cart.js"></script>
