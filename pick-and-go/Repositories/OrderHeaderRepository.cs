@@ -22,11 +22,11 @@ namespace PickAndGo.Repositories
                 Outstanding = _db.OrderHeaders
                                 .Where(oh => oh.OrderDate.ToString() == date)
                                 .Where(oh => oh.OrderStatus == "O")
-                                .Select(oh => oh.OrderStatus).Count(),
+                                .Count(),
                 Completed = _db.OrderHeaders
                                 .Where(oh => oh.OrderDate.ToString() == date)
                                 .Where(oh => oh.OrderStatus == "C")
-                                .Select(oh => oh.OrderStatus).Count(),
+                                .Count(),
                 OutstandingVal = (decimal)_db.OrderHeaders
                                     .Where(oh => oh.OrderDate.ToString() == date)
                                     .Where(oh => oh.OrderStatus == "O")
@@ -36,22 +36,33 @@ namespace PickAndGo.Repositories
                                     .Where(oh => oh.OrderStatus == "C")
                                     .Select(oh => oh.OrderValue ?? 0).Sum(),
                 Accounts = _db.Customers
-                              .Where(c => c.DateSignedUp != null)
-                              .Select(c => c.CustomerId).Count(),
+                                .Count(c => c.DateSignedUp != null && c.AdminUser != "Y"),
                 Guests = _db.Customers
-                              .Where(c => c.DateSignedUp == null)
-                              .Select(oh => oh.CustomerId).Count(),
-                //Ingredients = (from i in _db.Ingredients
-                 
-                // where i.InStock == "N"
-                // orderby i.CategoryId, i.Description
-                // select new IngredientVM
-                // {
-                //     Description = i.Description,
-                //     CategoryId = i.CategoryId
-                // }),
+                                .Count(c => c.DateSignedUp == null && c.AdminUser != "Y"),
+                Ingredients = _db.Ingredients
+                                  .Where(i => i.InStock != "Y")
+                                  .OrderBy(i => i.CategoryId)
+                                  .ThenBy(i => i.Description),
+                TopFive = _db.Ingredients
+                                .Where(li => _db.LineIngredients
+                                .Where(li => li.Quantity != null && li.Price != null)
+                                .GroupBy(li => li.IngredientId)
+                                .Select(g => g.Key)
+                                .Contains(li.IngredientId))
+                                .Select(i => new
+                                {
+                                    Ingredient = i,
+                                    Description = i.Description,
+                                    CategoryId = i.CategoryId,
+                                    SalesValue = _db.LineIngredients
+                                        .Where(li => li.IngredientId == i.IngredientId)
+                                        .Sum(li => li.Quantity * li.Price)
+                                })
+                                .OrderByDescending(g => g.SalesValue)
+                                .Take(5)
+                                .Select(g => g.Ingredient)
+                                .AsQueryable()
             };
-
             return vm;
         }
     }
