@@ -164,12 +164,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
+                //Check customer table first - if such a customer already exists - update existing user
                 CustomerRepository cr = new CustomerRepository(_db);
                 var customer = cr.ReturnCustomerByEmail(Input.Email);
 
@@ -184,12 +179,21 @@ namespace PickAndGo.Areas.Identity.Pages.Account
                     message = cr.UpdateCustomerSignUpDate(customer.CustomerId);
                 }
 
+                //If customer creation or update fails - redirect back to registration page with error message.
+
                 if (message != "")
                 {
-                    // do something - not sure what to do if identity framework creates the user 
-                    // successfully but our database update fails
+                    ViewData["ErrorMessage"] = message;
+                    return Page();
                 }
 
+                var user = CreateUser();
+
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
+
+   
                 if (result.Succeeded)
                 {
                     var defaultRole = _roleManager.FindByNameAsync("Customer").Result;
