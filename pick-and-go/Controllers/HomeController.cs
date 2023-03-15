@@ -29,7 +29,6 @@ namespace PickAndGo.Controllers
 
         public IActionResult Index()
         {
-            DateTime date1 = new DateTime(2015, 12, 25);
 
 
             CustomerRepository cr = new CustomerRepository(_db);

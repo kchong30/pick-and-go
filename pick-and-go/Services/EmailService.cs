@@ -17,9 +17,9 @@ namespace PickAndGo.Services
 
         public Task<Response> SendRegistrationEmail(RegistrationEmailModel payload)
         {
-            var apiKey = _configuration.GetSection("SendGrid")["ApiKey"];
-/*            var apiKey = _configuration["SendGrid:ApiKey"];
-*/            var client = new SendGridClient(apiKey);
+            //var apiKey = _configuration.GetSection("SendGrid")["ApiKey"];
+            var apiKey = _configuration["SendGrid:ApiKey"];
+            var client = new SendGridClient(apiKey);
             var from = new EmailAddress("pickandgoinc@gmail.com", "Pick And Go");
             var subject = payload.Subject;
             var to = new EmailAddress(payload.Email
