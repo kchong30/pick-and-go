@@ -11,6 +11,7 @@ namespace PickAndGo.ViewModels
         public string ViewDate { get; set; }
         public int Accounts { get; set; }
         public int Guests { get; set; }
-        public List<IngredientVM> Ingredients { get; set; }
+        public IQueryable<Ingredient> Ingredients { get; set; }
+        public IQueryable<Ingredient> TopFive { get; set; }
     }
 }
