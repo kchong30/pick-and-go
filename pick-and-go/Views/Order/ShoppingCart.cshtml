@@ -14,58 +14,58 @@
         <div class="shopping-title">
             <h1>Shopping Cart</h1>
         </div>
+        <div class="container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Description</th>
+                <th>Subtotal</th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
+              {
+                <tr>
+                  <td>
+                    <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
+                    </button>
+                  </td>
+                  <td style="white-space: nowrap;">@item.Value.description</td>
+                  <td><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
+                  <td>
+                   <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
+                  </td>
 
-        <div class="container" >
-            <table class="table" >
+                  <td>
+                   <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
+                  </td>
+                  <td>
+                        <button class="btn btn-danger" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
+                  </td>
+                </tr>
 
-                <thead>
-                    <tr>
-                        <th ></th>
-                        <th ></th>
-                        <th ></th>
-                        <th ></th>
-                        <th ></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
-                    {
-                        <tr>
-                            <td class="col-2">
-                                <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
-                                </button>
-                            </td>
-                            <td class="col-5" style="white-space: nowrap;">@item.Value.description</td>
-                            <td class="col-3"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
-                            <td class="col-2">@Html.ActionLink("Order Again", "Customize", "Order", new { index = item.Index }, new { @class = "btn btn-primary" })</td>
-                            <td class="col-2">
-                                <button class="btn btn-primary" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
-                            </td>
-                            <td class="col-2">
-                                <button class="btn btn-primary" id="btnEdit" OnClick="EditCustomize(@item.Index)">Edit</button>
-                                <a class="nav-link text-dark" asp-route-index="@item.Index" asp-area ="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
-                            </td>
+                <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show" aria-labelledby="@item.Value.productId">
+                  <td colspan="6">
+                    <table class="accordion-table container">
+                      @foreach (var ingredient in item.Value.ingredients)
+                      {
+                        <tr class="row">
+                          <td class="d-flex justify-content-center">@ingredient.description (x @ingredient.quantity) @ingredient.price</td>
                         </tr>
+                      }
+                    </table>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
 
-                        <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show" aria-labelledby="@item.Value.productId">
-
-                            <td class="accordion-detail accordion-body" colspan="4" >
-                                <table class="accordion-table container">
-                                    @foreach (var ingredient in item.Value.ingredients)
-                                    {
-                                        <tr class="row">
-                                            <td class="d-flex justify-content-center">@ingredient.description (x @ingredient.quantity) @ingredient.price</td>
-                                        </tr>
-                                    }
-                                </table>
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div> 
+   
 
 
         <footer >

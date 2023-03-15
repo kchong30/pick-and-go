@@ -123,6 +123,73 @@ function addToCart(event) {
     $("#message").text("This sandwich has been added to your shopping cart!")
 }
 
+/* Add to Cart from Edit Page */
+function addToCartFromEdit() {
+
+
+    var subTotal;
+    var productId;
+    var description;
+
+
+        if (!validateForm()) {
+            $(window).scrollTop(0);
+            return false
+        }
+
+        subTotal = $('#product-price').html();
+        productId = $("#product option:selected").val().split("-")[0];
+        description = $("#product option:selected").val().split("-")[2];
+
+    // Get item from localStorage
+    var cart = JSON.parse(localStorage.getItem("cart"));
+
+    if (cart == null) {
+        cart = [];
+    }
+    if (!(cart instanceof Array)) {
+        cart = [cart];
+    }
+
+    // Customized item array
+    var ingredients = [];
+
+    $(".ingredientTable").each(function () {
+        var quantity = $(this).find(".quantity").html();
+        if (quantity > 0) {
+            var ingredient = {
+                ingredientId: $(this).find(".ingredientId").html(),
+                description: $(this).find(".description").html(),
+                quantity: quantity,
+                price: parseFloat($(this).find(".price").html()),
+            };
+            subTotal = quantity * ingredient.price + parseFloat(subTotal);
+            ingredients.push(ingredient);
+        }
+    });
+
+    var item = {
+        productId: productId,
+        description: description,
+        ingredients: ingredients,
+        subTotal: subTotal
+    };
+
+    cart.push(item);
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    clearSelection();
+
+    $("#message").text("This sandwich has been added to your shopping cart!")
+
+    if (event.target.dataset.removeitem === "edit") {
+        var index = event.target.dataset.index;
+        removeSandwich(index);
+    }else{
+        ajaxStoreCart();
+    }
+}
+
 /* Clear Selection */
 function clearSelection() {
     // Uncheck radio button
@@ -219,10 +286,7 @@ function updateTotalPrice(id, quantityValue) {
 
 /* Checkout */
 function checkout(event) {
-    var cart = localStorage.getItem("cart");
-
     ajaxStoreCart();
-
 }
 
 function removeSandwich(index) {
@@ -231,11 +295,10 @@ function removeSandwich(index) {
   //  var cart = localStorage.getItem("cart");
 
     cart.splice(index, 1);
-
-
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    var cart = localStorage.getItem("cart");
+    $("#cart-icon").text(cart.length);
+
     if (cart.length === 0) {
         // display alert with message
         alert("Your shopping cart is empty, please click the button to proceed");
@@ -247,11 +310,11 @@ function removeSandwich(index) {
 }
 
 function ajaxStoreCart() {
-    var shoppingCart = cart;
+    var cart = localStorage.getItem("cart");
     $.ajax({
         type: "POST",
         url: "/Order/StoreCart",
-        data: JSON.stringify({ CartJson: shoppingCart }),
+        data: JSON.stringify({ CartJson: cart }),
         contentType: "application/json",
         success: function (response) {
             window.location.href

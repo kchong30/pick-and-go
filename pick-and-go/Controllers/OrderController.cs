@@ -68,10 +68,11 @@ namespace PickAndGo.Controllers
 
             string aa = HttpContext.Session.GetString("cart");
             ViewData["ProductId"] = SelectedProductId;
+
             return View(ocVm);
         }
 
-        public IActionResult EditCustomize(int Index)
+        public IActionResult EditCustomize(int Index, string removeItem)
         {
             // Receving Product ID from Main page
             IngredientsRepository ir = new IngredientsRepository(_db);
@@ -91,7 +92,9 @@ namespace PickAndGo.Controllers
             // Session Variable delete
 
             //ViewData["ProductId"] = SelectedProductId;
-            ViewData["cartItem"] = json[0];
+            ViewData["cartItem"] = json[Index];
+            ViewData["Index"] = Index;
+            ViewData["RemoveItem"] = removeItem;
 
             return View(ocVm);
         }
