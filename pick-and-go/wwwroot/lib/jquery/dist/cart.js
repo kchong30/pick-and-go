@@ -219,27 +219,9 @@ function updateTotalPrice(id, quantityValue) {
 
 /* Checkout */
 function checkout(event) {
-
-    // if data is empty, add to cart, or do not add to cart
-
     var cart = localStorage.getItem("cart");
 
-    // 
-    // var shoppingCart = sessionStorage.getItem('cart');
-    var shoppingCart = cart;
-    $.ajax({
-        type: "POST",
-        url: "/Order/StoreCart",
-        data: JSON.stringify({ CartJson: shoppingCart }),
-        contentType: "application/json",
-        success: function (response) {
-            window.location.href
-                = "/Order/ShoppingCart";
-        },
-        error: function (response) {
-            console.log(response);
-        }
-    });
+    ajaxStoreCart();
 
 }
 
@@ -261,7 +243,10 @@ function removeSandwich(index) {
         window.location.href = "/Order";
         return;
     }
+    ajaxStoreCart();
+}
 
+function ajaxStoreCart() {
     var shoppingCart = cart;
     $.ajax({
         type: "POST",
@@ -276,6 +261,4 @@ function removeSandwich(index) {
             console.log(response);
         }
     });
-
-
 }
