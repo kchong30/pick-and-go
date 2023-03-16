@@ -1,12 +1,4 @@
-﻿/* Initial jQuery as Page Loaded */
-(function ($) {
-    $(document).ready(function () {
-        var cart = JSON.parse(localStorage.getItem("cart"));
-        $("#cart-icon").text(cart.length);
-        var pp = $("#product option:selected").val();
-        setProductPrice(pp);
-    });
-})(jQuery);
+/* Page Loaded, setProducePrice has been moved to init.js due to cart icon */
 
 
 /* Form Validation */
@@ -40,19 +32,15 @@ function changeProduct(event) {
     setProductPrice(value);
 }
 
-/* Set Total Price from selected option value */
-function setProductPrice(value) {
-    // parse price from value
-    var productValue = value.split("-");
-    console.log(productValue)
-    var productPrice = productValue[1];
-    $("#product-price").text(productPrice);
 
-    // display total price
-    var totalPrice =
-        parseFloat($("#product-price").html()) + parseFloat($("#ingredients-price").html());
-    $("#total-price").text(totalPrice);
-}
+/* Add to Cart from Favorite */
+/*
+ 1) Which table is selected?
+ 2) What do the table have ? (productId, ingredients, subtotal)
+ 3) Parse to float and send it to shoopping cart
+ 4) Remove fav part from 'add to cart btn'
+  */
+
 
 /* Add to Cart */
 function addToCart(event) {
@@ -65,20 +53,18 @@ function addToCart(event) {
             $(window).scrollTop(0);
             return false
         }
-
         subTotal = $('#product-price').html();
         productId = $("#product option:selected").val().split("-")[0];
         description = $("#product option:selected").val().split("-")[2];
     } else {
         console.log("Fav Page")
-
-            var buttonValue = $("#addToCartButton").val();
-            var parts = buttonValue.split("-");
-
-            // Extract the product ID, description, and current price from the parts array
-            productId = parts[0];
-            description = parts[1];
-            subTotal = parts[2];
+        if (event) {
+            subTotal = event.target.value.split("-")[2];
+            productId = event.target.value.split("-")[0];
+            description = event.target.value.split("-")[1];
+            /* new values were not changed.. so left comment here */
+            /* Reason of error: event parameter was missing, so temporary added paramter in Favorites.cshtml */
+        }
     }
 
     // Get item from localStorage
