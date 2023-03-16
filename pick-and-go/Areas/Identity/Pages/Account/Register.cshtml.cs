@@ -23,6 +23,8 @@ using PickAndGo.Repositories;
 using PickAndGo.Models;
 using static PickAndGo.Services.ReCAPTCHA;
 using PickAndGo.ViewModels;
+using PickAndGo.Services;
+
 
 namespace PickAndGo.Areas.Identity.Pages.Account
 {
@@ -37,6 +39,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
         private readonly IConfiguration _configuration;
         private readonly PickAndGoContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailService _emailService;
 
 
         public RegisterModel(
@@ -47,7 +50,8 @@ namespace PickAndGo.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             IConfiguration configuration,
             PickAndGoContext context,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IEmailService emailService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -58,6 +62,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
             _configuration = configuration;
             _db = context;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -159,12 +164,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
+                //Check customer table first - if such a customer already exists - update existing user
                 CustomerRepository cr = new CustomerRepository(_db);
                 var customer = cr.ReturnCustomerByEmail(Input.Email);
 
@@ -179,12 +179,21 @@ namespace PickAndGo.Areas.Identity.Pages.Account
                     message = cr.UpdateCustomerSignUpDate(customer.CustomerId);
                 }
 
+                //If customer creation or update fails - redirect back to registration page with error message.
+
                 if (message != "")
                 {
-                    // do something - not sure what to do if identity framework creates the user 
-                    // successfully but our database update fails
+                    ViewData["ErrorMessage"] = message;
+                    return Page();
                 }
 
+                var user = CreateUser();
+
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
+
+   
                 if (result.Succeeded)
                 {
                     var defaultRole = _roleManager.FindByNameAsync("Customer").Result;
@@ -204,12 +213,23 @@ namespace PickAndGo.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    var response = await _emailService.SendRegistrationEmail(new RegistrationEmailModel
+                    {
+                        FirstName = "Kevin",
+                        LastName = "Chong",
+                        Subject = "Confirm your email",
+                        Email = Input.Email,
+                        Body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                    });
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email
+                                                  , returnUrl = returnUrl
+                                                  , DisplayConfirmAccountLink =false
+                                                  });
+
                     }
                     else
                     {

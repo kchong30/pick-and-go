@@ -1,5 +1,3 @@
-﻿
-
 /* Page Loaded, setProducePrice has been moved to init.js due to cart icon */
 
 
@@ -231,14 +229,39 @@ function checkout(event) {
 
 }
 
-//function transferData() {
-//    var cart = localStorage.getItem("cart");
-//    $.ajax({
-//        type: 'POST',
-//        url: '/Order/ShoppingCart',
-//        data: { cart: cart },
-//        success: function () {
-//            console.log('Data sent to server successfully.');
-//        }
-//    });
-//}
+function removeSandwich(index) {
+
+    var cart = JSON.parse(localStorage.getItem("cart"))
+  //  var cart = localStorage.getItem("cart");
+
+    cart.splice(index, 1);
+
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    var cart = localStorage.getItem("cart");
+    if (cart.length === 0) {
+        // display alert with message
+        alert("Your shopping cart is empty, please click the button to proceed");
+        // navigate to shopping cart page
+        window.location.href = "/Order";
+        return;
+    }
+
+    var shoppingCart = cart;
+    $.ajax({
+        type: "POST",
+        url: "/Order/StoreCart",
+        data: JSON.stringify({ CartJson: shoppingCart }),
+        contentType: "application/json",
+        success: function (response) {
+            window.location.href
+                = "/Order/ShoppingCart";
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+
+
+}

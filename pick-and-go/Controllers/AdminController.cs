@@ -148,9 +148,6 @@ namespace PickAndGo.Controllers
 
         public IActionResult Overview(string currentDate, string submitBtn)
         {
-            OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
-            OrderHeaderVM ohVM = new OrderHeaderVM();
-
             if (currentDate == null)
             {
                 currentDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -172,21 +169,10 @@ namespace PickAndGo.Controllers
 
             ViewBag.currentTime = DateTime.Now.ToString("h:mm:s tt");
 
-            ohVM.Date = currentDate;
-            var tuple = ohRepo.GetOverviewCounts(ohVM.Date);
-            ohVM.Outstanding = tuple.Item1;
-            ohVM.Completed = tuple.Item2;
+            OrderHeaderRepository ohRepo = new OrderHeaderRepository(_db);
+            OverviewVM ov = ohRepo.GetOverviewCounts(currentDate);
 
-            var tuple2 = ohRepo.GetOverviewValues(ohVM.Date);
-            ohVM.OutstandingVal = tuple2.Item1;
-            ohVM.CompletedVal = tuple2.Item2;
-
-            CustomerRepository cr = new CustomerRepository(_db);
-            var tuple3 = cr.GetOverviewCustomers();
-            ohVM.Accounts = tuple3.Item1;
-            ohVM.Guests = tuple3.Item2;
-
-            return View(ohVM);
+            return View(ov);
         }
 
         public IActionResult Orders(string message)

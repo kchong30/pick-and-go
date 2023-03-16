@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - PickAndGo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Erik.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/HomePage.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PickAndGo.styles.css" asp-append-version="true" />
 
@@ -15,7 +16,7 @@
     <!-- Google Fonts-->
 
 </head>
-<body>
+<body style="margin-bottom: 0">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
             <div class="container-fluid ">
@@ -64,7 +65,7 @@
                             </li>
                             <li>
                                 <a asp-area="" class="nav-link text-dark" asp-controller="UserRole" asp-action="Index">User Roles</a>
-                            </li>
+                           </li>
 
                         }
                         @if (User.IsInRole("Customer")){

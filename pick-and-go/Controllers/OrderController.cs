@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using PickAndGo.Models;
 using PickAndGo.Repositories;
 using PickAndGo.ViewModels;
+using PickAndGo.Services;
 using System.Net.NetworkInformation;
 using System;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace PickAndGo.Controllers
 {
@@ -16,31 +18,36 @@ namespace PickAndGo.Controllers
     {
         private readonly PickAndGoContext _db;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public OrderController(PickAndGoContext context, IConfiguration configuration)
+
+        public OrderController(PickAndGoContext context, IConfiguration configuration, IEmailService emailService)
         {
             _db = context;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public IActionResult Index(ProductVM products, string nameInput)
         {
             //If the user is a guest - set viewbag for greeting to nameInput (gathered from form at landing page).
             //If logged in, get customer's first name - pass on for greeting.
-            if (!User.Identity.IsAuthenticated)
+            if (HttpContext.Session.GetString("firstName") == null)
             {
-                ViewBag.NameInput = nameInput;
-                HttpContext.Session.SetString("firstName", nameInput);
-            }
-            else
-            {
-                CustomerRepository cr = new CustomerRepository(_db);
-                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
-                ViewBag.NameInput = customer.FirstName;
-                HttpContext.Session.SetString("firstName", customer.FirstName);
-            }
-  
+                if (!User.Identity.IsAuthenticated)
+                {
+                    ViewBag.NameInput = nameInput;
+                    HttpContext.Session.SetString("firstName", nameInput);
+                }
+                else
+                {
+                    CustomerRepository cr = new CustomerRepository(_db);
+                    var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                    ViewBag.NameInput = customer.FirstName;
+                    HttpContext.Session.SetString("firstName", customer.FirstName);
+                }
 
+            }
             ProductRepository pr = new ProductRepository(_db);
             var vm = pr.GetProducts();
             return View(vm);
@@ -64,6 +71,30 @@ namespace PickAndGo.Controllers
             return View(ocVm);
         }
 
+        public IActionResult EditCustomize(int Index)
+        {
+            // Receving Product ID from Main page
+            IngredientsRepository ir = new IngredientsRepository(_db);
+            IQueryable<IngredientListVM> iVm = ir.BuildIngredientListVM();
+
+            ProductRepository pr = new ProductRepository(_db);
+            IQueryable<ProductVM> pVm = pr.GetProducts();
+
+            OrderCustomizeVM ocVm = new OrderCustomizeVM();
+            ocVm.productVMs = pVm.ToList();
+            ocVm.ingredientListVMs = iVm.ToList();
+
+            string cartItem = HttpContext.Session.GetString("shoppingCart");
+            var json = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(cartItem);
+
+            // localStorage delete
+            // Session Variable delete
+
+            //ViewData["ProductId"] = SelectedProductId;
+            ViewData["cartItem"] = json[0];
+
+            return View(ocVm);
+        }
         public IActionResult History(string message, int customerId)
         {
             if (message == null)
@@ -120,8 +151,7 @@ namespace PickAndGo.Controllers
         {
             if (data.PickupTime != null)
             {
-                HttpContext.Session.SetString("pickupTime", DateTime.Now.ToString());
-                //HttpContext.Session.SetString("pickupTime", data.PickupTime);
+                HttpContext.Session.SetString("pickupTime", data.PickupTime);
             }
             if (data.CartJson != null)
             {
@@ -144,8 +174,9 @@ namespace PickAndGo.Controllers
             // Retrieve the session string value
             string pickupTimeString = HttpContext.Session.GetString("pickupTime");
             // Convert the string to a DateTime object
+
             DateTime pickupTime = DateTime.Parse(pickupTimeString);
-          
+
             string sandwichJson = HttpContext.Session.GetString("shoppingCart");
 
             //// Pass it to VM for View?
@@ -162,14 +193,21 @@ namespace PickAndGo.Controllers
             {
                 email = User.Identity.Name;
             }
-                message = oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID,
-                                         orderTotal,sandwichJson,email);
+            message = oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID,
+                                     orderTotal, sandwichJson, email);
+
+            var response = _emailService.SendConfirmationEmail(new ConfirmationEmailModel
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PickUpTime = pickupTimeString
+            });
 
             ViewData["Message"] = message;
 
             return Json(iPN);
         }
-
 
         public IActionResult Confirmation(string confirmationId)
         {

@@ -12,7 +12,7 @@
 <div class="d-flex justify-content-center align-items-center">
     <div>
         <div class="shopping-title">
-            <h1>@customerId Shopping Cart</h1>
+            <h1>Shopping Cart</h1>
         </div>
 
         <div class="container" >
@@ -25,6 +25,7 @@
                         <th ></th>
                         <th ></th>
                         <th ></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +38,14 @@
                             </td>
                             <td class="col-5" style="white-space: nowrap;">@item.Value.description</td>
                             <td class="col-3"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
-                            <td class="col-2">@Html.ActionLink("Duplicate", "Customize", "Order", new { index = item.Index }, new { @class = "btn btn-primary" })</td>
+                            <td class="col-2">@Html.ActionLink("Order Again", "Customize", "Order", new { index = item.Index }, new { @class = "btn btn-primary" })</td>
+                            <td class="col-2">
+                                <button class="btn btn-primary" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
+                            </td>
+                            <td class="col-2">
+                                <button class="btn btn-primary" id="btnEdit" OnClick="EditCustomize(@item.Index)">Edit</button>
+                                <a class="nav-link text-dark" asp-route-index="@item.Index" asp-area ="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
+                            </td>
                         </tr>
 
                         <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show" aria-labelledby="@item.Value.productId">
@@ -47,7 +55,7 @@
                                     @foreach (var ingredient in item.Value.ingredients)
                                     {
                                         <tr class="row">
-                                            <td class="d-flex justify-content-center">@ingredient.description (x @ingredient.quantity)</td>
+                                            <td class="d-flex justify-content-center">@ingredient.description (x @ingredient.quantity) @ingredient.price</td>
                                         </tr>
                                     }
                                 </table>
@@ -182,6 +190,7 @@
     });
 </script>
 
+<script src="~/lib/jquery/dist/cart.js"></script>
 
 
 

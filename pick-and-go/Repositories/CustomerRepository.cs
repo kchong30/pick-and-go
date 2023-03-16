@@ -76,18 +76,6 @@ namespace PickAndGo.Repositories
             return customer;
         }
 
-        public Tuple<int, int> GetOverviewCustomers()
-        {
-            int accounts = _db.Customers
-                                .Where(c => c.DateSignedUp != null)
-                                .Select(c => c.CustomerId).Count();
-            int guests = _db.Customers
-                                .Where(c => c.DateSignedUp == null)
-                                .Select(oh => oh.CustomerId).Count();
-
-            return new Tuple<int, int>(accounts, guests);
-        }
-
         public string EditCustomer(int id, EditCustomerVM customerVM)
         {
             string editMessage = "";
