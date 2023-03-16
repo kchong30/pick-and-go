@@ -29,7 +29,6 @@ namespace PickAndGo.Controllers
 
         public IActionResult Index()
         {
-            DateTime date1 = new DateTime(2015, 12, 25);
 
 
             CustomerRepository cr = new CustomerRepository(_db);
@@ -40,6 +39,19 @@ namespace PickAndGo.Controllers
             }
 
 
+            return View();
+        }
+
+
+        public IActionResult Landing()
+        {
+            CustomerRepository cr = new CustomerRepository(_db);
+            if (User.Identity.IsAuthenticated)
+            {
+                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                var customerId = customer.CustomerId.ToString();
+                HttpContext.Session.SetString("customerid", customerId);
+            }
             return View();
         }
 

@@ -1,4 +1,4 @@
-﻿@model PickAndGo.ViewModels.OverviewVM
+﻿@model PickAndGo.ViewModels.OverviewVM;
 
 @{
     ViewData["Title"] = "Overview";
@@ -111,14 +111,50 @@
         </tr>
     </thead>
     <tbody>
+        @foreach (var ing in Model.Ingredients)
+        {
+            <tr>
+                <td>
+                    @ing.CategoryId
+                </td>
+                <td>
+                    @ing.Description
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Best Sellers - Top 5</h4>
+
+<table class="table">
+    <colgroup>
+        <col style="width: 25%;">
+        <col style="width: 25%;">
+    </colgroup>
+    <thead>
         <tr>
-            <td>
-                
-            </td>
-            <td>
-                
-            </td>
+            <th>
+                Category
+            </th>
+            <th>
+                Description
+            </th>
+
         </tr>
+    </thead>
+    <tbody>
+        @foreach (var ing in Model.TopFive)
+        {
+            <tr>
+                <td>
+                    @ing.CategoryId
+                </td>
+                <td>
+                    @ing.Description
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

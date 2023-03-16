@@ -177,6 +177,7 @@ namespace PickAndGo.Controllers
             // Retrieve the session string value
             string pickupTimeString = HttpContext.Session.GetString("pickupTime");
             // Convert the string to a DateTime object
+
             DateTime pickupTime = DateTime.Parse(pickupTimeString);
 
             string sandwichJson = HttpContext.Session.GetString("shoppingCart");
