@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+.the-form {
+    margin-left: 65px;
+    margin-bottom: 50px;
+}
+
 .main-container {
     margin: 0;
     padding: 0;
@@ -15,7 +20,7 @@
 .header-titles {
     background-color: #ffaf01;
     color: white;
-    border-radius: 30px;
+    border-radius: 0px 0px 30px 30px;
     width: 100%;
     box-sizing: border-box;
     padding-bottom: 20px;
@@ -47,7 +52,7 @@
     width: max-content;
     margin-left: 20px;
     padding: 15px;
-    margin-top: 70px;
+    margin-top: 90px;
     position: absolute;
     transform: translateX(-60%);
     left: 50%;
@@ -56,10 +61,36 @@
 }
 
 .details-button:hover {
-        background-color: black;
-        color: white;
-        cursor: pointer;
-    }
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.header-name-edit {
+    border-radius: 10px;
+    background-color: white;
+    color: #ef6900;
+    width: max-content;
+    margin-left: 40px;
+    padding: 15px;
+    margin-top: 90px;
+    position: absolute;
+    transform: translateX(-60%);
+    left: 50%;
+    top: 0;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    padding-top: 15px;
+    color: #ef6900;
+    font-size: 125%;
+    width: 300px;
+}
+
+.form-group input {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
 
 @media (max-width: 768px) {
     .details-button {
