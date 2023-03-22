@@ -46,7 +46,7 @@ namespace PickAndGo.Controllers
         public IActionResult Landing()
         {
             CustomerRepository cr = new CustomerRepository(_db);
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
             {
                 var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
                 var customerId = customer.CustomerId.ToString();
