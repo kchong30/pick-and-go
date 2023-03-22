@@ -33,7 +33,7 @@
                 </a>
 
                 <!-- Cart Icon -->
-                <button class="navbar-cart order-sm-5">
+                <button class="navbar-cart order-sm-5" id="checkout" onclick="checkout()">
                     <i class="fa-solid fa-cart-shopping"></i> @*top-0 start-20 *@
                     <span id="cart-icon"class="position-absolute translate-middle badge rounded-pill bg-danger">
                         0
@@ -186,6 +186,7 @@
     <script src="~/lib/jquery/dist/init.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/cart.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
