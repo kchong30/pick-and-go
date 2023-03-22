@@ -101,7 +101,7 @@ function addToCartFromFav(event) {
 
     var productId = data.productid;
     var description = data.description;
-    console.log(description)
+
     var productPrice = data.baseprice;
     var subTotal = 0;
     var favId = data.favid;
