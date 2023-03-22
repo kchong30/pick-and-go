@@ -123,7 +123,7 @@
                     </th>
                     <th class="col-2" colspan="2">Name: @favorite.FavoriteName</th>
                     <th class="col-4 add-button">
-                        <button class="btn btn-primary btn-sm" onclick="addToCart(event)" value=@favorite.ProductId-@favorite.Description-@favorite.CurrentPrice-@favorite.OrderId>Add to Order</button>
+                        <button class="btn btn-primary btn-sm" onclick="addToCart(event)" value=@favorite.ProductId-@favorite.Description-@favorite.CurrentPrice-@favorite.OrderStr>Add to Order</button>
                     </th>
                 </tr>
             </thead>
@@ -136,7 +136,7 @@
                     <td class="col-3"></td>
                     <td class="col-2 cell-amount">@String.Format("${0:0.00}", favorite.LineValue)</td>
                     <td class="col-1">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@favorite.OrderStr" aria-expanded="false" aria-controls="@favorite.OrderStr"></button>
+                        <button class="btn btn-primary btn-sm" onclick="addToCartFromFav(event)" data-productId=@favorite.ProductId data-description=@favorite.Description data-basePrice=@favorite.CurrentPrice data-favId=@favorite.OrderStr>Add to Order</button>
                     </td>
                 </tr>
 
@@ -154,7 +154,7 @@
 
                             @foreach (var line in favorite.Ingredients)
                             {
-                                <tr class="ingredientTable-" + @favorite.OrderId.ToString()>
+                                <tr class="ingredientTable-@favorite.OrderStr">
                                     <td class="ingredientId" hidden>@line.IngredientId</td>
                                     <td class="quantity" hidden>@line.Quantity</td>
                                     <td class="price" hidden>@line.CurrentPrice</td>

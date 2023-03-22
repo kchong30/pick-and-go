@@ -24,7 +24,6 @@ namespace PickAndGo.Models
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
-        public virtual DbSet<DietaryType> DietaryTypes { get; set; } = null!;
         public virtual DbSet<Favorite> Favorites { get; set; } = null!;
         public virtual DbSet<Ingredient> Ingredients { get; set; } = null!;
         public virtual DbSet<LineIngredient> LineIngredients { get; set; } = null!;
@@ -182,45 +181,6 @@ namespace PickAndGo.Models
                     .IsUnicode(false)
                     .HasColumnName("phoneNumber");
 
-                entity.HasMany(d => d.Dietaries)
-                    .WithMany(p => p.Customers)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "CustomerDietaryType",
-                        l => l.HasOne<DietaryType>().WithMany().HasForeignKey("DietaryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Customer___dieta__5AD97420"),
-                        r => r.HasOne<Customer>().WithMany().HasForeignKey("CustomerId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Customer___custo__59E54FE7"),
-                        j =>
-                        {
-                            j.HasKey("CustomerId", "DietaryId");
-
-                            j.ToTable("Customer_DietaryType");
-
-                            j.IndexerProperty<int>("CustomerId").HasColumnName("customerID");
-
-                            j.IndexerProperty<string>("DietaryId").HasMaxLength(2).IsUnicode(false).HasColumnName("dietaryID");
-                        });
-            });
-
-            modelBuilder.Entity<DietaryType>(entity =>
-            {
-                entity.HasKey(e => e.DietaryId)
-                    .HasName("PK__DietaryT__9B5E3E4CD5E2933B");
-
-                entity.ToTable("DietaryType");
-
-                entity.Property(e => e.DietaryId)
-                    .HasMaxLength(2)
-                    .IsUnicode(false)
-                    .HasColumnName("dietaryID");
-
-                entity.Property(e => e.DietaryImage)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("dietaryImage");
-
-                entity.Property(e => e.DietaryName)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("dietaryName");
             });
 
             modelBuilder.Entity<Favorite>(entity =>
@@ -296,22 +256,6 @@ namespace PickAndGo.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Ingredien__categ__44EA3301");
 
-                entity.HasMany(d => d.Dietaries)
-                    .WithMany(p => p.Ingredients)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "IngredientDietaryType",
-                        l => l.HasOne<DietaryType>().WithMany().HasForeignKey("DietaryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Ingredien__dieta__5EAA0504"),
-                        r => r.HasOne<Ingredient>().WithMany().HasForeignKey("IngredientId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Ingredien__ingre__5DB5E0CB"),
-                        j =>
-                        {
-                            j.HasKey("IngredientId", "DietaryId");
-
-                            j.ToTable("Ingredient_DietaryType");
-
-                            j.IndexerProperty<int>("IngredientId").HasColumnName("ingredientID");
-
-                            j.IndexerProperty<string>("DietaryId").HasMaxLength(2).IsUnicode(false).HasColumnName("dietaryID");
-                        });
             });
 
             modelBuilder.Entity<LineIngredient>(entity =>

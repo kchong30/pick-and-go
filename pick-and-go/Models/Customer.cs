@@ -9,7 +9,6 @@ namespace PickAndGo.Models
         {
             Favorites = new HashSet<Favorite>();
             OrderHeaders = new HashSet<OrderHeader>();
-            Dietaries = new HashSet<DietaryType>();
         }
 
         public int CustomerId { get; set; }
@@ -24,6 +23,5 @@ namespace PickAndGo.Models
         public virtual ICollection<Favorite> Favorites { get; set; }
         public virtual ICollection<OrderHeader> OrderHeaders { get; set; }
 
-        public virtual ICollection<DietaryType> Dietaries { get; set; }
     }
 }
