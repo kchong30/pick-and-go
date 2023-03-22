@@ -9,32 +9,37 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<div class="d-flex justify-content-center align-items-center">
+<div class="justify-content-center align-items-center">
     <div>
         <div class="shopping-title">
             <h1>Shopping Cart</h1>
         </div>
-        <div class="container">
-          <table class="table">
+        <div class="container-fluid">
+          <table class="table text-center">
             <thead>
               <tr>
-                <th></th>
-                <th>Description</th>
-                <th>Subtotal</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th scope="col" class="col-md-1"></th>
+                        <th scope="col" class="col-md-2">Sandwich</th>
+                        <th scope="col" class="col-md-2">Description</th>
+                        <th scope="col" class="col-md-1">Quantity</th>
+                        <th scope="col" class="col-md-1">Price</th>
+                        <th scope="col" class="col-md-1">Sub Total</th>
               </tr>
             </thead>
-            <tbody>
+                <tbody class="">
               @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
               {
                 <tr>
+
                   <td>
                     <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
                     </button>
                   </td>
+
                   <td style="white-space: nowrap;">@item.Value.description</td>
+                  <td></td>
+                            <td></td>
+                                              <td></td>
                   <td><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
                   <td>
                    <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
@@ -48,16 +53,29 @@
                   </td>
                 </tr>
 
-                <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show" aria-labelledby="@item.Value.productId">
-                  <td colspan="6">
+                <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
+   
+                   <td colspan="12">
                     <table class="accordion-table container">
-                      @foreach (var ingredient in item.Value.ingredients)
-                      {
-                        <tr class="row">
-                          <td class="d-flex justify-content-center">@ingredient.description (x @ingredient.quantity) @ingredient.price</td>
-                        </tr>
-                      }
+                        @foreach (var ingredient in item.Value.ingredients)
+                        {
+                            decimal price = (Convert.ToDecimal(ingredient.price) * Convert.ToDecimal(ingredient.quantity));
+                            <tr>
+                                <th scope="col" class="col-md-1"></th>
+
+                                            <td class="text-center col-md-2"></td>
+                                <td class="text-center col-md-2">@ingredient.description</td>
+                        
+                               <td class="text-center col-md-1">@ingredient.quantity</td>
+                               <td class="text-center col-md-1">@price</td>
+                                <td class="text-center col-md-1"></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                        }
                     </table>
+
                   </td>
                 </tr>
               }
@@ -159,7 +177,6 @@
         });
         $(totalAmountId).html(totalAmount.toFixed(2));
     });
-
 
     $(document).ready(function() {
         // Hide the PayPal button initially

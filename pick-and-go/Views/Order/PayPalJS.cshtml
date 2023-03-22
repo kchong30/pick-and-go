@@ -1,21 +1,5 @@
 ﻿
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-
-@*<script>
-    const dropdown = document.getElementById('pickupTime');
-
-    function handleDropdownChange() {
-        const selectedValue = dropdown.value;
-        console.log(selectedValue);
-        sessionStorage.setItem('pickupTime', selectedValue);
-    }
-
-    dropdown.addEventListener('change', handleDropdownChange);
-
-    // Set the pickupTime session storage variable to the initial value
-    const initialPickupTime = dropdown.value;
-    sessionStorage.setItem('pickupTime', initialPickupTime);
-</script>*@
 <script>
     paypal.Button.render({
         env: 'sandbox', // Or ' production '
@@ -44,7 +28,10 @@
                     console.log(response);
                 },
                 error: function (response) {
+                    alrt("Error: Can not process the order currently.");
                     console.log(response);
+                    throw new Error("Payment process stopped due to an error.");
+                    return
                 }
             });
 
@@ -83,7 +70,6 @@
                 console.log(payment);
                 //alert("This JSON is from Paypal: " + JSON.stringify(payment));
                 console.log("-------------------------------------")
-
                 var email = $('#email').val();
 
                 var dataObject = {
@@ -135,6 +121,7 @@
             /*
             * Buyer cancelled the payment
             */
+            alert("Your order has bee Cancelled");
         },
     }, '#paypal-button');
 
