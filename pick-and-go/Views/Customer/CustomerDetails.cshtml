@@ -20,19 +20,19 @@
             <dt class="col-sm-2 title-name">
                 Full Name
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-10 title-result">
                 @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
             </dd>
             <dt class="col-sm-2 title-name">
                 Email Address
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-10  title-result">
                 @Html.DisplayFor(model => model.EmailAddress)
             </dd>
             <dt class="col-sm-2 title-name">
                 Phone Number
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-10  title-result">
                 @Html.DisplayFor(model => model.PhoneNumber)
             </dd>
             @if (Model.DateLastOrdered == null)
@@ -40,7 +40,7 @@
                 <dt class="col-sm-2 title-name">
                     Last Ordered On
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-10 title-result">
                     You Have Not Ordered Anything Yet!
                 </dd>
             }
@@ -49,7 +49,7 @@
                 <dt class="col-sm-2 title-name">
                     Last Ordered On
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-10 title-result">
                     @Html.DisplayFor(model => model.DateLastOrdered)
                 </dd>
             }
@@ -58,7 +58,7 @@
                 <dt class="col-sm-2 title-name">
                     Date Signed Up
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-10 title-result">
                     You Did Not Sign Up Yet!
                 </dd>
             }
@@ -67,7 +67,7 @@
                 <dt class="col-sm-2 title-name">
                     Date Signed Up
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-10 title-result">
                     @Html.DisplayFor(model => model.DateSignedUp)
                 </dd>
             }
