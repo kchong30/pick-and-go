@@ -7,25 +7,27 @@
 
 <form method="post" asp-action="CustomerEdit" enctype="multipart/form-data">
     <div class="header-titles">
-        <h1>Edit Profile</h1>
-        <h2 class="edit-text-two">Edit Info For @Html.DisplayFor(model => model.EmailAddress)</h2>
+        <h1>Customer Edit Page</h1>
+        <h2 class="header-name-edit">Edit Info For @Html.DisplayFor(model => model.EmailAddress)</h2>
     </div>
-    <div class="form-group">
-        <label asp-for="FirstName" class="title-name">First Name</label>
-        <input asp-for="FirstName" class="form-control" placeholder="FirstName">
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+    <div class="the-form">
+        <div class="form-group">
+            <label asp-for="FirstName">First Name</label>
+            <input asp-for="FirstName" class="form-control" placeholder="FirstName">
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName">Last Name</label>
+            <input asp-for="LastName" class="form-control" placeholder="LastName">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control" placeholder="PhoneNumber">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-    <div class="form-group">
-        <label asp-for="LastName" class="title-name">Last Name</label>
-        <input asp-for="LastName" class="form-control" placeholder="LastName">
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="PhoneNumber" class="title-name">Phone Number</label>
-        <input asp-for="PhoneNumber" class="form-control" placeholder="PhoneNumber">
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-    <br />
-    <button type="submit" class="details-button">Submit</button>
 </form>
 @ViewBag.Message
