@@ -204,8 +204,9 @@ namespace PickAndGo.Controllers
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                PickUpTime = pickupTimeString
-            });
+                PickUpTime = pickupTimeString,
+                OrderDetails = sandwichJson
+            }) ;
 
             ViewData["Message"] = message;
 
