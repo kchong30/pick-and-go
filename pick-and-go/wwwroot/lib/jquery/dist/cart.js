@@ -73,7 +73,7 @@ function addToCart() {
 
     var item = {
         productId: productId,
-        productPrice: parseFlaot(productPrice),
+        productPrice: parseFloat(productPrice),
         description: description,
         ingredients: ingredients,
         subTotal: subTotal + parseFloat(productPrice)
@@ -101,6 +101,7 @@ function addToCartFromFav(event) {
 
     var productId = data.productid;
     var description = data.description;
+    console.log(description)
     var productPrice = data.baseprice;
     var subTotal = 0;
     var favId = data.favid;
@@ -123,10 +124,10 @@ function addToCartFromFav(event) {
 
     var item = {
         productId: productId,
-        productPrice: parseFlaot(productPrice),
-    description: description,
-    ingredients: ingredients,
-    subTotal: subTotal + parseFloat(productPrice)
+        productPrice: parseFloat(productPrice),
+        description: description,
+        ingredients: ingredients,
+        subTotal: subTotal + parseFloat(productPrice)
     };
 
     // Get item from localStorage
@@ -193,7 +194,7 @@ function addToCartFromEdit() {
 
     var item = {
         productId: productId,
-        productPrice: parseFlaot(productPrice),
+        productPrice: parseFloat(productPrice),
         description: description,
         ingredients: ingredients,
         subTotal: subTotal + parseFloat(productPrice)
