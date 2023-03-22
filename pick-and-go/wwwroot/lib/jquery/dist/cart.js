@@ -289,7 +289,7 @@ function removeSandwich(index) {
         // display alert with message
         alert("Your shopping cart is empty, please click the button to proceed");
         // navigate to shopping cart page
-        window.location.href = "/Order";
+        window.location.href = "/Order/Index";
         return;
     }
     ajaxStoreCart();
