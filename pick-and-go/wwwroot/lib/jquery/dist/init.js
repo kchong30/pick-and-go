@@ -2,7 +2,9 @@
 (function ($) {
     $(document).ready(function () {
         var cart = JSON.parse(localStorage.getItem("cart"));
-        $("#cart-icon").text(cart.length);
+        if (cart != null) {
+            $("#cart-icon").text(cart.length);
+        }
         if ($("#customize-page").html()) {
             var pp = $("#product option:selected").val();
             setProductPrice(pp);
@@ -23,4 +25,27 @@ function setProductPrice(value) {
     var totalPrice =
         parseFloat($("#product-price").html()) + parseFloat($("#ingredients-price").html());
     $("#total-price").text(totalPrice);
+}
+
+
+function checkout() {
+    console.log("triggerd?")
+    ajaxStoreCart();
+}
+
+function ajaxStoreCart() {
+    var cart = localStorage.getItem("cart");
+    $.ajax({
+        type: "POST",
+        url: "/Order/StoreCart",
+        data: JSON.stringify({ CartJson: cart }),
+        contentType: "application/json",
+        success: function (response) {
+            window.location.href
+                = "/Order/ShoppingCart";
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
 }
