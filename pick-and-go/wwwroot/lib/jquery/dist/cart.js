@@ -1,4 +1,15 @@
-/* Page Loaded, setProducePrice has been moved to init.js due to cart icon */
+/* Page Loaded */
+(function ($) {
+    $(document).ready(function () {
+        $(".ingredientTable input:checked").each(function () {
+            var clickedId = $(this).attr("id")
+            var elementIdSplit = clickedId.split("-");
+            var id = elementIdSplit[0];
+            var quantityValue = elementIdSplit[1];
+            updateTotalPrice(id, quantityValue)
+        });
+    });
+})(jQuery);
 
 
 /* Form Validation */
@@ -32,50 +43,16 @@ function changeProduct(event) {
     setProductPrice(value);
 }
 
-
-/* Add to Cart from Favorite */
-/*
- 1) Which table is selected?
- 2) What do the table have ? (productId, ingredients, subtotal)
- 3) Parse to float and send it to shoopping cart
- 4) Remove fav part from 'add to cart btn'
-  */
-
-
 /* Add to Cart */
-function addToCart(event) {
-    var subTotal;
-    var productId;
-    var description;
-
-    if ($("#customize-page").html()) {
-        if (!validateForm()) {
-            $(window).scrollTop(0);
-            return false
-        }
-        subTotal = $('#product-price').html();
-        productId = $("#product option:selected").val().split("-")[0];
-        description = $("#product option:selected").val().split("-")[2];
-    } else {
-        console.log("Fav Page")
-        if (event) {
-            subTotal = event.target.value.split("-")[2];
-            productId = event.target.value.split("-")[0];
-            description = event.target.value.split("-")[1];
-            /* new values were not changed.. so left comment here */
-            /* Reason of error: event parameter was missing, so temporary added paramter in Favorites.cshtml */
-        }
+function addToCart() {
+    if (!validateForm()) {
+        $(window).scrollTop(0);
+        return false
     }
-
-    // Get item from localStorage
-    var cart = JSON.parse(localStorage.getItem("cart"));
-
-    if (cart == null) {
-        cart = [];
-    }
-    if (!(cart instanceof Array)) {
-        cart = [cart];
-    }
+    var productPrice = $('#product-price').html();
+    var productId = $("#product option:selected").val().split("-")[0];
+    var description = $("#product option:selected").val().split("-")[2];
+    var subTotal = 0;
 
     // Customized item array
     var ingredients = [];
@@ -96,10 +73,72 @@ function addToCart(event) {
 
     var item = {
         productId: productId,
+        productPrice: parseFloat(productPrice),
         description: description,
         ingredients: ingredients,
-        subTotal: subTotal
+        subTotal: subTotal + parseFloat(productPrice)
     };
+
+    // Get item from localStorage
+    var cart = JSON.parse(localStorage.getItem("cart"));
+
+    if (cart == null) {
+        cart = [];
+    }
+    if (!(cart instanceof Array)) {
+        cart = [cart];
+    }
+
+    cart.push(item);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    $("#cart-icon").text(cart.length);
+    clearSelection();
+}
+
+/* Add to Cart from Fav Page */
+function addToCartFromFav(event) {
+    var data = event.target.dataset
+
+    var productId = data.productid;
+    var description = data.description;
+
+    var productPrice = data.baseprice;
+    var subTotal = 0;
+    var favId = data.favid;
+    var ingredients = [];
+    var tableClassName = '.ingredientTable-' + favId
+
+    $(tableClassName).each(function () {
+        var quantity = $(this).find(".quantity").html();
+        if (quantity > 0) {
+            var ingredient = {
+                ingredientId: $(this).find(".ingredientId").html(),
+                description: $(this).find(".description").html(),
+                quantity: quantity,
+                price: $(this).find(".price").html(),
+            };
+            subTotal = quantity * ingredient.price + parseFloat(subTotal);
+            ingredients.push(ingredient);
+        }
+    });
+
+    var item = {
+        productId: productId,
+        productPrice: parseFloat(productPrice),
+        description: description,
+        ingredients: ingredients,
+        subTotal: subTotal + parseFloat(productPrice)
+    };
+
+    // Get item from localStorage
+    var cart = JSON.parse(localStorage.getItem("cart"));
+
+    if (cart == null) {
+        cart = [];
+    }
+    if (!(cart instanceof Array)) {
+        cart = [cart];
+    }
 
     cart.push(item);
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -112,20 +151,19 @@ function addToCart(event) {
 /* Add to Cart from Edit Page */
 function addToCartFromEdit() {
 
-
-    var subTotal;
+    var productPrice;
     var productId;
     var description;
+    var subTotal = 0;
 
+    if (!validateForm()) {
+        $(window).scrollTop(0);
+        return false
+    }
 
-        if (!validateForm()) {
-            $(window).scrollTop(0);
-            return false
-        }
-
-        subTotal = $('#product-price').html();
-        productId = $("#product option:selected").val().split("-")[0];
-        description = $("#product option:selected").val().split("-")[2];
+    productPrice = $('#product-price').html();
+    productId = $("#product option:selected").val().split("-")[0];
+    description = $("#product option:selected").val().split("-")[2];
 
     // Get item from localStorage
     var cart = JSON.parse(localStorage.getItem("cart"));
@@ -156,9 +194,10 @@ function addToCartFromEdit() {
 
     var item = {
         productId: productId,
+        productPrice: parseFloat(productPrice),
         description: description,
         ingredients: ingredients,
-        subTotal: subTotal
+        subTotal: subTotal + parseFloat(productPrice)
     };
 
     cart.push(item);
