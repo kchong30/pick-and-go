@@ -50,66 +50,69 @@
                                 modalLabel = "Remove from favorites?";
                                 askForName = false;
                             }
-                        
+
                             var dataTargetConfirm = "#ModalYes" + @order.LineId;
                             var modalID = "ModalYes" + @order.LineId;
                         }
-                        <a asp-action="UpdateFavorites" asp-route-custId="@order.CustomerId" asp-route-orderId="@order.OrderId" asp-route-lineId="@order.LineId" asp-route-isFavorite="@order.IsFavorite" asp-route-name="@favoriteName" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">
-                            <img class="cell-image" src=@imageSource /></a>
 
-
-                        @using (Html.BeginForm("UpdateFavorites", "Order", new
+                        <!-- Add to Favorites not allowed for admin user -->
+                        @if (!User.IsInRole("Admin"))
                         {
-                            custId = @order.CustomerId,
-                            orderId = @order.OrderId,
-                            lineId = @order.LineId,
-                            isFavorite = order.IsFavorite,
-                            name = @favoriteName,
-                            fromHistory = true
+                            <a asp-action="UpdateFavorites" asp-route-custId="@order.CustomerId" asp-route-orderId="@order.OrderId" asp-route-lineId="@order.LineId" asp-route-isFavorite="@order.IsFavorite" asp-route-name="@favoriteName" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">
+                                <img class="cell-image" src=@imageSource /></a>
 
-                        }, FormMethod.Post))
-                        {
-                            <!-- Modal -->
-                            <div class="modal fade bd-example-modal-sm" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmModalLabel">@modalLabel</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <table class="modal-table">
-                                                <tr>
-                                                    <td>Order:</td>
-                                                    <td>@order.OrderId</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Product:</td>
-                                                    <td>@order.Description</td>
-                                                </tr>
-                                            </table>
-                                            @if (askForName)
-                                            {
-                                                <form>
-                                                    <div class="form-group">
-                                                        <label for="favoriteName" class="col-form-label">Name of favorite:</label>
-                                                        <input type="text" class="form-control" id="favoriteName" name="favoriteName" required>
-                                                    </div>
-                                                </form>
-                                            }
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                            <button type="submit" class="btn btn-primary">Yes</button>
 
+                            @using (Html.BeginForm("UpdateFavorites", "Order", new
+                            {
+                                custId = @order.CustomerId,
+                                orderId = @order.OrderId,
+                                lineId = @order.LineId,
+                                isFavorite = order.IsFavorite,
+                                name = @favoriteName,
+                                fromHistory = true
+
+                            }, FormMethod.Post))
+                            {
+                                <!-- Modal -->
+                                <div class="modal fade bd-example-modal-sm" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmModalLabel">@modalLabel</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="modal-table">
+                                                    <tr>
+                                                        <td>Order:</td>
+                                                        <td>@order.OrderId</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Product:</td>
+                                                        <td>@order.Description</td>
+                                                    </tr>
+                                                </table>
+                                                @if (askForName)
+                                                {
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="favoriteName" class="col-form-label">Name of favorite:</label>
+                                                            <input type="text" class="form-control" id="favoriteName" name="favoriteName" required>
+                                                        </div>
+                                                    </form>
+                                                }
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-primary">Yes</button>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            }
                         }
-
-
                     </td>
                     <td class="col-6">@order.Description</td>
                     <td class="col-3"></td>

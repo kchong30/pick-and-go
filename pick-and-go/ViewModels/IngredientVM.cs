@@ -15,6 +15,7 @@ namespace PickAndGo.ViewModels
         public Boolean OutstandingOrders {get; set; }
         public string ?InStockIcon { get; set; }
         public bool IngredientInStock { get; set; }
+        public string IngredientImage { get; set; }
 
     }
 }

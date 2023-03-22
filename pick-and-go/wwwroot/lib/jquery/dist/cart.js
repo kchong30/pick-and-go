@@ -3,6 +3,8 @@
     $(document).ready(function () {
         var cart = JSON.parse(localStorage.getItem("cart"));
         $("#cart-icon").text(cart.length);
+        var pp = $("#product option:selected").val();
+        setProductPrice(pp);
     });
 })(jQuery);
 
@@ -42,6 +44,7 @@ function changeProduct(event) {
 function setProductPrice(value) {
     // parse price from value
     var productValue = value.split("-");
+    console.log(productValue)
     var productPrice = productValue[1];
     $("#product-price").text(productPrice);
 
@@ -57,20 +60,25 @@ function addToCart(event) {
     var productId;
     var description;
 
-    if ($("#customize-page")) {
+    if ($("#customize-page").html()) {
         if (!validateForm()) {
             $(window).scrollTop(0);
             return false
         }
-        console.log("Custom Page!")
+
         subTotal = $('#product-price').html();
         productId = $("#product option:selected").val().split("-")[0];
         description = $("#product option:selected").val().split("-")[2];
     } else {
         console.log("Fav Page")
-        subTotal = event.target.value.split("-")[2];
-        productId = event.target.value.split("-")[0];
-        description = event.target.value.split("-")[1];
+
+            var buttonValue = $("#addToCartButton").val();
+            var parts = buttonValue.split("-");
+
+            // Extract the product ID, description, and current price from the parts array
+            productId = parts[0];
+            description = parts[1];
+            subTotal = parts[2];
     }
 
     // Get item from localStorage
@@ -93,9 +101,9 @@ function addToCart(event) {
                 ingredientId: $(this).find(".ingredientId").html(),
                 description: $(this).find(".description").html(),
                 quantity: quantity,
-                price: $(this).find(".price").html(),
+                price: parseFloat($(this).find(".price").html()),
             };
-            subTotal = quantity * ingredient.price + subTotal;
+            subTotal = quantity * ingredient.price + parseFloat(subTotal);
             ingredients.push(ingredient);
         }
     });
@@ -235,14 +243,39 @@ function checkout(event) {
 
 }
 
-//function transferData() {
-//    var cart = localStorage.getItem("cart");
-//    $.ajax({
-//        type: 'POST',
-//        url: '/Order/ShoppingCart',
-//        data: { cart: cart },
-//        success: function () {
-//            console.log('Data sent to server successfully.');
-//        }
-//    });
-//}
+function removeSandwich(index) {
+
+    var cart = JSON.parse(localStorage.getItem("cart"))
+  //  var cart = localStorage.getItem("cart");
+
+    cart.splice(index, 1);
+
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    var cart = localStorage.getItem("cart");
+    if (cart.length === 0) {
+        // display alert with message
+        alert("Your shopping cart is empty, please click the button to proceed");
+        // navigate to shopping cart page
+        window.location.href = "/Order";
+        return;
+    }
+
+    var shoppingCart = cart;
+    $.ajax({
+        type: "POST",
+        url: "/Order/StoreCart",
+        data: JSON.stringify({ CartJson: shoppingCart }),
+        contentType: "application/json",
+        success: function (response) {
+            window.location.href
+                = "/Order/ShoppingCart";
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+
+
+}

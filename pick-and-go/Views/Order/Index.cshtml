@@ -18,7 +18,7 @@
     @foreach (var item in Model) {
             <tr>
                 <td>
-                    <img class="sandwich-image" src="../images/@item.Image" alt="Sandwich">
+                    <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
                 </td>
                 <td class="align-middle text-left">
                     @Html.DisplayFor(modelItem => item.Description)

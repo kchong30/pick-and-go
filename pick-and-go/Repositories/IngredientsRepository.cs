@@ -38,6 +38,7 @@ namespace PickAndGo.Repositories
                                                                 InStock = i.InStock,
                                                                 OutstandingOrders = (oCount > 0) ? true : false,
                                                                 InStockIcon = (i.InStock == "Y") ? "check.svg" : "x.svg",
+                                                                IngredientImage = i.Image,
                                                              }),
                          };
 
@@ -54,7 +55,8 @@ namespace PickAndGo.Repositories
                          Description = i.Description,
                          Price = i.Price,
                          CategoryId = i.CategoryId,
-                         InStock = i.InStock
+                         InStock = i.InStock,
+                         IngredientImage = i.Image
                      };
 
             return vm;
@@ -84,6 +86,7 @@ namespace PickAndGo.Repositories
                 vm.Price = 0;
                 vm.CategoryId = "";
                 vm.IngredientInStock = true;
+                vm.IngredientImage = "";
             }
             else
             {
@@ -92,6 +95,7 @@ namespace PickAndGo.Repositories
                 vm.Price = ingredient.Price;
                 vm.CategoryId = ingredient.CategoryId;
                 vm.IngredientInStock = ingredient.InStock == "Y" ? true : false;
+                vm.IngredientImage = ingredient.Image;
             }
             return vm;
         }
@@ -109,12 +113,14 @@ namespace PickAndGo.Repositories
                     Price = ingredientVM.Price,
                     CategoryId = ingredientVM.CategoryId,
                     InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
-                }); ;
+                    Image = ingredientVM.IngredientImage,
+            }); ;
                 _db.SaveChanges();
             }
             catch (Exception e)
             {
-                editMessage = e.Message;
+                editMessage = "An error occurred while updating the ingredient in the database." +
+                              " Please try again later." + " " + e.Message;
             }
 
             if (editMessage == "")
@@ -136,8 +142,8 @@ namespace PickAndGo.Repositories
             }
             catch (Exception e)
             {
-                deleteMessage = e.Message + " " + "The ingredient may not exist or "
-                                                + "there could be a foreign key restriction.";
+                deleteMessage = "The ingredient may not exist or " +
+                                "there could be a foreign key restriction." + " " + e.Message;
             }
 
             if (deleteMessage == "")
@@ -159,12 +165,14 @@ namespace PickAndGo.Repositories
                     Price = ingredientVM.Price,
                     CategoryId = ingredientVM.CategoryId,
                     InStock = ingredientVM.IngredientInStock == true ? "Y" : "N",
+                    Image = ingredientVM.IngredientImage,
                 });
                 _db.SaveChanges();
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = "An error occurred while adding the ingredient to the database." +
+                          " Please try again later." + " " + e.Message;
             }
             if (message == "")
             {

@@ -25,11 +25,14 @@ namespace PickAndGo.Controllers
         }
 
         //[Authorize(Roles = "Customer")]
-        public IActionResult CustomerDetails()
+        public IActionResult CustomerDetails(string message)
         {
             CustomerRepository cR = new CustomerRepository(_db);
-            var user = User.Identity.Name;
-            var vm = cR.ReturnCustomerByEmail(user);
+
+            int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
+            var vm = cR.ReturnCustomerById(customerId);
+
+            ViewData["Message"] = message;
             return View(vm);
         }
 
@@ -48,12 +51,14 @@ namespace PickAndGo.Controllers
         [HttpPost]
         public async Task<IActionResult> CustomerEdit(int id, EditCustomerVM customerVM)
         {
+            string editMessage = "";
+
             CustomerRepository cR = new CustomerRepository(_db);
             if (ModelState.IsValid)
             {
-                cR.EditCustomer(id, customerVM);
+                editMessage = cR.EditCustomer(id, customerVM);
             }
-            return RedirectToAction("CustomerDetails");
+            return RedirectToAction("CustomerDetails", new { message = editMessage });
         }
     }
 }
