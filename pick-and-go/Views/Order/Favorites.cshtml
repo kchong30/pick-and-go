@@ -123,7 +123,7 @@
                     </th>
                     <th class="col-2" colspan="2">Name: @favorite.FavoriteName</th>
                     <th class="col-4 add-button">
-                        <button class="btn btn-primary btn-sm" onclick="addToCart(event)" value=@favorite.ProductId-@favorite.Description-@favorite.CurrentPrice>Add to Order</button>
+                        <button class="btn btn-primary btn-sm" onclick="addToCart(event)" value=@favorite.ProductId-@favorite.Description-@favorite.CurrentPrice-@favorite.OrderId>Add to Order</button>
                     </th>
                 </tr>
             </thead>
@@ -154,7 +154,7 @@
 
                             @foreach (var line in favorite.Ingredients)
                             {
-                                <tr class="ingredientTable">
+                                <tr class="ingredientTable-" + @favorite.OrderId.ToString()>
                                     <td class="ingredientId" hidden>@line.IngredientId</td>
                                     <td class="quantity" hidden>@line.Quantity</td>
                                     <td class="price" hidden>@line.CurrentPrice</td>
