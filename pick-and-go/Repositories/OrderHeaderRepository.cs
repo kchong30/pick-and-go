@@ -2,6 +2,7 @@
 using PickAndGo.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System;
+using NuGet.Packaging.Signing;
 
 namespace PickAndGo.Repositories
 {
@@ -44,25 +45,22 @@ namespace PickAndGo.Repositories
                                   .OrderBy(i => i.CategoryId)
                                   .ThenBy(i => i.Description),
                 TopFive = _db.Ingredients
-                                .Where(li => _db.LineIngredients
-                                .Where(li => li.Quantity != null && li.Price != null)
-                                .GroupBy(li => li.IngredientId)
-                                .Select(g => g.Key)
-                                .Contains(li.IngredientId))
-                                .Select(i => new
-                                {
-                                    Ingredient = i,
-                                    Description = i.Description,
-                                    CategoryId = i.CategoryId,
-                                    SalesValue = _db.LineIngredients
-                                        .Where(li => li.IngredientId == i.IngredientId)
-                                        .Sum(li => li.Quantity * li.Price)
-                                })
-                                .OrderByDescending(g => g.SalesValue)
-                                .Take(5)
-                                .Select(g => g.Ingredient)
-                                .AsQueryable()
+                            .Join(_db.LineIngredients, i => i.IngredientId, li => li.IngredientId,
+                                 (i, li) => new { i.IngredientId, i.Description, i.CategoryId, li.Quantity })
+                            .Where(joined => joined.Quantity != null && joined.CategoryId != "Breads")
+                            .GroupBy(x => new { x.IngredientId, x.Description, x.CategoryId })
+                            .Select(g => new IngredientOVVM
+                            {
+                                IngredientId = g.Key.IngredientId,
+                                Description = g.Key.Description,
+                                CategoryId = g.Key.CategoryId,
+                                SalesQty = g.Sum(x => x.Quantity)
+                            })
+                            .OrderByDescending(x => x.SalesQty)
+                            .Take(5)
+                            .AsQueryable()
             };
+        
             return vm;
         }
     }

@@ -111,21 +111,28 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var ing in Model.Ingredients)
+        @if (@Model.Ingredients.Count() == 0)
         {
-            <tr>
-                <td>
-                    @ing.CategoryId
-                </td>
-                <td>
-                    @ing.Description
-                </td>
-            </tr>
+            <p>There are currently no ingredients out of stock</p>
+        }
+        else
+        {
+            @foreach (var ing in Model.Ingredients)
+            {
+                <tr>
+                    <td>
+                        @ing.CategoryId
+                    </td>
+                    <td>
+                        @ing.Description
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
 
-<h4>Best Sellers - Top 5</h4>
+<h4>Best Sellers - Top 5 (Excluding Breads)</h4>
 
 <table class="table">
     <colgroup>
