@@ -1,5 +1,9 @@
-﻿@using PickAndGo.ViewModels
-@model IEnumerable<OrderListVM>
+﻿@*@using PickAndGo.ViewModels
+@model IEnumerable<OrderListVM>*@
+
+@using PickAndGo.Utilities;
+@using PickAndGo.ViewModels;
+@model PaginatedList<OrderListVM>;
 
 @{
     ViewData["Title"] = "Orders";
@@ -150,6 +154,24 @@
             }
         </tbody>
     </table>
+    @if (isSelectedC)
+    {
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        <div class="paginated-list">
+            <a asp-action="Orders"
+               asp-route-searchName="@ViewData["CurrentNameSearch"]"
+               asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+               asp-route-page="@(Model.PageIndex - 1)"
+               class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
+            <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
+            <a asp-action="Orders"
+               asp-route-searchName="@ViewData["CurrentNameSearch"]"
+               asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+               asp-route-page="@(Model.PageIndex + 1)"
+               class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
+        </div>
+    }
 </div>  <!--class="container"-->
 
 @ViewBag.Message

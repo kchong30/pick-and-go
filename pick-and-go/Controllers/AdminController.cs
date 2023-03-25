@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.SignalR.Protocol;
 using NuGet.Protocol.Core.Types;
 using System.Security.Principal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using PickAndGo.Utilities;
+using System.Drawing.Printing;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PickAndGo.Controllers
 {
@@ -175,30 +178,53 @@ namespace PickAndGo.Controllers
             return View(ov);
         }
 
-        public IActionResult Orders(string message)
+        public IActionResult Orders(string message, string searchName, string searchOrder, int? page)
         {
             if (message == null)
             {
                 message = "";
             }
 
-            var orderFilter = "O";
+            string orderFilter = ViewData["CurrentFilter"] as string;
+
+            if (orderFilter == null)
+            {
+                orderFilter = OUTSTANDING;
+            }
+
+            if (searchName == null)
+            {
+                searchName = "";
+            }
+
+            if (searchOrder == null)
+            {
+                searchOrder = "";
+            }
 
             ViewData["CurrentFilter"] = orderFilter;
-            ViewData["CurrentNameSearch"] = "";
-            ViewData["CurrentOrderSearch"] = "";
+            ViewData["CurrentNameSearch"] = searchName;
+            ViewData["CurrentOrderSearch"] = searchOrder;
+
+            if (page == null || page == 0)
+            {
+                page = 1;
+            }
 
             OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, "", "");
 
             ViewData["Message"] = message;
 
-            return View(vm);
-        }
+            int pageSize = 10;
 
+            return View(PaginatedList<OrderListVM>.Create(vm.AsNoTracking()
+                                                          , page ?? 1, pageSize));
+        }
+     
         [HttpPost]
         public IActionResult Orders(string searchName, string searchOrder, int orderId, int lineId,
-                                    Boolean changeStatus)
+                                    Boolean changeStatus, int? page)
         {
             OrderRepository or = new OrderRepository(_db, _configuration);
 
@@ -214,7 +240,7 @@ namespace PickAndGo.Controllers
 
             if (orderFilter == null || orderFilter == "")
             {
-                orderFilter = "O";
+                orderFilter = OUTSTANDING;
             }
 
             ViewData["CurrentFilter"] = orderFilter;
@@ -223,44 +249,50 @@ namespace PickAndGo.Controllers
 
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
 
-            return View(vm);
+            int pageSize = 10;
+
+            return View(PaginatedList<OrderListVM>.Create(vm.AsNoTracking()
+                                                          , page ?? 1, pageSize));
+
         }
 
-        public IActionResult Transactions()
-        {
-            DateTime fromDate = new DateTime(2022, 1, 1); 
-            DateTime toDate = DateTime.Today;
-
-            ViewData["CurrentFromDate"] = fromDate;
-            ViewData["CurrentToDate"] = toDate;
-
-            OrderRepository or = new OrderRepository(_db, _configuration);
-            IQueryable<OrderTransactionVM> vm = or.BuildOrderTransactionVM("", "", fromDate, toDate);
-
-            ViewData["CurrentNameSearch"] = "";
-            ViewData["CurrentOrderSearch"] = "";
-
-            return View(vm);
-        }
-
+        [HttpGet]
         [HttpPost]
         public IActionResult Transactions(string searchName, string searchOrder,
-                                          string fromDate, string toDate)
+                                          string dateFrom, string dateTo, int? page)
         {
-            OrderRepository or = new OrderRepository(_db, _configuration);
+            if (searchName == null)
+            {
+                searchName = "";
+            }
 
-            DateTime fromDateValue = string.IsNullOrEmpty(fromDate) ? new DateTime(2022, 1, 1) : DateTime.Parse(fromDate);
-            DateTime toDateValue = string.IsNullOrEmpty(toDate) ? DateTime.Today : DateTime.Parse(toDate);
+            if (searchOrder == null)
+            {
+                searchOrder = "";
+            }
 
             ViewData["CurrentNameSearch"] = searchName;
             ViewData["CurrentOrderSearch"] = searchOrder;
-            ViewData["CurrentFromDate"] = fromDateValue;
-            ViewData["CurrentToDate"] = toDateValue;
 
+            DateTime fromDate = string.IsNullOrEmpty(dateFrom) ? new DateTime(2022, 1, 1) : DateTime.Parse(dateFrom);
+            DateTime toDate = string.IsNullOrEmpty(dateTo) ? DateTime.Today : DateTime.Parse(dateTo);
+
+            ViewData["CurrentFromDate"] = fromDate.ToString();
+            ViewData["CurrentToDate"] = toDate.ToString();
+
+            if (page == null || page == 0)
+            {
+                page = 1;
+            }            
+
+            OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderTransactionVM> vm = or.BuildOrderTransactionVM(searchName, searchOrder,
-                                                                           fromDateValue, toDateValue);
+                                                                           fromDate, toDate);
 
-            return View(vm);
+            int pageSize = 10;
+
+            return View(PaginatedList<OrderTransactionVM>.Create(vm.AsNoTracking()
+                                                         , page ?? 1, pageSize));
         }
     }
 }

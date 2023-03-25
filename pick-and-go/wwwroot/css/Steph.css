@@ -39,3 +39,23 @@ input[type="checkbox"]:checked {
 .btn-search {
     margin-bottom: 5px;
 }
+
+.paginated-list {
+    display: flex;
+    gap: 10px;
+}
+
+.paginated-list a {
+    text-decoration: none;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.page-button {
+    width: 25px;
+    height: 25px;
+    background-color: lightgray;
+}

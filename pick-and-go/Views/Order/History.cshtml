@@ -1,5 +1,6 @@
-﻿@using PickAndGo.ViewModels
-@model IEnumerable<OrderHistoryVM>
+﻿@using PickAndGo.Utilities;
+@using PickAndGo.ViewModels;
+@model PaginatedList<OrderHistoryVM>;
 
 @{
     ViewData["Title"] = "Order History";
@@ -156,11 +157,27 @@
                     </td>
 
                 </tr>
-
-            
             </tbody>
         }
     </table>
+
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <div class="paginated-list">
+        <a asp-action="History"
+           asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
+           asp-route-page="@(Model.PageIndex - 1)"
+           class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
+        <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
+        <a asp-action="History"
+           asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
+           asp-route-page="@(Model.PageIndex + 1)"
+           class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
+    </div>
+
 </div>  <!--class="container"-->
 @ViewBag.Message
 
