@@ -33,18 +33,6 @@
     text-align: center;
 }
 
-.details-button {
-    background-color: grey;
-    border: none;
-    color: black;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 10px;
-}
-
 .header-name {
     border-radius: 10px;
     background-color: white;
@@ -59,13 +47,6 @@
     top: 0;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 }
-
-.details-button:hover {
-    background-color: black;
-    color: white;
-    cursor: pointer;
-}
-
 
 .header-name-edit {
     border-radius: 10px;
@@ -85,7 +66,7 @@
 .form-group {
     padding-top: 15px;
     color: #ef6900;
-    font-size: 125%;
+    font-size: 1em;
     width: 300px;
 }
 

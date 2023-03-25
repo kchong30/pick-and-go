@@ -7,8 +7,7 @@
 <h3>@ViewBag.UserName</h3>
 
 <p>
-    @Html.ActionLink("Assign Roles", "Create",
-                     new { userName = @ViewBag.UserName })
+    <a type="button" class="btn btn-outline-secondary" asp-action="Create" asp-route-userName=@ViewBag.UserName>Assign Roles</a>
 </p> 
 
 <table class="table">
@@ -27,11 +26,12 @@
                     @Html.DisplayFor(modelItem => item.RoleName)
                 </td>
                 <td>
-                    @Html.ActionLink("Remove Role", "Delete", new {email=@ViewBag.UserName, roleName=item.RoleName })
+                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-email=@ViewBag.UserName asp-route-roleName=@item.RoleName>Remove Role</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<a asp-action="Index">Back To Existing Users</a>
-
+<div>
+    <a type="button" class="btn btn-outline-secondary" asp-action="Index">Back To Existing Users</a>
+</div>

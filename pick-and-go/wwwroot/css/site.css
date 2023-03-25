@@ -22,7 +22,7 @@ body .container {
     padding: 0;
 }
 
-h1, h2 {
+h1, h2, h3, h4 {
     color: #ef6900;
 }
 
@@ -43,13 +43,11 @@ h1, h2 {
     height: 30px;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
     background-color: #ffaf01;
     color: black:
-}
-
-.btn-outline:hover {
-    background-color: #ffaf01;
 }
 
 /* General accordion styles */
@@ -78,6 +76,7 @@ h1, h2 {
     box-shadow: none !important;
     border-style: none;
     outline: 0;
+    color: black;
 }
 
 .accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active {
@@ -181,9 +180,11 @@ h1, h2 {
     width: 100%;
 }
 
-<th class="col-1" >
-
 .radio-group input[type=radio] {
+    transform: scale(1.8);
+}
+
+input[type=radio] {
     transform: scale(1.8);
 }
 

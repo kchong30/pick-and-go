@@ -28,7 +28,7 @@
                 Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
                 or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
                 <input type="submit" value="Search" />
-                <a asp-action="Orders">Back to Full List</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Orders">Back to Full List</a>
             </p>
         </form>
     </div>
@@ -129,7 +129,14 @@
                                     <td class="col"></td>
                                     <td class="col"></td>
                                     <td class="col">@line.IngDescription</td>
-                                    <td class="col">@line.Quantity</td>
+                                    @if (line.Quantity == 1)
+                                    {
+                                        <td class="col">Reg</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col">Extra</td>
+                                    }
                                     <td class="col"></td>
                                     <td class="col"></td>
                                     <td class="col"></td>

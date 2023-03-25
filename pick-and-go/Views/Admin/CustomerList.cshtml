@@ -43,9 +43,8 @@
                 </td>
 
                 <td>
-                    <a asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Detail</a>
-                    @*                    <a asp-action="Edit" asp-route-accountNum="@item.CustomerId">Edit</a> |
-                <a asp-action="Delete" asp-route-accountNum="@item.CustomerId">Delete</a>*@
+                    <a type="button" class="btn btn-sm btn-outline-secondary"asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Detail</a>
+                
                 </td>
             </tr>
         }

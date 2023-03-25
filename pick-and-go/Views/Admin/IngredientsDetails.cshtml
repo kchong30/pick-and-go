@@ -45,7 +45,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="IngredientsEdit" asp-route-id="@Model?.IngredientId">Edit</a> |
-    <a asp-action="Ingredients">Back to List</a>
+    <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsEdit" asp-route-id="@Model?.IngredientId">Edit</a>
+    <a type="button" class="btn btn-outline-secondary" asp-action="Ingredients">Back to List</a>
 </div>
 @ViewBag.Message

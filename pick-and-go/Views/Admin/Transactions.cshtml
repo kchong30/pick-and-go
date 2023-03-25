@@ -29,7 +29,7 @@
                 Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
                 or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
                 <input type="submit" value="Search" />
-                <a asp-action="Transactions">Back to Full List</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Transactions">Back to Full List</a>
             </p>
         </form>
     </div>
