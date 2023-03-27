@@ -17,6 +17,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using PickAndGo.Utilities;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis;
 
 namespace PickAndGo.Controllers
 {
@@ -293,6 +294,56 @@ namespace PickAndGo.Controllers
 
             return View(PaginatedList<OrderTransactionVM>.Create(vm.AsNoTracking()
                                                          , page ?? 1, pageSize));
+        }
+
+        public IActionResult Products(string message)
+        {
+            if (message == null)
+            {
+                message = "";
+            }
+
+            ProductRepository pr = new ProductRepository(_db);
+            var vm = pr.GetProducts();
+
+            ViewData["Message"] = message;
+
+            return View(vm);
+        }
+
+        public IActionResult ProductDetails(int productId, string message)
+        {
+            ProductRepository pr = new ProductRepository(_db);
+            var vm = pr.ReturnProductById(productId);
+
+            ViewData["Message"] = message;
+
+            return View(vm);
+        }
+
+        public IActionResult ProductEdit(int productId)
+        {
+            ProductRepository pr = new ProductRepository(_db);
+            var vm = pr.ReturnProductById(productId);
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult ProductEdit(Product product)
+        {
+            string editMessage = "";
+
+            ProductRepository pr = new ProductRepository(_db);
+            if (ModelState.IsValid)
+            {
+                editMessage = pr.EditProduct(product);
+            }
+            return RedirectToAction("ProductDetails", "Admin", new
+            {
+                productId = product.ProductId,
+                message = editMessage
+            });
         }
     }
 }
