@@ -12,156 +12,158 @@
     int guests = Model != null ? Model.Guests : 0;
 }
 
+<section class="overview p-1">
+    <h1>Overview</h1>
 
-<h1>Overview</h1>
+    <div class="container ">
+        <div class="row">
+            <div class="col-12 col-lg-6 shadow-sm border rounded p-3">
+                <h4>Orders</h4>
+                <hr />
+                <form asp-controller="Admin" asp-action="Overview" method="get" class="d-flex gap-2">
+                    <button type="submit" name="submitBtn" class="" value="<"><i class="fa-solid fa-chevron-left"></i></button>
+                    <input type="date" name="currentDate" class="border w-100 text-center" value="@viewDate" required />
+                    <button type="submit" name="submitBtn" class="">Go</button>
+                    <button type="submit" name="submitBtn" class="" value=">" @(Convert.ToDateTime(viewDate).CompareTo(DateTime.Now.Date) < 0 ? "" : "disabled")><i class="fa-solid fa-chevron-right"></i></button>
+                </form>
+                <div class="update text-end fs-6">Last Update: @ViewData["CurrentTime"]</div>
 
-<h4>Orders</h4>
+                <div class="fw-bold d-flex justify-content-center p-3">
+                    Outstanding
+                </div>
+                <div class="d-flex">
+                    <div class="orders w-100 d-flex justify-content-center fw-bold">
+                        @outstanding
+                    </div>
+                    <div class="w-100 d-flex justify-content-center">
+                        $ @outstandingVal
+                    </div>
+                </div>
 
-<form asp-controller="Admin" asp-action="Overview" method="get">
-    <input type="submit" name="submitBtn" value="<" />
-    <input type="date" name="currentDate" value="@viewDate" required />
-    <input type="submit" name="submitBtn" value="Go" />
-    <input type="submit" name="submitBtn" value=">" @(Convert.ToDateTime(viewDate).CompareTo(DateTime.Now.Date) < 0  ? "" : "disabled") />
-</form>
+                <div class="fw-bold d-flex justify-content-center p-3">
+                    Completed
+                </div>
+                <div class="d-flex">
+                    <div class="orders w-100 d-flex justify-content-center">
+                        @completed
+                    </div>
+                    <div class="w-100 d-flex justify-content-center">
+                        $ @completedVal
+                    </div>
+                </div>
+            </div>
 
-<p>Last Update: @ViewData["CurrentTime"]</p>
+            <div class="col-12 col-lg-6  shadow-sm border rounded p-3">
+                <h4>Customers</h4>
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 25%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                Account Holders
+                            </th>
+                            <th>
+                                Guests
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @accounts
+                            </td>
+                            <td>
+                                @guests
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--Row-->
+
+        <div class="row">
+            <div class="col-12 col-lg-6  shadow-sm border rounded p-3">
+                <h4>Ingredients - Out of Stock</h4>
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 25%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Description
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (@Model.Ingredients.Count() == 0)
+                        {
+                            <p>There are currently no ingredients out of stock</p>
+                        }
+                        else
+                        {
+                            @foreach (var ing in Model.Ingredients)
+                            {
+                                <tr>
+                                    <td>
+                                        @ing.CategoryId
+                                    </td>
+                                    <td>
+                                        @ing.Description
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
 
 
-<table class="table">
-    <colgroup>
-        <col style="width: 25%;">
-        <col style="width: 25%;">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>
-                Outstanding
-            </th>
-            <th>
-                Completed
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                @outstanding
-            </td>
-            <td>
-                @completed
-            </td>
-        </tr>
-        <tr>
-            <td>
-                $ @outstandingVal
-            </td>
-            <td>
-                $ @completedVal
-            </td>
-        </tr>
-    </tbody>
-</table>
+            <div class="col-12 col-lg-6 shadow-sm border rounded p-3">
+                <h4>Best Sellers - Top 5 (Excluding Breads)</h4>
+                <table class="table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 25%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Description
+                            </th>
 
-<h4>Customers</h4>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ing in Model.TopFive)
+                        {
+                            <tr>
+                                <td>
+                                    @ing.CategoryId
+                                </td>
+                                <td>
+                                    @ing.Description
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<table class="table">
-    <colgroup>
-        <col style="width: 25%;">
-        <col style="width: 25%;">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>
-                Account Holders
-            </th>
-            <th>
-                Guests
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                @accounts
-            </td>
-            <td>
-                @guests
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<h4>Ingredients - Out of Stock</h4>
-
-<table class="table">
-    <colgroup>
-        <col style="width: 25%;">
-        <col style="width: 25%;">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>
-                Category
-            </th>
-            <th>
-                Description
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @if (@Model.Ingredients.Count() == 0)
-        {
-            <p>There are currently no ingredients out of stock</p>
-        }
-        else
-        {
-            @foreach (var ing in Model.Ingredients)
-            {
-                <tr>
-                    <td>
-                        @ing.CategoryId
-                    </td>
-                    <td>
-                        @ing.Description
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
-
-<h4>Best Sellers - Top 5 (Excluding Breads)</h4>
-
-<table class="table">
-    <colgroup>
-        <col style="width: 25%;">
-        <col style="width: 25%;">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>
-                Category
-            </th>
-            <th>
-                Description
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ing in Model.TopFive)
-        {
-            <tr>
-                <td>
-                    @ing.CategoryId
-                </td>
-                <td>
-                    @ing.Description
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
+</section>
