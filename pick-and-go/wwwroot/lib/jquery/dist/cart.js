@@ -285,7 +285,7 @@ function updateTotalPrice(id, quantityValue) {
     var amount = $(itemPriceId).html();
     var newAmount = (amount * quantity).toFixed(2);
 
-    console.log(newAmount)
+    //console.log(newAmount)
     $(cartAmtId).text(newAmount);
 
     //Calculate totals

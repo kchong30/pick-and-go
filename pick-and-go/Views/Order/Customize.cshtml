@@ -8,23 +8,12 @@
 
 <h1>Customize</h1>
 
-<!--Shopping Cart Icon-->
-
-@*<button type="button" class="btn btn-primary position-relative">
-    Shopping Cart
-    <span id="cart-icon" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        0
-        <span class="visually-hidden">unread messages</span>
-    </span>
-</button>*@
-
 <hr />
 <div id="customize-page" hidden>Customize-page</div>
 
 <div class="container productTable">
-    <!-- Product Select :: Add Sessions Here -->
-    <!-- !! Receive select data from localStorage(session)-->
-    <select onchange="changeProduct(event)" id="product">
+    <!-- Product Select -->
+    <select onchange="changeProduct(event)" id="product" class="p-2 border mb-3">
         <option value="">-----Select sandwich size-----</option>
         @foreach (var product in Model.productVMs)
         {
@@ -32,64 +21,56 @@
         }
     </select>
     <!-- End of Select-->
-
     <!-- Displaying Ingredients -->
     <div class="accordion" id="customize">
+        <div> Description, Price, Quantity </div>
         @foreach (var cat in Model.ingredientListVMs)
         {
-            <div class="accordion-item">
+            <div class="accordion-item p-2 mb-2 border border-danger">
                 <!-- Accordion Header : Catogory -->
-                <h2 class="accordion-header">
+                <h2 class="accordion-header border border-primary">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="true" aria-controls="@cat.CategoryId">
                         @cat.CategoryId
                     </button>
                 </h2>
                 <!-- Accordion Body : Ingredients, add show in the  class -->
-                <div id="@cat.CategoryId" class="accordion-collapse collapse" aria-labelledby="@cat.CategoryId">
-                    <div class="accordion-body">
+                <div id="@cat.CategoryId" class="accordion-collapse collapse border border-success" aria-labelledby="@cat.CategoryId">
+                    <div class="accordion-body p-0">
                         <!-- Ingredients Table -->
-                        <table class="accordion-table container d-flex">
+                        <table class="accordion-table container d-flex border border-danger p-0 m-0 w-100">
                             <tbody class="d-flex flex-column w-100">
-                                <tr class="d-flex w-100  justify-content-between">
-                                    <th class="w-25 ps-2">Description</th>
-                                    <th class="w-25">Price</th>
-                                    <th class="w-25 ps-3">Quantity</th>
-                                    <th> </th>
-                                </tr>
-                            @foreach (var ing in cat.Ingredients)
-                            {
-                                @* Ingredient not displayed when out of stock *@
-                                if (ing.InStock == "Y")
+                                @foreach (var ing in cat.Ingredients)
                                 {
-                                    <!-- Radio button for the breads, Everything else should be regular/extar btn with check box (radio as well)-->
+                                    @* Ingredient not displayed when out of stock *@
+                                    if (ing.InStock == "Y")
+                                    {
+                                        <!-- Radio button for the breads -->
                                         <tr id="@ing.IngredientId-table" class="ingredientTable d-flex w-100 justify-content-between my-3">
-                                        <td class="ingredientId w-25" hidden>@ing.IngredientId</td>
-                                        <td class="description w-25 ps-2">@ing.Description</td>
-                                        <td id="@ing.IngredientId-price" class="price w-25 ps-3">@ing.Price</td>
-                                        <td class="w-25 d-flex align-content-center">
-                                            @*      <button id="@ing.IngredientId-add" onclick="updateShoppingCart(event)">+</button>
-                                <button id="@ing.IngredientId-remove" onclick="updateShoppingCart(event)">-</button>*@
+                                            <td class="ingredientId w-25" hidden>@ing.IngredientId</td>
+                                            <td class="description w-25 ps-2">@ing.Description</td>
+                                            <td id="@ing.IngredientId-price" class="price w-25 ps-3">@ing.Price</td>
+                                            <td class="w-25 d-flex align-content-center">
 
-                                            <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
-                                                <div class="d-flex flex-column m-1">
-                                                    <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
-                                                    <label for="@ing.IngredientId-none" class="me-1">None</label>
-                                                </div>
-                                                <div class="d-flex flex-column m-1">
-                                                    <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
-                                                    <label for="@ing.IngredientId-reg" class="me-1">Reg</label>
-                                                </div>
-                                                <div class="d-flex flex-column m-1">
-                                                    <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
-                                                    <label for="@ing.IngredientId-extra" class="me-1">Extra</label>
-                                                </div>
-                                            </form>
-                                        </td>
-                                        <td id="@ing.IngredientId-quantity" class="quantity w-25">0</td>
+                                                <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-column m-1">
+                                                        <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
+                                                        <label for="@ing.IngredientId-none" class="me-1">None</label>
+                                                    </div>
+                                                    <div class="d-flex flex-column m-1">
+                                                        <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
+                                                        <label for="@ing.IngredientId-reg" class="me-1">Reg</label>
+                                                    </div>
+                                                    <div class="d-flex flex-column m-1">
+                                                        <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
+                                                        <label for="@ing.IngredientId-extra" class="me-1">Extra</label>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td id="@ing.IngredientId-quantity" class="quantity w-25">0</td>
                                             <td id="@ing.IngredientId-amount" class="amount pe-2">0.00</td>
-                                    </tr>
+                                        </tr>
+                                    }
                                 }
-                            }
                             </tbody>
                         </table>
                         <!-- End of Ingredients table-->

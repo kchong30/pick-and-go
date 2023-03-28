@@ -17,7 +17,6 @@
 function setProductPrice(value) {
     // parse price from value
     var productValue = value.split("-");
-    console.log(productValue)
     var productPrice = productValue[1];
     $("#product-price").text(productPrice);
 
