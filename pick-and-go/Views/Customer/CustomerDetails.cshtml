@@ -76,10 +76,10 @@
 </body>
 <div>
 
-    <a class="details-button" asp-action="CustomerEdit" asp-route-id="@Model?.CustomerId">Edit</a> 
-    <a class="details-button" asp-controller="Order" asp-action="History" asp-route-customerId="@Model?.CustomerId">Order History</a> 
-    <a class="details-button" asp-controller="Order" asp-action="Favorites" asp-route-customerId="@Model?.CustomerId">Favourites</a> 
-    <a class="details-button" asp-controller="Home" asp-action="Index">Back Home</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="CustomerEdit" asp-route-id="@Model?.CustomerId">Edit</a> 
+    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Order" asp-action="History" asp-route-customerId="@Model?.CustomerId">Order History</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Order" asp-action="Favorites" asp-route-customerId="@Model?.CustomerId">Favourites</a> 
+    <a type="button" class="btn btn-sm btn-outline-secondary" asp-controller="Home" asp-action="Index">Back Home</a>
 
 </div>
 @ViewBag.Message

@@ -27,5 +27,39 @@ namespace PickAndGo.Repositories
 
             return (vmList);
         }
+
+        public Product ReturnProductById(int productId)
+        {
+            var product = _db.Products.Where(p => p.ProductId == productId).FirstOrDefault();
+            return product;
+        }
+
+        public string EditProduct(Product product)
+        {
+            string editMessage = "";
+
+            try
+            {
+                _db.Update(new Product
+                {
+                    ProductId = product.ProductId,
+                    Description = product.Description,
+                    BasePrice = product.BasePrice,
+                    Image = product.Image,
+                }); ;
+                _db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                editMessage = "An error occurred while updating the product in the database." +
+                              " Please try again later." + " " + e.Message;
+            }
+
+            if (editMessage == "")
+            {
+                editMessage = $"Success editing product {product.Description}";
+            }
+            return editMessage;
+        }
     }
 }

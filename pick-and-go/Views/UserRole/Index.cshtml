@@ -20,7 +20,7 @@
                     @item.Email
                 </td>
                 <td>
-                    @Html.ActionLink("View Roles", "Detail", new { userName = item.Email })
+                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Detail" asp-route-userName=@item.Email>View Roles</a>
                 </td>
             </tr>
         }

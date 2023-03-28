@@ -8,6 +8,7 @@ namespace PickAndGo.ViewModels
         public string description { get; set; }
         public List<ShoppingCartLineVM> ingredients { get; set; }
         public string subtotal { get; set; }
+        public string productPrice { get; set; }
 
 
     }

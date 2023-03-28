@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using NuGet.Protocol.Core.Types;
+using PickAndGo.Utilities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PickAndGo.Controllers
 {
@@ -98,7 +101,8 @@ namespace PickAndGo.Controllers
 
             return View(ocVm);
         }
-        public IActionResult History(string message, int customerId)
+
+        public IActionResult History(string message, int customerId, int? page)
         {
             if (message == null)
             {
@@ -110,14 +114,21 @@ namespace PickAndGo.Controllers
                 customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
             }
 
+            if (page == null || page == 0)
+            {
+                page = 1;
+            }
+
             OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
 
+            int pageSize = 10;
+
             ViewData["Message"] = message;
-
-            return View(vm);
+           
+            return View(PaginatedList<OrderHistoryVM>.Create(vm.AsNoTracking()
+                                                         , page ?? 1, pageSize));
         }
-
 
         public IActionResult ShoppingCart()
         {
@@ -204,8 +215,9 @@ namespace PickAndGo.Controllers
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                PickUpTime = pickupTimeString
-            });
+                PickUpTime = pickupTimeString,
+                OrderDetails = sandwichJson
+            }) ;
 
             ViewData["Message"] = message;
 

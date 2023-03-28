@@ -1,5 +1,6 @@
-﻿@using PickAndGo.ViewModels
-@model IEnumerable<OrderTransactionVM>
+﻿@using PickAndGo.Utilities;
+@using PickAndGo.ViewModels;
+@model PaginatedList<OrderTransactionVM>;
 
 @{
     ViewData["Title"] = "Transactions";
@@ -15,21 +16,21 @@
         <form asp-controller="Admin" asp-action="Transactions">
             <input type="hidden" name="searchName" value="@ViewData["CurrentNameSearch"]"/>
             <input type="hidden" name="searchOrder" value="@ViewData["CurrentOrderSearch"]"/>
-            <input type="date" name="fromDate" value=@fromDate required />
-            <input type="date" name="toDate" value=@toDate required />
+            <input type="date" name="dateFrom" value=@fromDate required />
+            <input type="date" name="dateTo" value=@toDate required />
             <input type="submit" value="Refresh" />
         </form>
     </div>
 
     <div class="order-search">
         <form asp-controller="Admin" asp-action="Transactions">
-            <input type="hidden" name="fromDate" value="@fromDate" />
-            <input type="hidden" name="toDate" value="@toDate" />
+            <input type="hidden" name="dateFrom" value="@fromDate" />
+            <input type="hidden" name="dateTo" value="@toDate" />
             <p>
                 Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
                 or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
                 <input type="submit" value="Search" />
-                <a asp-action="Transactions">Back to Full List</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Transactions">Back to Full List</a>
             </p>
         </form>
     </div>
@@ -105,3 +106,26 @@
         </tr>
     </tfoot>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<div class="paginated-list">
+    <a asp-action="Transactions"
+       asp-route-searchName="@ViewData["CurrentNameSearch"]"
+       asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+       asp-route-dateFrom="@ViewData["CurrentFromDate"]"
+       asp-route-dateTo=" @ViewData["CurrentToDate"]"
+       asp-route-page="@(Model.PageIndex - 1)"
+       class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
+    <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
+    <a asp-action="Transactions"
+       asp-route-searchName="@ViewData["CurrentNameSearch"]"
+       asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+       asp-route-dateFrom="@ViewData["CurrentFromDate"]"
+       asp-route-dateTo=" @ViewData["CurrentToDate"]"
+       asp-route-page="@(Model.PageIndex + 1)"
+       class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
+</div>
