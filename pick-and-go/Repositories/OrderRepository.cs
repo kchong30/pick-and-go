@@ -259,7 +259,7 @@ namespace PickAndGo.Repositories
                         }
                         else
                         {
-                            message = cr.UpdateCustomerSignUpDate(customerId);
+                            customerId = customer.CustomerId;
                         }
                     }
 

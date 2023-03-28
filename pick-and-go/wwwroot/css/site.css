@@ -362,24 +362,26 @@ main .landing-page {
 }
 
     .landing-page img {
-        width: 100vw;
+        width: 70%;
         padding: 50px;
-        margin-bottom: 100px;
+        margin-bottom: 10px;
     }
 
     .landing-page .paragraph {
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 50px;
     }
 
     .landing-page .title {
         font-weight: 700;
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
 
     .landing-page .sub-title {
         margin-bottom: 20px;
+        font-size: 1.8rem;
     }
 
     .landing-page a {
