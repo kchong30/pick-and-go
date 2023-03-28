@@ -12,7 +12,6 @@ input[type="checkbox"]:checked {
 
 .form-control {
     padding-top: 15px;
-    color: #ef6900;
     font-size: 1em;
     width: 300px;
 }

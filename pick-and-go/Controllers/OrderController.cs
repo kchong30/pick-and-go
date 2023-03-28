@@ -206,6 +206,7 @@ namespace PickAndGo.Controllers
             if (User.Identity.Name != null)
             {
                 email = User.Identity.Name;
+                HttpContext.Session.SetString("email", email);
             }
             message = oR.CreateOrder(customerId, firstName, lastName, pickupTime, iPN.paymentID,
                                      orderTotal, sandwichJson, email);
