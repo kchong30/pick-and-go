@@ -152,6 +152,15 @@ namespace PickAndGo.Controllers
 
         public IActionResult Overview(string currentDate, string submitBtn)
         {
+            CustomerRepository cr = new CustomerRepository(_db);
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                var customerId = customer.CustomerId.ToString();
+                HttpContext.Session.SetString("customerid", customerId);
+            }
+
             if (currentDate == null)
             {
                 currentDate = DateTime.Now.ToString("yyyy-MM-dd");
