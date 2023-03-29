@@ -179,14 +179,12 @@ namespace PickAndGo.Controllers
             return View(ov);
         }
 
-        public IActionResult Orders(string message, string searchName, string searchOrder, int? page)
+        public IActionResult Orders(string message, string orderFilter, string searchName, string searchOrder, int? page)
         {
             if (message == null)
             {
                 message = "";
             }
-
-            string orderFilter = ViewData["CurrentFilter"] as string;
 
             if (orderFilter == null)
             {
@@ -218,9 +216,8 @@ namespace PickAndGo.Controllers
             ViewData["Message"] = message;
 
             int pageSize = 10;
-
-            return View(PaginatedList<OrderListVM>.Create(vm.AsNoTracking()
-                                                          , page ?? 1, pageSize));
+               return View(PaginatedList<OrderListVM>.Create(vm.AsNoTracking()
+                                                             , page ?? 1, pageSize));
         }
      
         [HttpPost]
