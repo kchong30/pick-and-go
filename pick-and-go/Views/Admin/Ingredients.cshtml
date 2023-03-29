@@ -69,11 +69,11 @@
                                     <td>
                                         @if (ing.IngredientImage != "" && ing.IngredientImage != null)
                                         {
-                                            <img class="ingredient-image" src=@ing.IngredientImage alt=@ing.Description>
+                                            <img class="ingredient-image rounded-circle shadow-sm" src=@ing.IngredientImage alt=@ing.Description>
                                         }
                                         else
                                         {
-                                            <img class="ingredient-image" src="~/images/empty-image.png">
+                                            <img class="ingredient-image rounded-circle shadow-sm" src="~/images/empty-image.png">
                                         }
                                     </td>
                                     <td class="celldesc">@ing.Description</td>

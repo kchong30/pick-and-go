@@ -264,11 +264,23 @@ nav li a:hover {
 
 .radio-group input[type=radio] {
     transform: scale(1.8);
+    border: 1px solid gray;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    appearance: none;
 }
 
 input[type=radio] {
     transform: scale(1.8);
 }
+
+input[type=radio]:checked {
+    border: 1px solid orange;
+    background-color: orange;
+    box-shadow: inset 0 0 0 2px white;
+}
+   
 
 /* Order history styles */
 
