@@ -58,3 +58,10 @@ input[type="checkbox"]:checked {
     height: 25px;
     background-color: lightgray;
 }
+
+/* table styling */
+
+thead {
+    background-color: #ffaf01;
+    color: white;
+}
