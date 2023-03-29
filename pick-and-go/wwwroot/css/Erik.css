@@ -11,6 +11,7 @@
 .main-container {
     margin: 0;
     padding: 0;
+    height: 50vh;
 }
 
 .title-name {
@@ -20,8 +21,8 @@
 .header-titles {
     background-color: #ffaf01;
     color: white;
-    border-radius: 0px 0px 30px 30px;
-    width: 100%;
+    border-radius: 0% 0% 90% 90%;
+    width:100%;
     box-sizing: border-box;
     padding-bottom: 20px;
     position: relative;
@@ -29,8 +30,15 @@
     margin-bottom: 40px;
 }
 
+.customer-details{
+    margin-top:5rem;
+}
+
 .header-titles h1 {
     text-align: center;
+    color:white;
+    margin-top:-1.5rem;
+
 }
 
 .header-name {
