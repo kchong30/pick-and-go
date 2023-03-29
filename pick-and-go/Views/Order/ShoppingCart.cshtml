@@ -20,85 +20,87 @@
         </div>
         <div class="container-fluid">
             <table class="table text-start">
-            <thead>
-              <tr>
+                <thead>
+                    <tr>
                         <th scope="col" class="col-1"></th>
                         <th scope="col" class="col-5">Sandwich</th>
                         <th scope="col" class="col-1">Price</th>
                         <th scope="col" class="col-1"></th>
                         <th scope="col" class="col-1"></th>
                         <th scope="col" class="col-1"></th>
-              </tr>
-            </thead>
-              <tbody class="">
-              @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
-              {
-                <tr class="ml-0">
+                    </tr>
+                </thead>
+                <tbody class="">
+                    @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
+                    {
+                        <tr class="ml-0">
 
-                  <td class="col-1">
-                    <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
-                    </button>
-                  </td>
+                            <td class="col-1">
+                                <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
+                                </button>
+                            </td>
 
-                  <td class="col-5">@item.Value.description</td>
-                            <td class="col-1"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
-                            
-
-                  <td></td>
-                  <td></td>
-                      <td>
-                       <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
-                      </td>
-                      <td>
-                       <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
-                      </td>
-                      <td>
-                            <button class="btn btn-danger" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
-                      </td>
-                </tr>
-
-                <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
-   
-                  <td colspan="12">
-                    <table class="accordion-table container">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="col-4">Ingredient</th>
-                            <th scope="col" class="col-2">Quantity</th>
-                            <th scope="col" class="col-2">Sub Total</th>
+                            <td class="col-5">@item.Value.description</td>
+                            <td class="col-1"><span id="@item.Value.productId-amount" class="amount">$@Convert.ToDecimal(item.Value.subtotal).ToString("0.00")</span></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="col-4">Base sandwich price</td>
-                            <td class="col-2">N/A</td>
-                            <td class="col-2">@item.Value.productPrice</td>
-                        </tr>
-                        @foreach (var ingredient in item.Value.ingredients)
-                        {
-                            decimal price = (Convert.ToDecimal(ingredient.price) * Convert.ToDecimal(ingredient.quantity));
-                            <tr>
-                               <td class="col-4">@ingredient.description</td>  
-                               @if (ingredient.quantity == "1") {
-                               <td class="col-1">Regular</td>
-                               } else {
-                               <td class="col-1">Extra</td>
-                               }
-                               <td class="col-1">@price</td>
-                               <td class="col-6"></td>
-                            </tr>
-                        }
-                     </tbody>
-                    </table>
 
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
+                        <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
+
+                            <td colspan="12">
+                                <table class="accordion-table container">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="col-4">Ingredient</th>
+                                            <th scope="col" class="col-2">Quantity</th>
+                                            <th scope="col" class="col-2">Sub Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-4">Base sandwich price</td>
+                                            <td class="col-2">N/A</td>
+                                            <td class="col-2">$@(Convert.ToDouble(item.Value.productPrice).ToString("0.00"))</td>
+
+                                        </tr>
+                                        @foreach (var ingredient in item.Value.ingredients)
+                                        {
+                                            decimal price = (Convert.ToDecimal(ingredient.price) * Convert.ToDecimal(ingredient.quantity));
+                                            <tr>
+                                                <td class="col-4">@ingredient.description</td>
+                                                @if (ingredient.quantity == "1")
+                                                {
+                                                    <td class="col-1">Regular</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="col-1">Extra</td>
+                                                }
+                                                <td class="col-1">$@price.ToString("0.00")</td>
+                                                <td class="col-6"></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
 
-        <footer >
+        <footer>
 
             <div>
                 <label>Total: $</label>
@@ -114,7 +116,7 @@
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
 
                 <!-- Modal -->
-                <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true" >
+                <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -183,6 +185,18 @@
     }
 </style>
 <script>
+
+
+        $(document).ready(function () {
+        var totalAmountId = "#totalAmount";
+        var totalAmount = 0.00;
+        $('.amount').each(function () {
+            var thisAmount = $(this).html().replace(/[^0-9.-]+/g, ""); // remove non-numeric characters
+            totalAmount += parseFloat(thisAmount);
+        });
+        $(totalAmountId).html(totalAmount.toFixed(2));
+    });
+
      $(document).ready(function () {
         // Hide the PayPal button initially
         $("#paypal-button").hide();
