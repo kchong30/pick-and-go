@@ -38,17 +38,16 @@ namespace PickAndGo.Services
 
         public Task<Response> SendConfirmationEmail(ConfirmationEmailModel payload)
         {
-            var apiKey = _configuration.GetSection("SendGrid")["ApiKey"];
-            /*            var apiKey = _configuration["SendGrid:ApiKey"];
-            */
+            /*            var apiKey = _configuration.GetSection("SendGrid")["ApiKey"];*/
+            var apiKey = _configuration["SendGrid:ApiKey"];
+
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("pickandgoinc@gmail.com", "Pick And Go");
             var to = new EmailAddress(payload.Email
                                      , $"{payload.FirstName} {payload.LastName}");
-            var templateId = "d-f29d09ac37ff430f8eddf388421f9ddb";
+            var templateId = "d-aea4e36c45544c50b279e40406207b59";
             List<ShoppingCartVM> products = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(payload.OrderDetails);
             var productsArray = products.ToArray();
-            var textContent = "ORDER PLACED FOR PICK UP AT: " + payload.PickUpTime + ".";
 
             var dynamicTemplateData = new
             {

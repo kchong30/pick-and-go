@@ -6,9 +6,12 @@
     ViewData["Title"] = "Shopping Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int? customerId = Context.Session.GetInt32("customerId");
+
+
 }
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <div class="justify-content-center align-items-center">
     <div>
@@ -16,71 +19,74 @@
             <h1>Shopping Cart</h1>
         </div>
         <div class="container-fluid">
-          <table class="table text-center">
+            <table class="table text-start">
             <thead>
               <tr>
-                <th scope="col" class="col-md-1"></th>
-                        <th scope="col" class="col-md-2">Sandwich</th>
-                        <th scope="col" class="col-md-2">Description</th>
-                        <th scope="col" class="col-md-1">Quantity</th>
-                        <th scope="col" class="col-md-1">Price</th>
-                        <th scope="col" class="col-md-1">Sub Total</th>
+                        <th scope="col" class="col-1"></th>
+                        <th scope="col" class="col-5">Sandwich</th>
+                        <th scope="col" class="col-1">Price</th>
+                        <th scope="col" class="col-1"></th>
+                        <th scope="col" class="col-1"></th>
+                        <th scope="col" class="col-1"></th>
               </tr>
             </thead>
-                <tbody class="">
+              <tbody class="">
               @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
               {
-                <tr>
+                <tr class="ml-0">
 
-                  <td>
+                  <td class="col-1">
                     <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
                     </button>
                   </td>
 
-                  <td style="white-space: nowrap;">@item.Value.description</td>
+                  <td class="col-5">@item.Value.description</td>
+                  <td class ="col-1"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
                   <td></td>
-                            <td></td>
-                                              <td></td>
-                  <td><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
-                  <td>
-                   <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
-                  </td>
-
-                  <td>
-                   <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
-                  </td>
-                  <td>
-                        <button class="btn btn-danger" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
-                  </td>
+                  <td></td>
+                      <td>
+                       <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
+                      </td>
+                      <td>
+                       <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
+                      </td>
+                      <td>
+                            <button class="btn btn-danger" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
+                      </td>
                 </tr>
 
                 <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
    
-                   <td colspan="12">
+                  <td colspan="12">
                     <table class="accordion-table container">
+                    <thead>
                         <tr>
-                            <td class="col-2"></td>
-                            <td class="col-6">Base sandwich price</td>
-                                        <td class="col-2 cell-amount">@String.Format("${0:0.00}", item.Value.productPrice)</td>
-                            <td class="col-2"></td>
+                            <th scope="col" class="col-4">Ingredient</th>
+                            <th scope="col" class="col-2">Quantity</th>
+                            <th scope="col" class="col-2">Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-4">Base sandwich price</td>
+                            <td class="col-2">N/A</td>
+                            <td class="col-2">@item.Value.productPrice</td>
                         </tr>
                         @foreach (var ingredient in item.Value.ingredients)
                         {
                             decimal price = (Convert.ToDecimal(ingredient.price) * Convert.ToDecimal(ingredient.quantity));
                             <tr>
-                                <th scope="col" class="col-md-1"></th>
-
-                                            <td class="text-center col-md-2"></td>
-                                <td class="text-center col-md-2">@ingredient.description</td>
-                        
-                               <td class="text-center col-md-1">@ingredient.quantity</td>
-                               <td class="text-center col-md-1">@price</td>
-                                <td class="text-center col-md-1"></td>
-                                <td></td>
-                                <td></td>
-
+                               <td class="col-4">@ingredient.description</td>  
+                               @if (ingredient.quantity == "1") {
+                               <td class="col-1">Regular</td>
+                               } else {
+                               <td class="col-1">Extra</td>
+                               }
+                               <td class="col-1">@price</td>
+                               <td class="col-6"></td>
                             </tr>
                         }
+                     </tbody>
                     </table>
 
                   </td>
@@ -89,9 +95,6 @@
             </tbody>
           </table>
         </div>
-
-   
-
 
         <footer >
 
@@ -215,6 +218,5 @@
 </script>
 
 <script src="~/lib/jquery/dist/cart.js"></script>
-
 
 
