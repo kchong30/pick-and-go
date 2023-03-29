@@ -338,7 +338,10 @@ function ajaxStoreCart() {
     var cart = localStorage.getItem("cart");
     var cartLen = parseInt($('#cart-icon').text());
 
-    if (cartLen === 0) {
+    console.log(cartLen);
+
+    if (cartLen == 0) {
+
         alert("Your shopping cart is empty, please click the button to proceed");
         return;
     };
