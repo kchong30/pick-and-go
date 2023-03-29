@@ -112,7 +112,8 @@
                     },
                     //after fail
                     error: function (msg) {
-                        alert("fail: " + JSON.stringify(msg));
+                        $('#ModalYes').modal('hide');
+                        $('#errorModal').modal('show');
                     }
                 });
             })
@@ -121,7 +122,8 @@
             /*
             * Buyer cancelled the payment
             */
-            alert("Your order has bee Cancelled");
+            $('#ModalYes').modal('hide');
+            $('#cancelModal').modal('show');
         },
     }, '#paypal-button');
 
