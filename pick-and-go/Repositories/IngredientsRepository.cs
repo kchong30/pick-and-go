@@ -86,7 +86,7 @@ namespace PickAndGo.Repositories
                 vm.Price = 0;
                 vm.CategoryId = "";
                 vm.IngredientInStock = true;
-                vm.IngredientImage = "";
+                vm.IngredientImage = "https://i.imgur.com/8QvuLqF.png";
             }
             else
             {
