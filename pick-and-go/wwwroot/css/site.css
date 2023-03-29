@@ -1,7 +1,14 @@
-
 html {
     font-size: 14px;
+    margin: 0;
+    padding: 0;
+   
 }
+
+* {
+    box-sizing: border-box;
+}
+
 
 @media (min-width: 768px) {
     html {
@@ -10,20 +17,92 @@ html {
 }
 
 html {
-    position: relative;
-    min-height: 100%;
+/*    position: relative;
+    min-height: 100%;*/
 }
 
-body {
-    min-height: 100%;
-}
+/* Default setting */
 
 body .container {
     padding: 0;
 }
 
+header {
+    height: 65px;
+    background-color: #ffaf01;
+}
+
+.root {
+    min-height: calc(100vh - 65px);
+}
+
+main {
+    /* main or section.. whatever */
+    margin: 20px;
+    min-height: calc(100vh - 65px);
+    height: 100%;
+    border: 2px solid blue;
+}
+
 h1, h2, h3, h4 {
     color: #ef6900;
+}
+
+/* Navigation */
+
+nav {
+    width: 100%;
+    z-index: 10;
+}
+
+nav img {
+    width: 150px;
+    padding-top: 5px;
+}
+
+nav .dropdown button:hover {
+    color: #ef6900 !important;
+}
+
+nav li a:hover {
+    color: #ef6900 !important;
+}
+
+#cart-icon {
+    font-size: 0.7rem;
+    top: 0;
+ 
+}
+
+.navbar-toggler:active,
+.navbar-toggler:hover,
+.navbar-toggler:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.navbar-collapse {
+    background-color: #ffaf01;
+}
+
+@media (max-width: 576px) {
+    .dropdown-menu{
+        display: block;
+        position: static;
+        background-color: transparent;
+        border: none;
+    }
+    .dropdown-menu li a{
+        color: white !important;
+    }
+    .dropdown-menu li:hover{
+        background-color: rgba(255,255,255,0.1);
+    }
+    nav .dropdown button:hover {
+        color: white !important;
+        cursor:auto;
+    }
 }
 
 /* Bootstrap button styles */
@@ -229,82 +308,7 @@ input[type=radio] {
     }
 
 
-/***************/
-/* Navigation*/
-/***************/
-/* 
-Yellow : #ffaf01
-Orange : #ef6900
-*/
-
-
-/* Menu Button */
-header .navbar-toggler {
-    border: none;
-}
-
-header .navbar-toggler i {
-    font-size: 1.5rem;
-    color: white;
-}
-
-header .navbar-toggler:active,
-header .navbar-toggler:hover,
-header .navbar-toggler:focus {
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-
-
-header .navbar-brand {
-    display: flex;
-    justify-content: center;
-}
-
-
-header .navbar-brand img {
-    width: 150px;
-}
-
-header .navbar-cart {
-    color: white;
-    font-size: 1.5rem;
-    padding-right: 7px;
-    background-color: transparent;
-    border: none;
-    position: relative;
-}
-
-#cart-icon {
-    font-size: 0.7rem;
-    top: 0;
-    text-align: center;
-    background-color: white;
-}
-
-header .navbar-collapse {
-    background-color: #ffaf01;
-    padding: 5px;
-}
-
-/*ul*/
-header .navbar-nav {
-
-}
-
-/*li*/
-header .nav-item {
-    color: white;
-}
-
-
-/* Main */
-/* Keep this style for every page */
-header {
-    position: relative;
-    z-index: 10;
-}
+/*
 
 .root {
     box-sizing: border-box;
@@ -331,7 +335,7 @@ main {
 
 main .landing-page {
     margin: -20px;
-}
+}*/
 
 /*.text {
     width: 100%;
@@ -345,51 +349,23 @@ main .landing-page {
 
 
 /* Landing Page */
-/* Going to shift to Bootstrap later */
-* {
-    box-sizing: border-box;
-}
-
 .landing-page {
-    box-sizing: border-box;
     background-image: linear-gradient(#ffaf01, #ef6900);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
 }
 
-    .landing-page img {
-        width: 70%;
-        padding: 50px;
-        margin-bottom: 10px;
-    }
+.landing-page img {
+    max-width: 700px;
+    padding: 50px;
+    margin-bottom: 10px;
+}
 
-    .landing-page .paragraph {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 50px;
-    }
+.landing-page button {
+    max-width: 600px;
+    background-color: white;
+}
 
-    .landing-page .title {
-        font-weight: 700;
-        font-size: 2.5rem;
-    }
-
-    .landing-page .sub-title {
-        margin-bottom: 20px;
-        font-size: 1.8rem;
-    }
-
-    .landing-page a {
-        text-decoration: none;
-        color: #ef6900;
-    }
-
-    .paragraph button {
-        margin-bottom: 20px;
-    }
+.landing-page a {
+    text-decoration: none;
+    color: #ef6900;
+}
 

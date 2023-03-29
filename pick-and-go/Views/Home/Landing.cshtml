@@ -2,16 +2,14 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@{
-    ViewData["Title"] = "PickAndGo";
-}
-<section class="landing-page">
-    <img src="https://i.imgur.com/Z1Rb2VG.png" class="">
-    <div class="paragraph">
-        <div class="title">Feeling Hungry?</div>
-        <div class="sub-title">Let's Start An Order!</div>
-        <button class="btn-outline"> <a asp-area="" asp-controller="Home" asp-action="Index">Start an Order</a></button>
+
+<main class="landing-page m-0 d-flex flex-column justify-content-center align-items-center">
+    <img src="https://i.imgur.com/Z1Rb2VG.png" class="w-75">
+    <div class="w-100 d-flex flex-column align-items-center text-white p-5">
+        <div class="fw-bold fs-2">Feeling Hungry?</div>
+        <div class="fs-4 m-2">Let's Start An Order!</div>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class=""><div class="btn btn-primary border-0 rounded w-75 p-3 m-5 fw-bold"> Start an Order</div></a>
     </div>
-</section>
+</main>
 @{
 }
