@@ -130,27 +130,35 @@ namespace PickAndGo.Controllers
             // Retrieve the session string value
             string jsonData = HttpContext.Session.GetString("shoppingCart");
 
-            // Pass it to VM for View
-            List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
-
-            // Check if the user is logged in or no
-
-            if (User.Identity.Name != null)
+            if(jsonData?.Length > 0)
+       
             {
-                string email = User.Identity.Name;
-                CustomerRepository cR = new CustomerRepository(_db);
-                // get current user record from client
-                Customer customer = cR.ReturnCustomerByEmail(email);
+                // Pass it to VM for View
+                List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
 
-                //if (User.Identity.IsAuthenticated)
-                //{
-                HttpContext.Session.SetString("firstName", customer.FirstName);
-                HttpContext.Session.SetString("lastName", customer.LastName);
-                HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+                // Check if the user is logged in or no
 
-                //}
+                if (User.Identity.Name != null)
+                {
+                    string email = User.Identity.Name;
+                    CustomerRepository cR = new CustomerRepository(_db);
+                    // get current user record from client
+                    Customer customer = cR.ReturnCustomerByEmail(email);
+
+                    //if (User.Identity.IsAuthenticated)
+                    //{
+                    HttpContext.Session.SetString("firstName", customer.FirstName);
+                    HttpContext.Session.SetString("lastName", customer.LastName);
+                    HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+
+                    //}
+                }
+                return View(items);
             }
-            return View(items);
+
+            return View();
+
+
 
         }
 

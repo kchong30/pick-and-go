@@ -6,10 +6,14 @@
     ViewData["Title"] = "Shopping Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int? customerId = Context.Session.GetInt32("customerId");
-
+    int itemCount = 0;
+    string cart = Context.Session.GetString("shoppingCart");
+    if (!string.IsNullOrEmpty(cart) && cart != "[]")
+    {
+        itemCount = cart.Split(',').Length;
+    }
 
 }
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
@@ -18,165 +22,181 @@
         <div class="shopping-title">
             <h1>Shopping Cart</h1>
         </div>
-        <div class="container-fluid">
-            <table class="table text-start">
-                <thead>
-                    <tr>
-                        <th scope="col" class="col-1"></th>
-                        <th scope="col" class="col-5">Sandwich</th>
-                        <th scope="col" class="col-1">Price</th>
-                        <th scope="col" class="col-1"></th>
-                        <th scope="col" class="col-1"></th>
-                        <th scope="col" class="col-1"></th>
-                    </tr>
-                </thead>
-                <tbody class="">
-                    @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
-                    {
-                        <tr class="ml-0">
-
-                            <td class="col-1">
-                                <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
-                                </button>
-                            </td>
-
-                            <td class="col-5">@item.Value.description</td>
-                            <td class="col-1"><span id="@item.Value.productId-amount" class="amount">$@Convert.ToDecimal(item.Value.subtotal).ToString("0.00")</span></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
-                            </td>
+        @if(itemCount > 0)
+        {
+            <div class="container-fluid">
+                <table class="table text-start">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-1"></th>
+                            <th scope="col" class="col-5">Sandwich</th>
+                            <th scope="col" class="col-1">Price</th>
+                            <th scope="col" class="col-1"></th>
+                            <th scope="col" class="col-1"></th>
+                            <th scope="col" class="col-1"></th>
                         </tr>
+                    </thead>
+                    <tbody class="">
+                        @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }))
+                        {
+                            <tr class="ml-0">
 
-                        <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
+                                <td class="col-1">
+                                    <button class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#@($"item-{item.Index}")" aria-expanded="false" aria-controls="@($"item-{item.Index}")">
+                                    </button>
+                                </td>
 
-                            <td colspan="12">
-                                <table class="accordion-table container">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="col-4">Ingredient</th>
-                                            <th scope="col" class="col-2">Quantity</th>
-                                            <th scope="col" class="col-2">Sub Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="col-4">Base sandwich price</td>
-                                            <td class="col-2">N/A</td>
-                                            <td class="col-2">$@(Convert.ToDouble(item.Value.productPrice).ToString("0.00"))</td>
+                                <td class="col-5">@item.Value.description</td>
+                                <td class="col-1"><span id="@item.Value.productId-amount" class="amount">$@Convert.ToDecimal(item.Value.subtotal).ToString("0.00")</span></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <a class="btn btn-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
+                                </td>
+                            </tr>
 
-                                        </tr>
-                                        @foreach (var ingredient in item.Value.ingredients)
-                                        {
-                                            decimal price = (Convert.ToDecimal(ingredient.price) * Convert.ToDecimal(ingredient.quantity));
+                            <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
+
+                                <td colspan="12">
+                                    <table class="accordion-table container">
+                                        <thead>
                                             <tr>
-                                                <td class="col-4">@ingredient.description</td>
-                                                @if (ingredient.quantity == "1")
+                                                <th scope="col" class="col-4">Ingredient</th>
+                                                <th scope="col" class="col-2">Quantity</th>
+                                                <th scope="col" class="col-2">Sub Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="col-4">Base sandwich price</td>
+                                                <td class="col-2">N/A</td>
+                                                <td class="col-2">$@(Convert.ToDouble(item.Value.productPrice).ToString("0.00"))</td>
+
+                                            </tr>
+                                            @foreach (var ingredient in item.Value.ingredients)
+                                            {
+                                                decimal price = (Convert.ToDecimal(ingredient.price) * Convert.ToDecimal(ingredient.quantity));
+                                                <tr>
+                                                    <td class="col-4">@ingredient.description</td>
+                                                    @if (ingredient.quantity == "1")
+                                                    {
+                                                        <td class="col-1">Regular</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="col-1">Extra</td>
+                                                    }
+                                                    <td class="col-1">$@price.ToString("0.00")</td>
+                                                    <td class="col-6"></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <footer>
+
+                <div>
+                    <label>Total: $</label>
+                    <span id="totalAmount">0</span>
+                    <input id="currency" hidden value="CAD" />
+                </div>
+                <br />
+                <div>
+                    @{
+                        var dataTargetConfirm = "#ModalYes";
+                        var modalID = "ModalYes";
+                    }
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmModalLabel">Checkout and Pay</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div>
+
+                                        <h4>Pick up time</h4>
+                                        <select id="pickupTime" name="pickupTime" required>
+                                            @{
+                                                // Get the time after 20mins from current time
+                                                var currentTime = DateTime.Now;
+                                                var timeToAdd = new TimeSpan(0, 20, 0);
+                                                var pickupTime = currentTime.Add(timeToAdd);
+
+                                                // round up the time per 20mins
+                                                var roundedTime = new DateTime(pickupTime.Year, pickupTime.Month, pickupTime.Day, pickupTime.Hour, (pickupTime.Minute / 20) * 20, 0);
+
+                                                // set business hour (9-22) and create a dropdown list between the time
+                                                if (roundedTime.Hour >= 9 && roundedTime.Hour < 22)
                                                 {
-                                                    <td class="col-1">Regular</td>
+                                                    // loop eace 20mins until 22
+                                                    for (var j = roundedTime; j <= new DateTime(roundedTime.Year, roundedTime.Month, roundedTime.Day, 22, 0, 0); j = j.AddMinutes(20))
+                                                    {
+                                                        <option value="@j.ToString("yyyy-MM-ddTHH:mm:ss")">@j.ToString("h:mm tt")</option>
+                                                    }
                                                 }
+                                                // if the time is not between 9 to 22, show we are closed
                                                 else
                                                 {
-                                                    <td class="col-1">Extra</td>
-                                                }
-                                                <td class="col-1">$@price.ToString("0.00")</td>
-                                                <td class="col-6"></td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
-        <footer>
-
-            <div>
-                <label>Total: $</label>
-                <span id="totalAmount">0</span>
-                <input id="currency" hidden value="CAD" />
-            </div>
-            <br />
-            <div>
-                @{
-                    var dataTargetConfirm = "#ModalYes";
-                    var modalID = "ModalYes";
-                }
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
-
-                <!-- Modal -->
-                <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmModalLabel">Checkout and Pay</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div>
-
-                                    <h4>Pick up time</h4>
-                                    <select id="pickupTime" name="pickupTime" required>
-                                        @{
-                                            // Get the time after 20mins from current time
-                                            var currentTime = DateTime.Now;
-                                            var timeToAdd = new TimeSpan(0, 20, 0);
-                                            var pickupTime = currentTime.Add(timeToAdd);
-
-                                            // round up the time per 20mins
-                                            var roundedTime = new DateTime(pickupTime.Year, pickupTime.Month, pickupTime.Day, pickupTime.Hour, (pickupTime.Minute / 20) * 20, 0);
-
-                                            // set business hour (9-22) and create a dropdown list between the time
-                                            if (roundedTime.Hour >= 9 && roundedTime.Hour < 22)
-                                            {
-                                                // loop eace 20mins until 22
-                                                for (var j = roundedTime; j <= new DateTime(roundedTime.Year, roundedTime.Month, roundedTime.Day, 22, 0, 0); j = j.AddMinutes(20))
-                                                {
-                                                    <option value="@j.ToString("yyyy-MM-ddTHH:mm:ss")">@j.ToString("h:mm tt")</option>
+                                                    <option value="">Sorry, We are closed!</option>
                                                 }
                                             }
-                                            // if the time is not between 9 to 22, show we are closed
-                                            else
-                                            {
-                                                <option value="">Sorry, We are closed!</option>
-                                            }
-                                        }
-                                    </select>
-                                    <br />
+                                        </select>
+                                        <br />
+                                        <br />
+                                    </div>
+                                    @if (customerId == null)
+                                    {
+                                        <h4> Please provide your first name and email address for a receipt</h4>
+                                        <label for="first-name">First Name</label>
+                                        <input id="first-name" type="text" class="form-control" name="first-name" required>
+
+                                        <label for="email">Email address</label>
+                                        <input id="email" type="email" class="form-control" name="email" required pattern="^[a-zA-Z0-9._+-]+@("@")[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$">
+                                    }
                                     <br />
                                 </div>
-                                @if (customerId == null)
-                                {
-                                    <h4> Please provide your first name and email address for a receipt</h4>
-                                    <label for="first-name">First Name</label>
-                                    <input id="first-name" type="text" class="form-control" name="first-name" required >
-
-                                    <label for="email">Email address</label>
-                                    <input id="email" type="email" class="form-control" name="email" required pattern="^[a-zA-Z0-9._+-]+@("@")[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$">
-                                }
-                                <br />
-                            </div>
-                            <div class="modal-footer">
-                                <div class="mt-3" id="paypal-button">@Html.Partial("PayPalJS")</div>
+                                <div class="modal-footer">
+                                    <div class="mt-3" id="paypal-button">@Html.Partial("PayPalJS")</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+            </footer>
+        }
+        else
+        {
+            <div class="container-fluid">
+                <div class="container mt-5">
+                    <div class="jumbotron text-center">
+                        <h1 class="display-4">You did not add anything to the cart</h1>
+                        <p class="lead">Please click the button to start order.</p>
+                        <a class="btn btn-dark" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
+                    </div>
+                </div>
             </div>
 
-        </footer>
+        }
     </div>
 </div>
 <style>
@@ -185,8 +205,6 @@
     }
 </style>
 <script>
-
-
         $(document).ready(function () {
         var totalAmountId = "#totalAmount";
         var totalAmount = 0.00;
