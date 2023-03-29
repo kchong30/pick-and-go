@@ -113,7 +113,7 @@ nav li a:hover {
 .btn-primary {
     background-color: #ef6900;
     border-radius: 5px;
-    border-color: #ef6900;
+    border: none;
 }
 
 .btn-outline {
