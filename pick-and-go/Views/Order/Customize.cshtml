@@ -5,13 +5,12 @@
     ViewData["Title"] = "Customize";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<section class="customize">
-   
+<main class="customize">
+
     <div id="customize-page" hidden>Customize-page</div>
 
     <div class="productTable container">
         <h1>Customize</h1>
-
         <hr />
         <!-- Product Select -->
         <select onchange="changeProduct(event)" id="product" class="p-3 mb-3 w-100 border-1 border">
@@ -25,7 +24,7 @@
         <div class="d-flex w-100 justify-content-end">
             <button id="clear-selection" class="border-0 my-2 bg-transparent clear-btn" onclick="clearSelection(event)">Clear Selection</button>
         </div>
-      
+
         <!-- Displaying Ingredients -->
         <div class="accordion" id="customize">
             @foreach (var cat in Model.ingredientListVMs)
@@ -96,22 +95,20 @@
             <button type="button" class="btn btn-primary fs-5 p-2 mb-3" id="add-cart" onclick="addToCart()" value="">Add to Cart</button>
             <button type="button" class="btn btn-primary fs-5 p-2" id="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
         </div>
-       
+
     </div>
 
     <!--End of Bottom-->
-
-
     <!--jQuery Classes-->
     <div hidden>
         <span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
         <button onclick="validateForm()">Validation</button>
         <button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
-       
+
     </div>
     <!--End of jQuery Classes-->
 
-</section>
+</main>
 
 <!-- Cart jQuery Script-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>

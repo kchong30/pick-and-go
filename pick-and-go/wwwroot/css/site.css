@@ -1,12 +1,5 @@
 html {
     font-size: 14px;
-    margin: 0;
-    padding: 0;
-   
-}
-
-* {
-    box-sizing: border-box;
 }
 
 
@@ -14,11 +7,6 @@ html {
     html {
         font-size: 16px;
     }
-}
-
-html {
-/*    position: relative;
-    min-height: 100%;*/
 }
 
 /* Default setting */
@@ -41,7 +29,6 @@ main {
     margin: 20px;
     min-height: calc(100vh - 65px);
     height: 100%;
-    border: 2px solid blue;
 }
 
 h1, h2, h3, h4 {
@@ -52,12 +39,26 @@ h1, h2, h3, h4 {
 
 nav {
     width: 100%;
+    height: 100%;
     z-index: 10;
+    font-size: 14px;
+}
+
+nav button {
+    font-size: 14px !important;
+}
+
+nav button:hover {
+    color: #ef6900 !important;
 }
 
 nav img {
     width: 150px;
     padding-top: 5px;
+}
+
+.nav-item{
+ 
 }
 
 nav .dropdown button:hover {
@@ -86,7 +87,9 @@ nav li a:hover {
     background-color: #ffaf01;
 }
 
-@media (max-width: 576px) {
+ 
+
+@media (max-width: 768px) {
     .dropdown-menu{
         display: block;
         position: static;
@@ -303,50 +306,9 @@ input[type=radio] {
     margin-top: 10px;
 }
 
-    .date-filter input[type="date"] {
-        width: 125px;
-    }
-
-
-/*
-
-.root {
-    box-sizing: border-box;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    padding-top: 68px;
-    background-color: #ffaf01;
-    height: 100vh;
-    min-width: 350px;
+.date-filter input[type="date"] {
+    width: 125px;
 }
-
-main {
-    box-sizing: border-box;
-    min-width: 350px;
-    background-color: white;
-
-
-    min-height: fit-content;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-main .landing-page {
-    margin: -20px;
-}*/
-
-/*.text {
-    width: 100%;
-    height: 200px;
-    background-color: skyblue;
-    border: 2px solid green;
-}*/
-
-
-/* Homepage */
-
 
 /* Landing Page */
 .landing-page {
@@ -359,13 +321,20 @@ main .landing-page {
     margin-bottom: 10px;
 }
 
-.landing-page button {
+.landing-page .button {
     max-width: 600px;
-    background-color: white;
 }
 
 .landing-page a {
     text-decoration: none;
     color: #ef6900;
+    transition: all 0.2s ease-in-out;
 }
 
+.landing-page a:hover{
+    background-color: rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* Footer */

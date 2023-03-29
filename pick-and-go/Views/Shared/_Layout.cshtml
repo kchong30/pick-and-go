@@ -20,9 +20,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light ">
+        <nav class="navbar navbar-expand-md accordion-header navbar-light ">
             <!-- Menu Button -->
-            <button class="navbar-toggler text-white border-0 px-3" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            <button class="navbar-toggler text-white border-0 px-4" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 @*<span class="navbar-toggler-icon"></span>*@
                 <i class="fa-solid fa-bars"></i>
@@ -34,7 +34,7 @@
             </a>
 
             <!-- Cart Icon -->
-            <button class="navbar-cart order-sm-5 border-0 bg-transparent text-white position-relative fs-4 px-3" id="checkout" onclick="checkout()">
+            <button class="navbar-cart order-md-5 border-0 bg-transparent text-white position-relative fs-4 px-4" id="checkout" onclick="checkout()">
                 <i class="fa-solid fa-cart-shopping"></i> @*top-0 start-20 *@
                 <span id="cart-icon" class="position-absolute translate-middle badge rounded-pill bg-danger">
                     0
@@ -42,10 +42,10 @@
             </button>
 
             <!-- Navigation Panel-->
-            <div class="navbar-collapse collapse d-sm-inline-flex p-3 p-sm-0 gap-3">
+            <div class="navbar-collapse collapse d-md-inline-flex p-3 p-md-0 gap-3">
                 @*@if (User.IsInRole("Admin"))
                 {*@
-                <div class="dropdown py-2 ps-sm-2">
+                <div class="dropdown py-2 ps-md-2">
                     <button class="dropdown-toggle border-0 bg-transparent text-white p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</button>
                     <ul class="dropdown-menu">
                         <li class="dropdown-item">
@@ -78,7 +78,7 @@
                 @*
                 }
                 @if (User.IsInRole("Customer")){*@
-                <ul class="navbar-nav nav-section-2 w-100">
+                <ul class="navbar-nav w-25">
                     <li class="nav-item">
                         <a class="nav-link text-white ps-0" asp-area="" asp-controller="Order" asp-action="Index">Start Order</a>
                     </li>
@@ -92,14 +92,10 @@
         @RenderBody()
     </div>
     <!-- Footer -->
-    <footer class="  bg-success">
-        HaHAHAHAH
-    </footer>
-@*    <footer class="bg-dark text-light py-4 b-0">
+    <footer class="bg-secondary">
         <div class="container-fluid pt-5 pb-5">
             <div class="row text-center">
                 <p class="d-flex justify-content-center">
-                    &copy; 2023 PickAndGo
                     <!--list-unstyled d-flex justify-content-center-->
                     @if (!User.IsInRole("Admin") && !User.IsInRole("Customer"))
                     {
@@ -177,7 +173,10 @@
                 </p>
             </div>
         </div>
-    </footer>*@
+
+        <div class="d-flex justify-content-center text-white p-3">&copy; 2023 Pick And Go</div>
+    </footer>
+ 
     <!--End of Footer-->
 
     <script src="~/js/bootstrap.min.js"></script>
