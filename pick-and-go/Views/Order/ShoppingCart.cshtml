@@ -3,6 +3,7 @@
 
 
 @{
+    ViewData["Title"] = "Shopping Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int? customerId = Context.Session.GetInt32("customerId");
 }
@@ -112,7 +113,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="confirmModalLabel">Complete this sandwich?</h5>
+                                <h5 class="modal-title" id="confirmModalLabel">Checkout and Pay</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -130,16 +131,16 @@
                                             // round up the time per 20mins
                                             var roundedTime = new DateTime(pickupTime.Year, pickupTime.Month, pickupTime.Day, pickupTime.Hour, (pickupTime.Minute / 20) * 20, 0);
 
-                                            // set business hour (9-17) and create a dropdown list between the time
-                                            if (roundedTime.Hour >= 9 && roundedTime.Hour < 17)
+                                            // set business hour (9-22) and create a dropdown list between the time
+                                            if (roundedTime.Hour >= 9 && roundedTime.Hour < 22)
                                             {
-                                                // loop eace 20mins until 17
-                                                for (var j = roundedTime; j <= new DateTime(roundedTime.Year, roundedTime.Month, roundedTime.Day, 17, 0, 0); j = j.AddMinutes(20))
+                                                // loop eace 20mins until 22
+                                                for (var j = roundedTime; j <= new DateTime(roundedTime.Year, roundedTime.Month, roundedTime.Day, 22, 0, 0); j = j.AddMinutes(20))
                                                 {
                                                     <option value="@j.ToString("yyyy-MM-ddTHH:mm:ss")">@j.ToString("h:mm tt")</option>
                                                 }
                                             }
-                                            // if the time is not between 9 to 17, show we are closed
+                                            // if the time is not between 9 to 22, show we are closed
                                             else
                                             {
                                                 <option value="">Sorry, We are closed!</option>
