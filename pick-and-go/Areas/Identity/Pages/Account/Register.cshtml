@@ -1,17 +1,17 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Please Enter Your Account Details";
 }
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
-<h1>@ViewData["Title"]</h1>
+
 
 <div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <div class="d-flex flex-column w-100 m-auto text-center">
+        <h1 class="mb-3">@ViewData["Title"]</h1>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class= "d-flex flex-column align-items-center">
             <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div>
-            <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
@@ -44,7 +44,7 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button id="registerSubmit" type="submit" class="w-25 btn btn-lg btn-primary my-5">Register</button>
         </form>
         <p class="mt-2 text-danger">@ViewData["ErrorMessage"]</p>
     </div>
