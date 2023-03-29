@@ -41,9 +41,7 @@
                   </td>
 
                   <td class="col-5">@item.Value.description</td>
-                            <td class="col-1"><span id="@item.Value.productId-amount" class="amount">@item.Value.subtotal</span></td>
-                            
-
+                            <td class="col-1"><span id="@item.Value.productId-amount" class="amount">$@Convert.ToDecimal(item.Value.subtotal).ToString("0.00")</span></td>
                   <td></td>
                   <td></td>
                       <td>
@@ -72,20 +70,24 @@
                         <tr>
                             <td class="col-4">Base sandwich price</td>
                             <td class="col-2">N/A</td>
-                            <td class="col-2">@item.Value.productPrice</td>
+                            <td class="col-2">$@(Convert.ToDouble(item.Value.productPrice).ToString("0.00"))</td>
+
                         </tr>
                         @foreach (var ingredient in item.Value.ingredients)
                         {
                             decimal price = (Convert.ToDecimal(ingredient.price) * Convert.ToDecimal(ingredient.quantity));
                             <tr>
-                               <td class="col-4">@ingredient.description</td>  
-                               @if (ingredient.quantity == "1") {
-                               <td class="col-1">Regular</td>
-                               } else {
-                               <td class="col-1">Extra</td>
-                               }
-                               <td class="col-1">@price</td>
-                               <td class="col-6"></td>
+                                <td class="col-4">@ingredient.description</td>
+                                @if (ingredient.quantity == "1")
+                                {
+                                    <td class="col-1">Regular</td>
+                                }
+                                else
+                                {
+                                    <td class="col-1">Extra</td>
+                                }
+                                <td class="col-1">$@price.ToString("0.00")</td>
+                                <td class="col-6"></td>
                             </tr>
                         }
                      </tbody>
@@ -184,11 +186,12 @@
         var totalAmountId = "#totalAmount";
         var totalAmount = 0.00;
         $('.amount').each(function () {
-            var thisAmount = $(this).html();
+            var thisAmount = $(this).html().replace(/[^0-9.-]+/g, ""); // remove non-numeric characters
             totalAmount += parseFloat(thisAmount);
         });
         $(totalAmountId).html(totalAmount.toFixed(2));
     });
+
 
     $(document).ready(function() {
         // Hide the PayPal button initially
