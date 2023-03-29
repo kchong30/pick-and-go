@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ProductVM>
+@using PickAndGo.ViewModels
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Products</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product Image
+            </th>
+            <th>
+                Product ID
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Base Price
+            </th>
+            <th>
+                Image URL
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
+                </td>
+                <td class="align-middle text-left">
+                    @Html.DisplayFor(model => item.ProductId)
+                </td>
+                <td class="align-middle text-left">
+                    @Html.DisplayFor(model => item.Description)
+                </td>
+                <td class="align-middle text-left">
+                    @Html.DisplayFor(model => item.BasePrice)
+                </td>
+                <td class="align-middle text-left">
+                    @Html.DisplayFor(model => item.Image)
+                </td>
+                <td class="align-middle">
+                    <a type="button" class="btn btn-sm btn-outline-secondary"asp-action="ProductDetails" asp-route-productId="@item.ProductId">Details</a>
+                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="ProductEdit" asp-route-productId="@item.ProductId">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

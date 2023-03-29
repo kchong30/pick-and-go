@@ -1,7 +1,7 @@
-
 html {
     font-size: 14px;
 }
+
 
 @media (min-width: 768px) {
     html {
@@ -9,18 +9,128 @@ html {
     }
 }
 
-html {
-    position: relative;
-    min-height: 100%;
+/* Default setting */
+
+body .container {
+    padding: 0;
 }
 
-body {
-    min-height: 100%;
+header {
+    height: 65px;
+    background-color: #ffaf01;
 }
 
-    body .container {
-        padding: 0;
+.root {
+    min-height: calc(100vh - 65px);
+}
+
+main {
+    /* main or section.. whatever */
+    margin: 20px;
+    min-height: calc(100vh - 65px);
+    height: 100%;
+}
+
+h1, h2, h3, h4 {
+    color: #ef6900;
+}
+
+/* Navigation */
+
+nav {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    font-size: 14px;
+}
+
+nav button {
+    font-size: 14px !important;
+}
+
+nav button:hover {
+    color: #ef6900 !important;
+}
+
+nav img {
+    width: 150px;
+    padding-top: 5px;
+}
+
+.nav-item{
+ 
+}
+
+nav .dropdown button:hover {
+    color: #ef6900 !important;
+}
+
+nav li a:hover {
+    color: #ef6900 !important;
+}
+
+#cart-icon {
+    font-size: 0.7rem;
+    top: 0;
+ 
+}
+
+.navbar-toggler:active,
+.navbar-toggler:hover,
+.navbar-toggler:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.navbar-collapse {
+    background-color: #ffaf01;
+}
+
+ 
+
+@media (max-width: 768px) {
+    .dropdown-menu{
+        display: block;
+        position: static;
+        background-color: transparent;
+        border: none;
     }
+    .dropdown-menu li a{
+        color: white !important;
+    }
+    .dropdown-menu li:hover{
+        background-color: rgba(255,255,255,0.1);
+    }
+    nav .dropdown button:hover {
+        color: white !important;
+        cursor:auto;
+    }
+}
+
+/* Bootstrap button styles */
+
+.btn-primary {
+    background-color: #ef6900;
+    border-radius: 5px;
+    border-color: #ef6900;
+}
+
+.btn-outline {
+    background-color: white;
+    color: #ef6900;
+    font-weight: 700;
+    border-radius: 5px;
+    border: none;
+    height: 30px;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #ffaf01;
+    color: black:
+}
 
 /* General accordion styles */
 
@@ -36,26 +146,35 @@ body {
     margin-left: 0px;
 }
 
-    .accordion-button:focus {
-        background-color: white !important;
-        box-shadow: none !important;
-        border-style: none;
-        outline: 0;
-    }
+.accordion-button:focus {
+    background-color: white !important;
+    box-shadow: none !important;
+    border-style: none;
+    outline: 0;
+}
 
-    .accordion-button:not(.collapsed) {
-        background-color: white !important;
-        box-shadow: none !important;
-        border-style: none;
-        outline: 0;
-    }
+.accordion-button:not(.collapsed) {
+    background-color: white !important;
+    box-shadow: none !important;
+    border-style: none;
+    outline: 0;
+    color: black;
+}
 
-    .accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active {
-        background-color: white !important;
-        box-shadow: none !important;
-        border-style: none;
-        outline: 0;
-    }
+.accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active {
+    background-color: white !important;
+    box-shadow: none !important;
+    border-style: none;
+    outline: 0;
+}
+
+.accordion-button.collapsed::after {
+    background-image: url("/images/down-arrow.jpg");
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("/images/down-arrow.jpg");
+}
 
 .col {
     padding: 0;
@@ -79,9 +198,9 @@ body {
     margin-top: 10px;
 }
 
-    .order-search input[type="text"] {
-        width: 150px;
-    }
+.order-search input[type="text"] {
+    width: 150px;
+}
 
 .order-filter #orderfilter {
     height: 31px;
@@ -99,9 +218,9 @@ body {
     margin-bottom: 30px;
 }
 
-    .modal-table td {
-        padding-left: 15px;
-    }
+.modal-table td {
+    padding-left: 15px;
+}
 
 /* Ingredient list with expanding/collapsing sections styles */
 
@@ -143,11 +262,25 @@ body {
     width: 100%;
 }
 
-<th class="col-1" >
-
 .radio-group input[type=radio] {
     transform: scale(1.8);
+    border: 1px solid gray;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    appearance: none;
 }
+
+input[type=radio] {
+    transform: scale(1.8);
+}
+
+input[type=radio]:checked {
+    border: 1px solid orange;
+    background-color: orange;
+    box-shadow: inset 0 0 0 2px white;
+}
+   
 
 /* Order history styles */
 
@@ -185,177 +318,39 @@ body {
     margin-top: 10px;
 }
 
-    .date-filter input[type="date"] {
-        width: 125px;
-    }
-
-
-/***************/
-/* Navigation*/
-/***************/
-/* 
-Yellow : #ffaf01
-Orange : #ef6900
-*/
-
-
-/* Menu Button */
-header .navbar-toggler {
-    border: none;
+.date-filter input[type="date"] {
+    width: 125px;
 }
-
-    header .navbar-toggler i {
-        font-size: 1.5rem;
-        color: white;
-    }
-
-    header .navbar-toggler:active,
-    hadear .navbar-toggler:hover,
-    header .navbar-toggler:focus {
-        border: none;
-        outline: none;
-        box-shadow: none;
-    }
-
-
-header .navbar-brand {
-    display: flex;
-    justify-content: center;
-}
-
-
-    header .navbar-brand img {
-        width: 150px;
-    }
-
-header .navbar-cart {
-    color: white;
-    font-size: 1.5rem;
-    padding-right: 7px;
-    background-color: transparent;
-    border: none;
-    position: relative;
-}
-
-#cart-icon {
-    font-size: 0.7rem;
-    top: 0;
-    text-align: center;
-    background-color: white;
-}
-
-header .navbar-collapse {
-    background-color: #ffaf01;
-    padding: 5px;
-}
-
-/*ul*/
-header .navbar-nav {
-
-}
-
-/*li*/
-header .nav-item {
-    color: white;
-}
-
-
-/* Main */
-/* Keep this style for every page */
-header {
-    position: relative;
-    z-index: 10;
-}
-
-.root {
-    box-sizing: border-box;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    padding-top: 68px;
-    background-color: #ffaf01;
-    height: 100vh;
-    min-width: 350px;
-    border: 2px solid red;
-}
-
-main {
-    box-sizing: border-box;
-    min-width: 350px;
-    height: 100%;
-    background-color: white;
-}
-
-/*.text {
-    width: 100%;
-    height: 200px;
-    background-color: skyblue;
-    border: 2px solid green;
-}*/
-
-
-footer {
-}
-
-/* Homepage */
-
 
 /* Landing Page */
-/* Going to shift to Bootstrap later */
-* {
-    box-sizing: border-box;
-}
-
 .landing-page {
-    box-sizing: border-box;
     background-image: linear-gradient(#ffaf01, #ef6900);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
 }
 
-    .landing-page img {
-        width: 100vw;
-        padding: 50px;
-        margin-bottom: 100px;
-    }
+.landing-page img {
+    max-width: 700px;
+    padding: 50px;
+    margin-bottom: 10px;
+}
 
-    .landing-page .paragraph {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+.landing-page .button {
+    max-width: 600px;
+}
 
-    .landing-page .title {
-        font-weight: 700;
-        font-size: 2rem;
-    }
-
-    .landing-page .sub-title {
-        margin-bottom: 20px;
-    }
-
-    .landing-page a {
-        text-decoration: none;
-        color: #ef6900;
-    }
-
-
-.paragraph button {
-    background-color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px 5px 10px;
+.landing-page a {
+    text-decoration: none;
     color: #ef6900;
-    font-weight: 700;
-    margin-bottom: 50px;
-    box-shadow: 0px 0px 5px rgba(0,0,0,0.4)
+    transition: all 0.2s ease-in-out;
 }
 
-    .paragraph button:hover {
-        background-color: #ffaf01;
-        color: white;
-    }
+.landing-page a:hover{
+    background-color: rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* Footer */
+
+.bottom {
+    background-color: #ef6900;
+}

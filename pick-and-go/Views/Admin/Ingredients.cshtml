@@ -9,7 +9,7 @@
 <h1>Ingredients</h1>
 
 <p>
-    <a asp-action="IngredientsCreate">Create New</a>
+    <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsCreate">Create New</a>
 </p>
 
 <div class="container">
@@ -69,24 +69,24 @@
                                     <td>
                                         @if (ing.IngredientImage != "" && ing.IngredientImage != null)
                                         {
-                                            <img class="ingredient-image" src=@ing.IngredientImage alt=@ing.Description>
+                                            <img class="ingredient-image rounded-circle shadow-sm" src=@ing.IngredientImage alt=@ing.Description>
                                         }
                                         else
                                         {
-                                            <img class="ingredient-image" src="~/images/empty-image.png">
+                                            <img class="ingredient-image rounded-circle shadow-sm" src="~/images/empty-image.png">
                                         }
                                     </td>
                                     <td class="celldesc">@ing.Description</td>
                                     <td>@ing.Price</td>
                                     <td><img class="stock-icon" src="~/images/@ing.InStockIcon"/></td>
                                     <td>
-                                        <a asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a> |
-                                        <a asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a> |
+                                        <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
+                                        <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
                                         @if (!ing.OutstandingOrders)
                                         {
                                             var dataTargetConfirm = "#ModalYes" + ing.IngredientId;
                                             var modalID = "ModalYes" + ing.IngredientId;
-                                            <a asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
+                                            <a type="button" class="btn btn-outline-secondary"  asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
 
                                             @using (Html.BeginForm("IngredientsDelete", "Admin", new
                                             {

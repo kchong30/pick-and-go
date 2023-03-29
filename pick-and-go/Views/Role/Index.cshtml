@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<PickAndGo.ViewModels.RoleVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Roles";
 }
 
 <h1>Roles</h1>
 
 <p>
-    <a asp-action="Create">Create New Role</a>
+    <a type="button" class="btn btn-outline-secondary" asp-action="Create">Create New Role</a>
 </p>
 <table class="table">
     <thead>
@@ -25,7 +25,7 @@
                 @Html.DisplayFor(modelItem => item.RoleName)
             </td>
             <td>
-                <a asp-action="Delete" asp-route-rolename ="@item.RoleName">Delete</a>
+                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-rolename="@item.RoleName">Delete</a>
             </td>
         </tr>
 }

@@ -1,7 +1,7 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Sign Up";
+    ViewData["Title"] = "Please Enter Your Account Details";
 }
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
@@ -15,7 +15,7 @@
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h1 class="sign-up">@ViewData["Title"]</h1>
             <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div>
-
+            <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <label asp-for="Input.FirstName"></label>
             <div class="form-floating">

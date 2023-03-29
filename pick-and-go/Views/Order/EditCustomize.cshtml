@@ -2,7 +2,7 @@
 @model OrderCustomizeVM;
 
 @{
-    ViewData["Title"] = "Ingredients";
+    ViewData["Title"] = "Customize";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,138 +15,141 @@
     }
 }
 
+<main class="customize">
 
-<h1>EDDIDDTT Customize</h1>
+    <div id="customize-page" hidden>Customize-page</div>
 
-<!--Shopping Cart Icon-->
+    <div class="productTable container">
+        <h1>Edit Customize</h1>
+        <hr />
+        <!-- Product Select -->
+        <select onchange="changeProduct(event)" id="product" class="p-3 mb-3 w-100 border-1 border">
+            <option value="">-----Select sandwich size-----</option>
+            @foreach (var product in Model.productVMs)
+            {
+                <option value="@product.ProductId-@product.BasePrice-@product.Description" selected="@(Int32.Parse(ViewBag.cartItem.productId)==@product.ProductId ? "selected" : null)">@product.Description</option>
+            }
+        </select>
+        <!-- End of Select-->
+        <div class="d-flex w-100 justify-content-end">
+            <button id="clear-selection" class="border-0 my-2 bg-transparent clear-btn" onclick="clearSelection(event)">Clear Selection</button>
+        </div>
 
-<button type="button" class="btn btn-primary position-relative">
-    Shopping Cart
-    <span id="cart-icon" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        0
-        <span class="visually-hidden">unread messages</span>
-    </span>
-</button>
+        <!-- Displaying Ingredients -->
+        <div class="accordion" id="customize">
+            @foreach (var cat in Model.ingredientListVMs)
+            {
+                <div class="accordion-item">
+                    <!-- Accordion Header : Catogory -->
+                    <h2 class="accordion-header p-3">
+                        <button class="accordion-button collapsed fs-6 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="true" aria-controls="@cat.CategoryId">
+                            @cat.CategoryId
+                        </button>
+                    </h2>
+                    <!-- Accordion Body : Ingredients, add show in the  class -->
+                    <div id="@cat.CategoryId" class="accordion-collapse collapse p-2" aria-labelledby="@cat.CategoryId">
+                        <div class="accordion-body">
+                            <!-- Ingredients Table -->
+                            @foreach (var ing in cat.Ingredients)
+                            {
+                                // Skip ingredients that are out of stock
+                                if (ing.InStock == "N") { continue; }
 
-<hr />
-<div id="customize-page" hidden>Customize-page</div>
+                                // Check if the ingredient is in the cart and get the quantity
+                                int quantity = cartIngredients.ContainsKey(ing.IngredientId) ? cartIngredients[ing.IngredientId] : 0;
 
-<div class="container">
-    <!-- Product Select :: Add Sessions Here -->
-    <!-- !! Receive select data from localStorage(session)-->
-    <select onchange="changeProduct(event)" id="product">
-        <option value="">-----Select sandwich size-----</option>
-        @foreach (var product in Model.productVMs)
-        {
-            <option value="@product.ProductId-@product.BasePrice-@product.Description" selected="@(Int32.Parse(ViewBag.cartItem.productId)==@product.ProductId ? "selected" : null)">@product.Description</option>
-        }
-    </select>
-    <!-- End of Select-->
-    <!-- Displaying Ingredients -->
-    <div class="accordion" id="customize">
-        @foreach (var cat in Model.ingredientListVMs)
-        {
-            <div class="accordion-item">
-                <!-- Accordion Header : Catogory -->
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="true" aria-controls="@cat.CategoryId">
-                        @cat.CategoryId
-                    </button>
-                </h2>
-                <!-- Accordion Body : Ingredients, add show in the  class -->
-                <div id="@cat.CategoryId" class="accordion-collapse collapse" aria-labelledby="@cat.CategoryId">
-                    <div class="accordion-body">
-                        <!-- Ingredients Table -->
-                        <table class="accordion-table container d-flex">
-                            <tbody class="d-flex flex-column w-100">
-                                <tr class="d-flex w-100  justify-content-between">
-                                    <th class="w-25 ps-2">Description</th>
-                                    <th class="w-25">Price</th>
-                                    <th class="w-25 ps-3">Quantity</th>
-                                    <th> </th>
-                                </tr>
-                                @foreach (var ing in cat.Ingredients)
-                                {
-                                    // Skip ingredients that are out of stock
-                                    if (ing.InStock == "N") { continue; }
+                                <!-- Display the ingredient with the updated quantity -->
+                                <div id="@ing.IngredientId-table" class="ingredientTable d-flex w-100">
+                                    <div class="col p-3">
+                                        <img src="@ing.IngredientImage" alt="@ing.Description" class="w-100 rounded-circle shadow-sm" />
+                                    </div>
 
-                                    // Check if the ingredient is in the cart and get the quantity
-                                    int quantity = cartIngredients.ContainsKey(ing.IngredientId) ? cartIngredients[ing.IngredientId] : 0;
+                                    <div class="col-4 d-flex flex-column justify-content-center p-3">
+                                        <div class="ingredientId" hidden>@ing.IngredientId</div>
+                                        <div class="description fw-bold">@ing.Description</div>
+                                        <div>$<span id="@ing.IngredientId-price" class="price">@ing.Price</span></div>
+                                    </div>
 
-                                    <!-- Display the ingredient with the updated quantity -->
-                                    <tr id="@ing.IngredientId-table" class="ingredientTable d-flex w-100 justify-content-between my-3">
-                                        <td class="ingredientId w-25" hidden>@ing.IngredientId</td>
-                                        <td class="description w-25 ps-2">@ing.Description</td>
-                                        <td id="@ing.IngredientId-price" class="price w-25 ps-3">@ing.Price</td>
-                                        <td class="w-25 d-flex align-content-center">
-                                            @if (quantity > 0)
-                                            {
-                                                <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column m-1">
-                                                        <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none">
-                                                        <label for="@ing.IngredientId-none" class="me-1">None</label>
-                                                    </div>
-                                                    <div class="d-flex flex-column m-1">
-                                                        <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg" @(quantity == 1 ? "checked" : "") />
-                                                        <label for="@ing.IngredientId-reg" class="me-1">Reg</label>
-                                                    </div>
-                                                    <div class="d-flex flex-column m-1">
-                                                        <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra" @(quantity == 2 ? "checked" : "") />
-                                                        <label for="@ing.IngredientId-extra" class="me-1">Extra</label>
-                                                    </div>
-                                                </form>
-                                            }
-                                            else
-                                            {
-                                                <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-column m-1">
-                                                        <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
-                                                        <label for="@ing.IngredientId-none" class="me-1">None</label>
-                                                    </div>
-                                                    <div class="d-flex flex-column m-1">
-                                                        <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
-                                                        <label for="@ing.IngredientId-reg" class="me-1">Reg</label>
-                                                    </div>
-                                                    <div class="d-flex flex-column m-1">
-                                                        <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
-                                                        <label for="@ing.IngredientId-extra" class="me-1">Extra</label>
-                                                    </div>
-                                                </form>
-                                            }
-                                        </td>
-                                                    
-                                        <td id="@ing.IngredientId-quantity" class="quantity w-25">@quantity</td>
-                                        <td id="@ing.IngredientId-amount" class="amount pe-2">@((decimal)ing.Price * quantity)</td>
+                                    <div class="col-6 d-flex align-items-center justify-content-end p-3">
+                                        @if (quantity > 0)
+                                        {
+                                            <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
 
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                        <!-- End of Ingredients table-->
+                                                <label for="@ing.IngredientId-none" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                    <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none">
+                                                    None
+                                                </label>
+                                                <label for="@ing.IngredientId-reg" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                    <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg" @(quantity == 1 ? "checked" : "")>
+                                                    Regular
+                                                </label>
+
+                                                <label for="@ing.IngredientId-extra" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                    <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra" @(quantity == 2 ? "checked" : "")>
+                                                    Extra
+                                                </label>
+
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
+
+                                                <label for="@ing.IngredientId-none" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                    <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
+                                                    None
+                                                </label>
+                                                <label for="@ing.IngredientId-reg" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                    <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
+                                                    Regular
+                                                </label>
+
+                                                <label for="@ing.IngredientId-extra" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                    <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
+                                                    Extra
+                                                </label>
+
+                                            </form>
+                                        }
+                                    </div>
+
+                                    <div id="@ing.IngredientId-quantity" class="quantity" hidden>@quantity</div>
+                                    <div id="@ing.IngredientId-amount" class="amount" hidden>@((decimal)ing.Price * quantity)</div>
+                                </div>
+                            }
+                            <!-- End of Ingredients table-->
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- End of Accordian -->
-        }
+            }
+        </div>
+        <!-- End of Accordian -->
     </div>
-</div>
 
-<hr />
-<span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
-<span>Total : $</span> <span id="total-price">0</span> <!-- Add Sandwich price by default, changes with selection change-->
+    <!--Bottom-->
+    <div class="container">
+        <div class="d-flex justify-content-end p-3 fw-bold"><span class="pe-2">Total</span> <span class="pe-1">$</span> <span id="total-price">0</span> </div>
 
-<button onclick="addToCartFromEdit()" data-index="@ViewData["index"]" data-removeItem="@ViewData["removeItem"].ToString().ToLower()" value="">Add to Cart</button> <!-- Trigger to save in localStorage-->
-<!-- !! Reset radio button (select all to none)-->
-<button id="clear-selection" onclick="clearSelection(event)">Clear Selection</button>
-<button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
+        <div class="d-flex flex-column">
+            <button type="button" class="btn btn-primary fs-5 p-2 mb-3" id="add-cart" onclick="addToCartFromEdit()" data-index="@ViewData["index"]" data-removeItem="@ViewData["removeItem"].ToString().ToLower()" value="">Add to Cart</button> <!-- Trigger to save in localStorage-->
+            <button type="button" class="btn btn-primary fs-5 p-2" id="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
 
-<button id="checkout" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+    <!--End of Bottom-->
+    <!--jQuery Classes-->
+    <div hidden>
+        <span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
+        <button onclick="validateForm()">Form Validation</button>
+        <button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
+    </div>
+    <!--End of jQuery Classes-->
 
-<button onclick="validateForm()">Form Validation</button>
+
+</main>
+
+
 <!-- Cart jQuery Script-->
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/cart.js"></script>
-<script>
-</script>
 <!-- End of Script-->

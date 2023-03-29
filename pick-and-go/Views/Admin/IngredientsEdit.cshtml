@@ -2,7 +2,7 @@
 @using PickAndGo.ViewModels
 
 @{
-    ViewData["Title"] = "IngredientsEdit";
+    ViewData["Title"] = "Edit Ingredient";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -43,13 +43,10 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a type="button" class="btn btn-outline-secondary" asp-action="Ingredients">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Ingredients">Back to List</a>
 </div>
 
 @section Scripts {

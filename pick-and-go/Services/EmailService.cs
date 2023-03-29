@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using PickAndGo.Models;
+using PickAndGo.ViewModels;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
@@ -36,17 +38,24 @@ namespace PickAndGo.Services
 
         public Task<Response> SendConfirmationEmail(ConfirmationEmailModel payload)
         {
-            var apiKey = _configuration.GetSection("SendGrid")["ApiKey"];
-/*            var apiKey = _configuration["SendGrid:ApiKey"];
-*/            var client = new SendGridClient(apiKey);
+            /*            var apiKey = _configuration.GetSection("SendGrid")["ApiKey"];*/
+            var apiKey = _configuration["SendGrid:ApiKey"];
+
+            var client = new SendGridClient(apiKey);
             var from = new EmailAddress("pickandgoinc@gmail.com", "Pick And Go");
-            var subject = "Your Order Has Been Placed!";
             var to = new EmailAddress(payload.Email
                                      , $"{payload.FirstName} {payload.LastName}");
-            var textContent = "ORDER PLACED FOR PICK UP AT: " + payload.PickUpTime + ".";
-            var htmlContent = $"<strong>{textContent}</strong>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject
-                                                  , textContent, htmlContent);
+            var templateId = "d-aea4e36c45544c50b279e40406207b59";
+            List<ShoppingCartVM> products = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(payload.OrderDetails);
+            var productsArray = products.ToArray();
+
+            var dynamicTemplateData = new
+            {
+                name = payload.FirstName + " " + payload.LastName,
+                subject = "Your Order Has Been Placed!",
+                items = productsArray
+            };
+            var msg = MailHelper.CreateSingleTemplateEmail(from, to, templateId, dynamicTemplateData);
             var request = client.SendEmailAsync(msg);
             request.Wait();
             var result = request.Result;

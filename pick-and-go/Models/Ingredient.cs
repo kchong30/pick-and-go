@@ -8,7 +8,6 @@ namespace PickAndGo.Models
         public Ingredient()
         {
             LineIngredients = new HashSet<LineIngredient>();
-            Dietaries = new HashSet<DietaryType>();
         }
 
         public int IngredientId { get; set; }
@@ -20,6 +19,5 @@ namespace PickAndGo.Models
 
         public virtual Category Category { get; set; } = null!;
         public virtual ICollection<LineIngredient> LineIngredients { get; set; }
-        public virtual ICollection<DietaryType> Dietaries { get; set; }
     }
 }

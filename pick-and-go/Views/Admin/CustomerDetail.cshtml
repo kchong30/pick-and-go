@@ -59,8 +59,8 @@
     </dl>
 </div>
 <div>
-    <a asp-action="History" asp-controller="Order" asp-route-customerId="@Model?.CustomerId">View History</a> |
-    <a asp-action="CustomerList">Back to List</a>
+    <a type="button" class="btn btn-outline-secondary" asp-action="History" asp-controller="Order" asp-route-customerId="@Model?.CustomerId">View History</a>
+    <a type="button" class="btn btn-outline-secondary"  asp-action="CustomerList">Back to List</a>
 </div>
 @ViewBag.Message
 

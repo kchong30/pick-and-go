@@ -1,0 +1,17 @@
+﻿
+.login-banner {
+    background-color: #ef6900;
+    width:70%;
+    margin:auto;
+   
+}
+
+.forgot-password-link {
+    text-decoration:none !important;
+    color: inherit;
+
+}
+
+.login-button {
+    width: 50%
+}

@@ -106,7 +106,7 @@
                                             <form>
                                                 <div class="form-group">
                                                     <label for="favoriteName" class="col-form-label">Name of favorite:</label>
-                                                    <input type="text" class="form-control" id="favoriteName" name="favoriteName" value="@favorite.FavoriteName" required>
+                                                    <input type="text" class="form-control" id="favoriteName" name="favoriteName" value="@favorite.FavoriteName" maxlength="25" required>
                                                 </div>
                                             </form>
                                         </div>
@@ -123,7 +123,8 @@
                     </th>
                     <th class="col-2" colspan="2">Name: @favorite.FavoriteName</th>
                     <th class="col-4 add-button">
-                        <button class="btn btn-primary btn-sm" onclick="addToCart(event)" value=@favorite.ProductId-@favorite.Description-@favorite.CurrentPrice-@favorite.OrderId>Add to Order</button>
+
+                        <button class="btn btn-primary btn-sm" onclick="addToCartFromFav(event)" data-productId=@favorite.ProductId data-description="@favorite.Description" data-basePrice=@favorite.CurrentPrice data-favId=@favorite.OrderStr>Add to Order</button>
                     </th>
                 </tr>
             </thead>
@@ -154,13 +155,21 @@
 
                             @foreach (var line in favorite.Ingredients)
                             {
-                                <tr class="ingredientTable-" + @favorite.OrderId.ToString()>
+                                <tr class="ingredientTable-@favorite.OrderStr" + @favorite.OrderId.ToString()>
                                     <td class="ingredientId" hidden>@line.IngredientId</td>
                                     <td class="quantity" hidden>@line.Quantity</td>
                                     <td class="price" hidden>@line.CurrentPrice</td>
 
                                     <td class="col-2"></td>
-                                    <td class="col-6 description">@line.IngDescription</td>
+                                    <td class="col-4 description">@line.IngDescription</td>
+                                    @if (line.Quantity == 1)
+                                    {
+                                        <td class="col-2">Reg</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-2">Extra</td>
+                                    }
                                     <td class="col-2 cell-amount">@String.Format("${0:0.00}", line.IngValue)</td>
                                     <td class="col-2"></td>
                                 </tr>

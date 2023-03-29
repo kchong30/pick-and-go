@@ -1,13 +1,17 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-<section class="landing-page">
-    <img src="https://i.imgur.com/Z1Rb2VG.png" class="">
-    <div class="paragraph">
-        <div class="title">Feeling Hungry?</div>
-        <div class="sub-title">Let's Start An Order!</div>
-        <button> <a asp-area="" asp-controller="Home" asp-action="Index">Start an Order</a></button>
+
+
+<main class="landing-page m-0 d-flex flex-column justify-content-center align-items-center">
+    <img src="https://i.imgur.com/Z1Rb2VG.png" class="w-75">
+    <div class="w-100 d-flex flex-column align-items-center text-white p-5">
+        <div class="fw-bold fs-2">Feeling Hungry?</div>
+        <div class="fs-4 m-2">Let's Start An Order!</div>
+        <div class="button rounded bg-white w-75 m-5 fw-bold">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="w-100 h-100 p-3 fs-5 d-flex justify-content-center">Start an Order</a>
     </div>
-</section>
+    </div>
+</main>
 @{
 }

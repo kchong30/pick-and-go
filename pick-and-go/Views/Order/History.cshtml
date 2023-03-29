@@ -1,5 +1,6 @@
-﻿@using PickAndGo.ViewModels
-@model IEnumerable<OrderHistoryVM>
+﻿@using PickAndGo.Utilities;
+@using PickAndGo.ViewModels;
+@model PaginatedList<OrderHistoryVM>;
 
 @{
     ViewData["Title"] = "Order History";
@@ -97,7 +98,7 @@
                                                     <form>
                                                         <div class="form-group">
                                                             <label for="favoriteName" class="col-form-label">Name of favorite:</label>
-                                                            <input type="text" class="form-control" id="favoriteName" name="favoriteName" required>
+                                                            <input type="text" class="form-control" id="favoriteName" name="favoriteName" maxlength="25" required>
                                                         </div>
                                                     </form>
                                                 }
@@ -129,7 +130,8 @@
 
                             <tr>
                                 <td class="col-2"></td>
-                                <td class="col-6">Base sandwich price</td>
+                                <td class="col-4">Base sandwich price</td>
+                                <td class="col-2"></td>
                                 <td class="col-2 cell-amount">@String.Format("${0:0.00}", order.Price)</td>
                                 <td class="col-2"></td>
                             </tr>
@@ -138,8 +140,16 @@
                             {
                                 <tr>
                                     <td class="col-2"></td>
-                                    <td class="col-6">@line.IngDescription</td>
-                                    <td class="col-2 cell-amount">@String.Format("${0:0.00}", line.IngValue)</td>
+                                    <td class="col-4">@line.IngDescription</td>
+                                    @if (line.Quantity == 1)
+                                    {
+                                        <td class="col-2">Reg</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-2">Extra</td>
+                                    }
+                                    <td class="col-2 cell-amount">@String.Format("${0:0.00}", line.IngValue)          </td>
                                     <td class="col-2"></td>
                                 </tr>
                             }
@@ -147,11 +157,27 @@
                     </td>
 
                 </tr>
-
-            
             </tbody>
         }
     </table>
+
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <div class="paginated-list">
+        <a asp-action="History"
+           asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
+           asp-route-page="@(Model.PageIndex - 1)"
+           class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
+        <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
+        <a asp-action="History"
+           asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
+           asp-route-page="@(Model.PageIndex + 1)"
+           class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
+    </div>
+
 </div>  <!--class="container"-->
 @ViewBag.Message
 

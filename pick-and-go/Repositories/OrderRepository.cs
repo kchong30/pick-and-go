@@ -259,7 +259,7 @@ namespace PickAndGo.Repositories
                         }
                         else
                         {
-                            message = cr.UpdateCustomerSignUpDate(customerId);
+                            customerId = customer.CustomerId;
                         }
                     }
 
@@ -274,7 +274,7 @@ namespace PickAndGo.Repositories
                         {
                             foreach (var product in products)
                             {
-                                var tuple2 = CreateOrderLine(orderId, Convert.ToInt32(product.productId), Convert.ToDecimal(product.subtotal));
+                                var tuple2 = CreateOrderLine(orderId, Convert.ToInt32(product.productId), Convert.ToDecimal(product.productPrice));
 
                                 message = tuple2.Item1;
                                 var lineId = tuple2.Item2;
