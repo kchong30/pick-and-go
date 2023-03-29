@@ -339,39 +339,27 @@ function removeSandwich(index) {
     localStorage.setItem("cart", JSON.stringify(cart));
 
     $("#cart-icon").text(cart.length);
-
-    if (cart.length === 0) {
-        // display alert with message
-        alert("Your shopping cart is empty, please click the button to proceed");
-        // navigate to shopping cart page
-        window.location.href = "/Order/Index";
-        return;
-    }
     ajaxStoreCart();
 }
 
 function ajaxStoreCart() {
     var cart = localStorage.getItem("cart");
-    var cartLen = parseInt($('#cart-icon').text());
-
-    console.log(cartLen);
-
-    if (cartLen == 0) {
-
-        alert("Your shopping cart is empty, please click the button to proceed");
-        return;
-    };
-    $.ajax({
-        type: "POST",
-        url: "/Order/StoreCart",
-        data: JSON.stringify({ CartJson: cart }),
-        contentType: "application/json",
-        success: function (response) {
-            window.location.href
-                = "/Order/ShoppingCart";
-        },
-        error: function (response) {
-            console.log(response);
+    if (cart !== null) {
+        if (cart.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Order/StoreCart",
+                data: JSON.stringify({ CartJson: cart }),
+                contentType: "application/json",
+                success: function (response) {
+                    window.location.href = "/Order/ShoppingCart";
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+            return 
         }
-    });
+    }
+    window.location.href = "/Order/ShoppingCart";
 }
