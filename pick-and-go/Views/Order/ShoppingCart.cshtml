@@ -157,7 +157,10 @@
                                 </div>
                                 @if (customerId == null)
                                 {
-                                    <h4> Please input your email for a receipt</h4>
+                                    <h4> Please provide your first name and email address for a receipt</h4>
+                                    <label for="first-name">First Name</label>
+                                    <input id="first-name" type="text" class="form-control" name="first-name" required >
+
                                     <label for="email">Email address</label>
                                     <input id="email" type="email" class="form-control" name="email" required pattern="^[a-zA-Z0-9._+-]+@("@")[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$">
                                 }
@@ -180,43 +183,40 @@
     }
 </style>
 <script>
-    $(document).ready(function () {
-        var totalAmountId = "#totalAmount";
-        var totalAmount = 0.00;
-        $('.amount').each(function () {
-            var thisAmount = $(this).html();
-            totalAmount += parseFloat(thisAmount);
-        });
-        $(totalAmountId).html(totalAmount.toFixed(2));
-    });
-
-    $(document).ready(function() {
+     $(document).ready(function () {
         // Hide the PayPal button initially
         $("#paypal-button").hide();
 
-        // Add event listener to email input field
-        $("#email").on("input", function() {
-            // Get the input value
-            var email = $(this).val();
+        // Add event listener to email and first name input fields
+        $("#email, #first-name").on("input", function () {
+            // Get the input values
+            var email = $("#email").val();
+            var firstName = $("#first-name").val();
 
-            // Check if the input is a valid email address
-            if (/\S+@@\S+\.\S+/.test(email)) {
-                // If the input is a valid email address, show the PayPal button
-                $("#paypal-button").show();
+            // Check if both inputs have values
+            if (email && firstName) {
+                // If both inputs have values, check if the email is valid
+                if (/\S+@@\S+\.\S+/.test(email)) {
+                    // If the email is valid, show the PayPal button
+                    $("#paypal-button").show();
+                } else {
+                    // If the email is not valid, hide the PayPal button
+                    $("#paypal-button").hide();
+                }
             } else {
-                // If the input is not a valid email address, hide the PayPal button
+                // If either input is empty, hide the PayPal button
                 $("#paypal-button").hide();
             }
         });
 
         // Check for customerId and show the PayPal button if customerId is present
-        //var customerId = $("#customerId").val();
         var customerId = '@customerId';
         console.log("customerID", customerId);
         if (customerId) {
             $("#paypal-button").show();
         }
     });
+
 </script>
 
 <script src="~/lib/jquery/dist/cart.js"></script>
