@@ -7,10 +7,24 @@
             var id = elementIdSplit[0];
             var quantityValue = elementIdSplit[1];
             updateTotalPrice(id, quantityValue)
+           
         });
+        checkoutBtnToggle()
     });
 })(jQuery);
 
+
+/* Checkout Button Toggle */
+function checkoutBtnToggle() {
+    var cart = JSON.parse(localStorage.getItem("cart"));
+
+    if (cart == null) {
+        console.log("hidden!")
+        $("#checkout-btn").hide();
+    } else {
+        $("#checkout-btn").show();
+    }
+}
 
 /* Form Validation */
 function validateForm() {
@@ -93,6 +107,7 @@ function addToCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
     $("#cart-icon").text(cart.length);
     clearSelection();
+    checkoutBtnToggle()
 }
 
 /* Add to Cart from Fav Page */
@@ -204,6 +219,7 @@ function addToCartFromEdit() {
     localStorage.setItem("cart", JSON.stringify(cart));
 
     clearSelection();
+    checkoutBtnToggle()
 
     $("#message").text("This sandwich has been added to your shopping cart!")
 
@@ -285,7 +301,7 @@ function updateTotalPrice(id, quantityValue) {
     var amount = $(itemPriceId).html();
     var newAmount = (amount * quantity).toFixed(2);
 
-    console.log(newAmount)
+    //console.log(newAmount)
     $(cartAmtId).text(newAmount);
 
     //Calculate totals
