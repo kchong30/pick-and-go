@@ -61,7 +61,11 @@ input[type="checkbox"]:checked {
 
 /* table styling */
 
-thead {
+.table-heading {
     background-color: #ffaf01;
     color: white;
+}
+
+.button-120 {
+    width: 120px;
 }
