@@ -31,18 +31,13 @@ namespace PickAndGo.Controllers
             _emailService = emailService;
         }
 
-        public IActionResult Index(ProductVM products, string nameInput)
+        public IActionResult Index(ProductVM products)
         {
             //If the user is a guest - set viewbag for greeting to nameInput (gathered from form at landing page).
             //If logged in, get customer's first name - pass on for greeting.
             if (HttpContext.Session.GetString("firstName") == null)
             {
-                if (!User.Identity.IsAuthenticated)
-                {
-                    ViewBag.NameInput = nameInput;
-                    HttpContext.Session.SetString("firstName", nameInput);
-                }
-                else
+                if (User.Identity.IsAuthenticated)
                 {
                     CustomerRepository cr = new CustomerRepository(_db);
                     var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
@@ -175,6 +170,11 @@ namespace PickAndGo.Controllers
             if (data.Email != null)
             {
                 HttpContext.Session.SetString("email", data.Email);
+            }
+
+            if (data.FirstName != null)
+            {
+                HttpContext.Session.SetString("firstName", data.FirstName);
             }
         }
 

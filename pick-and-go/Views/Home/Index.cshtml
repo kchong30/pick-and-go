@@ -25,13 +25,7 @@
         </div>
         <div class="guest-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
             <h1>Continue as Guest?</h1>
-            <p>We just need a name to take your order!</p>
-            @using (Html.BeginForm("Index", "Order", FormMethod.Post))
-            {
-                <label for="nameInput">Enter your name:</label>
-                <input type="text" id="nameInput" required name="nameInput" />
-                <button type="submit">Submit</button>
-            }
+            <a class="btn btn-dark" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
         </div>
     }else{
     <div class="create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">

@@ -22,7 +22,7 @@
             $.ajax({
                 type: "POST",
                 url: "/Order/StoreCart",
-                data: JSON.stringify({ PickupTime: $('#pickupTime').val(), Email: $('#email').val() }),
+                data: JSON.stringify({ PickupTime: $('#pickupTime').val(), Email: $('#email').val(), FirstName: $('#first-name').val() }),
                 contentType: "application/json",
                 success: function (response) {
                     console.log(response);
