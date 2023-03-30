@@ -4,25 +4,30 @@
     ViewData["Title"] = "User Roles";
 }
 
-<h1>Existing User Emails</h1>
+<main class="userroles">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <h1>Existing User Emails</h1>
+    <hr />
+
+    <table class="table">
+        <thead class="table-heading">
             <tr>
-                <td>
-                    @item.Email
-                </td>
-                <td>
-                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Detail" asp-route-userName=@item.Email>View Roles</a>
-                </td>
+                <th>Email</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Detail" asp-route-userName=@item.Email>View Roles</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

@@ -11,20 +11,24 @@
 }
 <br />
 <br />
-<div class="text-success">
-    <div class="text-center">
-        <div class="text-center">
-            <span class="text-center">
-                <span style="font-size: 2em;">Thank you for your order</span><br><br><br><br>
-                <span style="font-size: 1.4em;">
-                    Your $@Html.DisplayFor(model => model.OrderValue) @Html.DisplayFor(model => model.Currency) @Html.DisplayFor(model => model.PaymentType) transaction was successful.
-                </span>
-            </span>
-            <br>
-            <br>
-            <span class="text-center" style="font-size: 1.2em;">Keep this transaction Id for future reference.</span>
-            <span style="color: black; font-size: 1.2em;"> @Html.DisplayFor(model => model.PaymentId)</span><br/>
-            <span style="font-size: 1.2em;">A confirmation email has been sent to @email </span>
-        </div>
+    <main class="confirmation d-flex flex-column align-items-center">
+    <div class="text-success m-3"><i class="fa-solid fa-check fs-1"></i></div>
+    <div class="fs-1 fw-bolder m-3">Thank you for your order</div>
+    <div class="text-center fs-4">
+        Your $@Html.DisplayFor(model => model.OrderValue) @Html.DisplayFor(model => model.Currency) @Html.DisplayFor(model => model.PaymentType) transaction was successful.
+     </div>
+    <div class="rounded-3 p-4 m-5 text-center" style="background-color: lightgray">
+        <div class="fs-6">Keep this transaction Id for future reference.</div>
+        <div class="fs-6"> @Html.DisplayFor(model => model.PaymentId)</div>
     </div>
-</div>
+    <div class="fs-6">A confirmation email has been sent to <span class="fw-bold">@email</span></div>
+    <div style="margin-top: 50px;">
+        <h4>Thank you for choosing Sandwich Palace for your sandwich needs!</h4>
+            <p>Visit us at:</p>
+            <p>123 Main Street, Anytown, CA 12345</p>
+            <p>Call us at: (555) 123-4567</p>
+     </div>
+
+    <a class="btn btn-primary m-5 p-3" asp-controller="Home" asp-action="Index" role="button">Continue to shopping</a>
+
+</main>

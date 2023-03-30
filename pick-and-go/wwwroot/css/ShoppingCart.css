@@ -1,0 +1,25 @@
+﻿.total-price {
+    margin-right: 5rem;
+}
+
+.proceed-button{
+    margin-right: 5rem;
+}
+
+.button-box{
+    width:100%;
+    justify-content: space-evenly
+}
+.shopping-cart-btn{
+    width:30%;
+    min-width:120px;
+}
+
+.ingredient-dropdown{
+   width:75%;
+   margin-left: 7rem;
+}
+
+.shopping-title {
+    margin-left: 3rem;
+}

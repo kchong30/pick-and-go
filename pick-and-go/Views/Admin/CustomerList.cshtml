@@ -6,47 +6,54 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Customers</h1>
+<main class="customers">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Customer ID
-            </th>
-            <th>
-                Email Address
-            </th>
-            <th>
-                Date Last Ordered
-            </th>
-            <th>
-                Orders
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <h1>Customers</h1>
+
+    <hr />
+
+    <table class="table">
+        <thead class="table-heading">
             <tr>
-                <td>
-                    @Html.DisplayFor(model => item.CustomerId)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.EmailAddress)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.DateLastOrdered)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => item.NumbersOfOrders)
-                </td>
-
-                <td>
-                    <a type="button" class="btn btn-sm btn-outline-secondary"asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Details</a>
-                
-                </td>
+                <th class="align-middle">
+                    Customer ID
+                </th>
+                <th class="align-middle">
+                    Email Address
+                </th>
+                <th class="align-middle">
+                    Date Last Ordered
+                </th>
+                <th class="align-middle">
+                    Orders
+                </th>
+                <th class="align-middle">
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="align-middle">
+                        @Html.DisplayFor(model => item.CustomerId)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(model => item.EmailAddress)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(model => item.DateLastOrdered)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(model => item.NumbersOfOrders)
+                    </td>
+
+                    <td class="align-middle">
+                        <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Details</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

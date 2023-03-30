@@ -58,3 +58,14 @@ input[type="checkbox"]:checked {
     height: 25px;
     background-color: lightgray;
 }
+
+/* table styling */
+
+.table-heading {
+    background-color: #ffaf01;
+    color: white;
+}
+
+.button-120 {
+    width: 120px;
+}
