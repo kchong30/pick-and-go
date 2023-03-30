@@ -72,3 +72,21 @@
 .overview .orders {
     color: #ffaf01;
 }
+
+/* Favourites */
+
+ 
+.text {
+    color: #ffaf01;
+}
+ 
+.favorites table * {
+    border:none;
+}
+.favorites th {
+ 
+}
+
+.favorites {
+ 
+}

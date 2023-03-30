@@ -6,32 +6,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
+<main class="favorites">
     <h1>Favorites</h1>
-    <h4>@Model.FirstOrDefault()?.FullName</h4>
-</div>
+    @*<h4>@Model.FirstOrDefault()?.FullName</h4>*@
 
-<div class="container">
-    
-    <table class="table">
-
-        @foreach (var favorite in Model)
-        {  
-                                  
-            var dataTargetConfirm = "#ModalYes" + @favorite.LineId;
-            var dataTargetConfirm2 = "#ModalYes2" + @favorite.LineId;
-            var modalID = "ModalYes" + @favorite.LineId;
-            var modalID2 = "ModalYes2" + @favorite.LineId;
-
+    @foreach (var favorite in Model)
+    {
+        var dataTargetConfirm = "#ModalYes" + @favorite.LineId;
+        var dataTargetConfirm2 = "#ModalYes2" + @favorite.LineId;
+        var modalID = "ModalYes" + @favorite.LineId;
+        var modalID2 = "ModalYes2" + @favorite.LineId;
+        <table class="table border border-start-0 border-end-0">
             <thead>
-                <tr class-"no-padding">
-                    <th class="col-1">
+                <tr class="no-padding">
+                    <th class="col-1 text-center">
                         <a class="modal-a" asp-action="UpdateFavorites" asp-route-custId="@favorite.CustomerId" asp-route-orderId="@favorite.OrderId" asp-route-lineId="@favorite.LineId" asp-route-isFavorite=true asp-route-name="" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">
                             <img class="cell-image" src="~/images/red-heart.png" />
-                        </a>
-
-                        <a class="modal-a" asp-action="ChangeFavoritesName" asp-route-custId="@favorite.CustomerId" asp-route-orderId="@favorite.OrderId" asp-route-lineId="@favorite.LineId" asp-route-isFavorite=true asp-route-name="" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm2">
-                            <img class="cell-image2" src="~/images/edit-icon.png" />
                         </a>
 
                         @using (Html.BeginForm("UpdateFavorites", "Order", new
@@ -113,44 +103,46 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                                             <button type="submit" class="btn btn-primary">Yes</button>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         }
-
                     </th>
-                    <th class="col-2" colspan="2">Name: @favorite.FavoriteName</th>
-                    <th class="col-4 add-button">
+                    <th class="col">
+                        @favorite.FavoriteName
 
-                        <button class="btn btn-primary btn-sm" onclick="addToCartFromFav(event)" data-productId=@favorite.ProductId data-description="@favorite.Description" data-basePrice=@favorite.CurrentPrice data-favId=@favorite.OrderStr>Add to Order</button>
+                        <a class="modal-a" asp-action="ChangeFavoritesName" asp-route-custId="@favorite.CustomerId" asp-route-orderId="@favorite.OrderId" asp-route-lineId="@favorite.LineId" asp-route-isFavorite=true asp-route-name="" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm2">
+                            <i class="fa-solid fa-pen ms-2" style="color:gray"></i>
+                        </a>
+                    </th>
+                    <th class="col"></th>
+                    <th class="col add-button text-end" colspan="2">
+                        <button class="btn btn-primary btn-sm w-50" onclick="addToCartFromFav(event)" data-productId=@favorite.ProductId data-description="@favorite.Description" data-basePrice=@favorite.CurrentPrice data-favId=@favorite.OrderStr>Add to Order</button>
                     </th>
                 </tr>
             </thead>
 
             <tbody class="accordion" id="PickAndGoAccordion">
-
-                <tr class-"no-padding">
-                    <td class="col-2"></td>
+                <tr class="no-padding">
+                    <td class="col"></td>
                     <td class="col-6">@favorite.Description</td>
-                    <td class="col-3"></td>
-                    <td class="col-2 cell-amount">@String.Format("${0:0.00}", favorite.LineValue)</td>
-                    <td class="col-1">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@favorite.OrderStr" aria-expanded="false" aria-controls="@favorite.OrderStr"></button>
+                    <td class="col"></td>
+                    <td class="col cell-amount fw-bold">@String.Format("${0:0.00}", favorite.LineValue)</td>
+                    <td class="col-1 ">
+                        <button class="accordion-button collapsed m-0" style="" type="button" data-bs-toggle="collapse" data-bs-target="#@favorite.OrderStr" aria-expanded="false" aria-controls="@favorite.OrderStr"></button>
                     </td>
                 </tr>
 
                 <tr id="@favorite.OrderStr" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
-
-                    <td class="accordion-detail accordion-body" colspan="12">
-                        <table class="accordion-table container">
-
+                    <td class="accordion-detail accordion-body p-0" colspan="12">
+                        <!-- Ingredients -->
+                        <table class="accordion-table table mb-0">
                             <tr>
-                                <td class="col-2"></td>
-                                <td class="col-6">Base sandwich price</td>
-                                <td class="col-2 cell-amount">@String.Format("${0:0.00}", favorite.CurrentPrice)</td>
-                                <td class="col-2"></td>
+                                <td class="col-1"></td>
+                                <td class="col ps-3"><i class="fa-solid fa-caret-right text pe-1"></i> Base sandwich price</td>
+                                <td class="col cell-amount" colspan="2">@String.Format("${0:0.00}", favorite.CurrentPrice)</td>
+                                <td class="col-1"></td>
                             </tr>
 
                             @foreach (var line in favorite.Ingredients)
@@ -160,32 +152,30 @@
                                     <td class="quantity" hidden>@line.Quantity</td>
                                     <td class="price" hidden>@line.CurrentPrice</td>
 
-                                    <td class="col-2"></td>
-                                    <td class="col-4 description">@line.IngDescription</td>
+                                    <td class="col"></td>
+                                    <td class="col ps-3 description"><i class="fa-solid fa-caret-right text pe-1"></i> @line.IngDescription</td>
                                     @if (line.Quantity == 1)
                                     {
-                                        <td class="col-2">Reg</td>
+                                        <td class="col text-end">Reg</td>
                                     }
                                     else
                                     {
-                                        <td class="col-2">Extra</td>
+                                        <td class="col text-end">Extra</td>
                                     }
-                                    <td class="col-2 cell-amount">@String.Format("${0:0.00}", line.IngValue)</td>
-                                    <td class="col-2"></td>
+                                    <td class="col-1 cell-amount">@String.Format("${0:0.00}", line.IngValue)</td>
+                                    <td class="col-1"></td>
                                 </tr>
                             }
                         </table>
+                        <!--End of ingredients-->
                     </td>
-
                 </tr>
-
-            
             </tbody>
-        }
-    </table>
-</div>  <!--class="container"-->
-<div class="message" id="message"></div>
-@ViewBag.Message
+        </table>
+    }
+    <div class="message" id="message">@ViewBag.Message</div>
+
+</main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/cart.js"></script>
 

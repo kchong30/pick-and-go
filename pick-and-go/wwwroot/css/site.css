@@ -25,9 +25,7 @@ header {
 }
 
 main {
-    /* main or section.. whatever */
     margin: 20px;
-    min-height: calc(100vh - 65px);
     height: 100%;
 }
 
@@ -57,10 +55,6 @@ nav img {
     padding-top: 5px;
 }
 
-.nav-item{
- 
-}
-
 nav .dropdown button:hover {
     color: #ef6900 !important;
 }
@@ -86,8 +80,6 @@ nav li a:hover {
 .navbar-collapse {
     background-color: #ffaf01;
 }
-
- 
 
 @media (max-width: 768px) {
     .dropdown-menu{
@@ -282,14 +274,10 @@ input[type=radio] {
 
 .cell-amount {
     text-align: right;
-    6
 }
 
 /* Favorites styles */
 
-.cell-image2 {
-    width: 20px;
-}
 
 .modal-a {
     text-decoration: none;
@@ -342,3 +330,4 @@ input[type=radio] {
 .bottom {
     background-color: #ef6900;
 }
+
