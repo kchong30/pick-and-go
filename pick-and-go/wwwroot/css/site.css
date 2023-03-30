@@ -21,15 +21,17 @@ header {
 }
 
 .root {
-    min-height: calc(100vh - 65px);
-    border: 2px solid red;
+    min-height: calc(100vh - 65px - 65px);
+    display: block;
+    overflow: auto;
 }
 
 main {
-    margin: 20px;
-
     height: 100%;
-    border: 2px solid blue;
+    box-sizing: border-box;
+    max-width: 800px;
+    margin:auto;
+    padding: 2rem;
 }
 
 h1, h2, h3, h4 {
@@ -138,7 +140,7 @@ nav li a:hover {
     background-color: white !important;
     outline: none;
     padding: 0;
-    margin-left: 0px;
+    margin: 0;
 }
 
 .accordion-button:focus {
@@ -293,7 +295,6 @@ input[type=radio]:checked {
 
 /* Favorites styles */
 
-
 .modal-a {
     text-decoration: none;
 }
@@ -314,9 +315,11 @@ input[type=radio]:checked {
 }
 
 /* Landing Page */
+
 .landing-page {
     background-image: linear-gradient(#ffaf01, #ef6900);
-    min-height: calc(100vh - 65px);
+    height: calc(100vh - 65px);
+ 
 }
 
 .landing-page img {
@@ -340,10 +343,23 @@ input[type=radio]:checked {
     transition: all 0.2s ease-in-out;
 }
 
+/* History styles */
+.history td {
+    /*border: 2px solid green;*/
+}
+
+.history th {
+    /*border: 2px solid blue;*/
+}
+
+
+.history table * {
+  border:none;
+}
 
 /* Footer */
-
 .bottom {
-    background-color: #ef6900;
+    height: 65px;
+    color: #ef6900;
 }
 

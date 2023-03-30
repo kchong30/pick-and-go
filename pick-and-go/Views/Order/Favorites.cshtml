@@ -16,7 +16,8 @@
         var dataTargetConfirm2 = "#ModalYes2" + @favorite.LineId;
         var modalID = "ModalYes" + @favorite.LineId;
         var modalID2 = "ModalYes2" + @favorite.LineId;
-        <table class="table border border-start-0 border-end-0">
+        <hr />
+        <table class="table">
             <thead>
                 <tr class="no-padding">
                     <th class="col-1 text-center">
@@ -118,7 +119,7 @@
                     </th>
                     <th class="col"></th>
                     <th class="col add-button text-end" colspan="2">
-                        <button class="btn btn-primary btn-sm w-50" onclick="addToCartFromFav(event)" data-productId=@favorite.ProductId data-description="@favorite.Description" data-basePrice=@favorite.CurrentPrice data-favId=@favorite.OrderStr>Add to Order</button>
+                        <button class="btn btn-primary btn-sm" onclick="addToCartFromFav(event)" data-productId=@favorite.ProductId data-description="@favorite.Description" data-basePrice=@favorite.CurrentPrice data-favId=@favorite.OrderStr>Add to Order</button>
                     </th>
                 </tr>
             </thead>
@@ -129,7 +130,7 @@
                     <td class="col-6">@favorite.Description</td>
                     <td class="col"></td>
                     <td class="col cell-amount fw-bold">@String.Format("${0:0.00}", favorite.LineValue)</td>
-                    <td class="col-1 ">
+                    <td class="col-1">
                         <button class="accordion-button collapsed m-0" style="" type="button" data-bs-toggle="collapse" data-bs-target="#@favorite.OrderStr" aria-expanded="false" aria-controls="@favorite.OrderStr"></button>
                     </td>
                 </tr>
@@ -140,7 +141,7 @@
                         <table class="accordion-table table mb-0">
                             <tr>
                                 <td class="col-1"></td>
-                                <td class="col ps-3"><i class="fa-solid fa-caret-right text pe-1"></i> Base sandwich price</td>
+                                <td class="col ps-3"><i class="fa-solid fa-caret-right text pe-1"></i>Base sandwich price</td>
                                 <td class="col cell-amount" colspan="2">@String.Format("${0:0.00}", favorite.CurrentPrice)</td>
                                 <td class="col-1"></td>
                             </tr>
@@ -153,7 +154,7 @@
                                     <td class="price" hidden>@line.CurrentPrice</td>
 
                                     <td class="col"></td>
-                                    <td class="col ps-3 description"><i class="fa-solid fa-caret-right text pe-1"></i> @line.IngDescription</td>
+                                    <td class="col ps-3"><i class="fa-solid fa-caret-right text pe-1"></i><span class="description">@line.IngDescription</span></td>
                                     @if (line.Quantity == 1)
                                     {
                                         <td class="col text-end">Reg</td>
@@ -173,7 +174,8 @@
             </tbody>
         </table>
     }
-    <div class="message" id="message">@ViewBag.Message</div>
+    <hr />
+    <div class="message text-center text-success" style="border-radius: 30px;" id="message">@ViewBag.Message</div>
 
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>

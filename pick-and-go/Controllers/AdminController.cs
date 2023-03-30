@@ -21,7 +21,7 @@ using Microsoft.CodeAnalysis;
 
 namespace PickAndGo.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
 
     public class AdminController : Controller
     {

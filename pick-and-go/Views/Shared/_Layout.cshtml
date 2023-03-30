@@ -47,8 +47,8 @@
 
             <!-- Navigation Panel-->
             <div class="navbar-collapse collapse d-md-inline-flex p-3 p-md-0 gap-3">
-                @if (User.IsInRole("Admin"))
-                {
+               @* @if (User.IsInRole("Admin"))
+                {*@
                 <div class="dropdown py-2 ps-md-2">
                     <button class="dropdown-toggle border-0 bg-transparent text-white p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</button>
                     <ul class="dropdown-menu">
@@ -79,7 +79,7 @@
                         <!-- Profie moved to LoginPartial, Start Order is below-->
                     </ul>
                 </div>
-                }
+                @*}*@
                 @if (User.IsInRole("Customer")){
                 <ul class="navbar-nav w-25">
                     <li class="nav-item">
@@ -96,7 +96,7 @@
     </div>
     <!-- Footer -->
     <footer class="bottom">
-        <div class="d-flex justify-content-center text-white p-3">&copy; 2023 Pick And Go</div>
+        <div class="d-flex justify-content-center p-3">&copy; 2023 Pick And Go</div>
     </footer>
  
     <!--End of Footer-->
