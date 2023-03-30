@@ -74,14 +74,7 @@
                         <li class="dropdown-item">
                             <a class="nav-link text-secondary" asp-area="" asp-controller="UserRole" asp-action="Index">User Roles</a>
                         </li>
-                        @if (User.IsInRole("Customer")){
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="CustomerDetails">Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                 <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Start Order</a>
-                             </li>
-                        }
+                        <!-- Profie moved to LoginPartial, Start Order is below-->
                     </ul>
                 </div>
                 @*

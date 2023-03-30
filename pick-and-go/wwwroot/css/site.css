@@ -22,11 +22,14 @@ header {
 
 .root {
     min-height: calc(100vh - 65px);
+    border: 2px solid red;
 }
 
 main {
     margin: 20px;
+
     height: 100%;
+    border: 2px solid blue;
 }
 
 h1, h2, h3, h4 {
@@ -301,6 +304,7 @@ input[type=radio] {
 /* Landing Page */
 .landing-page {
     background-image: linear-gradient(#ffaf01, #ef6900);
+    min-height: calc(100vh - 65px);
 }
 
 .landing-page img {
