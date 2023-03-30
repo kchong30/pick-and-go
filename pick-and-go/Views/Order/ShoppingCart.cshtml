@@ -16,7 +16,7 @@
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
+<main>
 <div class="justify-content-center align-items-center">
     <div>
         <div class="shopping-title">
@@ -189,8 +189,8 @@
             <div class="container-fluid">
                 <div class="container mt-5">
                     <div class="jumbotron text-center">
-                        <h1 class="display-4">You did not add anything to the cart</h1>
-                        <p class="lead">Please click the button to start order.</p>
+                        <h1 class="display-6">Your shopping cart is empty</h1>
+                        <p class="lead">Please click the button to start an order.</p>
                         <a class="btn btn-dark" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
                     </div>
                 </div>
@@ -199,6 +199,7 @@
         }
     </div>
 </div>
+</main>
 <style>
     #paypal-button {
         display: none;

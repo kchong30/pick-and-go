@@ -4,37 +4,46 @@
     ViewData["Title"] = "Assign Roles";
 }
 
-<h4>User Role</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly"
-                 class="text-danger">
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label visually-hidden"></label>
+<main>
+    <div class="d-flex flex-column w-50 m-auto">
+        <div class="w-100 d-flex flex-column justify-item-center">
+            <div>
 
-                @Html.DropDownList("Email", new SelectList(ViewBag.UserSelectList, "Value", "Text", ViewBag.SelectedUser), 
-                "Select User", new { @id = "userDD", @class = "form-control", @hidden = "true" })
+                <h1>User Role</h1>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly"
+                                 class="text-danger">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label visually-hidden"></label>
 
-                <span asp-validation-for="Email" class="text-danger"></span>
+                                @Html.DropDownList("Email", new SelectList(ViewBag.UserSelectList, "Value", "Text", ViewBag.SelectedUser), 
+                                "Select User", new { @id = "userDD", @class = "form-control", @hidden = "true" })
+
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Role" class="control-label"></label>
+                                @Html.DropDownList("Role",
+                                new SelectList(ViewBag.RoleSelectList, "Value", "Text"),
+                                "Select Role",
+                                new { @id = "roleDD", @class = "form-control"})
+                                <span asp-validation-for="Role" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Assign" class="btn btn-primary" />
+                                <a type="button" class="btn btn-outline-secondary" asp-action="Index">Back To Existing Users </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                @Html.DropDownList("Role",
-                new SelectList(ViewBag.RoleSelectList, "Value", "Text"),
-                "Select Role",
-                new { @id = "roleDD", @class = "form-control"})
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Assign" class="btn btn-primary" />
-                <a type="button" class="btn btn-outline-secondary" asp-action="Index">Back To Existing Users </a>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</main>
 
 @section Scripts {
     @{

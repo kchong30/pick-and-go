@@ -4,34 +4,39 @@
     ViewData["Title"] = "User Role Details";
 }
 
-<h3>@ViewBag.UserName</h3>
+<main>
+    <div class="d-flex flex-column w-50 m-auto">
+        <h3>@ViewBag.UserName</h3>
+        <hr />
+        <p>
+            <a type="button" class="btn btn-outline-secondary" asp-action="Create" asp-route-userName=@ViewBag.UserName>Assign Roles</a>
+        </p> 
 
-<p>
-    <a type="button" class="btn btn-outline-secondary" asp-action="Create" asp-route-userName=@ViewBag.UserName>Assign Roles</a>
-</p> 
+        <table class="table">
+            <thead class="table-heading">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RoleName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoleName)
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-email=@ViewBag.UserName asp-route-roleName=@item.RoleName>Remove Role</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>
+            <a type="button" class="btn btn-outline-secondary" asp-action="Index">Back To Existing Users</a>
+        </div>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RoleName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoleName)
-                </td>
-                <td>
-                    <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-email=@ViewBag.UserName asp-route-roleName=@item.RoleName>Remove Role</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<div>
-    <a type="button" class="btn btn-outline-secondary" asp-action="Index">Back To Existing Users</a>
-</div>
+</main>

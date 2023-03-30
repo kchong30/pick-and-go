@@ -5,35 +5,38 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Hello @ViewBag.NameInput -  Please Select a Sandwich Size!</h1>
+<main>
 
-<form method="post" action="@Url.Action("Customize", "Order")">
-    <table class="table">
-        <thead>
-            <th></th>
-            <th></th>
-            <th class="text-center">Base Price</th>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
-                </td>
-                <td class="align-middle text-left">
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td class="align-middle text-center">
-                    @Html.DisplayFor(modelItem => item.BasePrice)
-                </td>
-                    <td class="radio-group align-middle">
-                        <input asp-for=@item.SelectedProductId value="@item.ProductId" id="type_radio_@item.ProductId" name="SelectedProductId" type="radio" />
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>
-    <div class="button-strip">
-        <button type="submit" class="btn btn-primary">Customize</button>
-    </div>
-</form>
+    <h1>Hello @ViewBag.NameInput -  Please Select a Sandwich Size!</h1>
+
+    <form method="post" action="@Url.Action("Customize", "Order")">
+        <table class="table">
+            <thead>
+                <th></th>
+                <th></th>
+                <th class="text-center">Base Price</th>
+            </thead>
+            <tbody>
+        @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
+                    </td>
+                    <td class="align-middle text-left">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td class="align-middle text-center">
+                        @Html.DisplayFor(modelItem => item.BasePrice)
+                    </td>
+                        <td class="radio-group align-middle">
+                            <input asp-for=@item.SelectedProductId value="@item.ProductId" id="type_radio_@item.ProductId" name="SelectedProductId" type="radio" />
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+        <div class="button-strip">
+            <button type="submit" class="btn btn-primary">Customize</button>
+        </div>
+    </form>
+</main>
