@@ -319,6 +319,7 @@ input[type=radio]:checked {
 .landing-page {
     background-image: linear-gradient(#ffaf01, #ef6900);
     height: calc(100vh - 65px);
+    max-width:100%;
  
 }
 
