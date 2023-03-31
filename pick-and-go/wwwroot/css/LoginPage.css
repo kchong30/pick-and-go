@@ -1,45 +1,62 @@
 ﻿
+.login-page {
+    margin-top:2rem;
+    max-width: 65%;
+}
+
 .login-banner {
     background-color: #ef6900;
     width:70%;
     margin:auto;
-   
 }
 
-@media (max-width: 1200px) {
-    .login-banner {
-        width:100%;
-    }
+.login-prompt {
+    white-space:nowrap;
 }
 
-.forgot-password-link {
-    text-decoration:none !important;
-    color: inherit;
+.login-form input {
+    padding: 1rem;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
 
+.login-form label {
+    margin-bottom: 5px;
+    color: #ef6900;
 }
 
 .login-button {
-    width: 50%
+    width: 300px
 }
 
-.login-form {
-    margin-bottom:1rem;
-  
-}
 
-.login-form input{
-   padding:1rem;
-   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
-   margin-bottom:20px;
+@media (max-width: 768px) {
 
-}
+    .login-page {
+        margin: 0!important;
+        max-width:100%;
+        padding:0;
+    }
 
-.login-form label{
-    margin-bottom:5px;
-    color:#ef6900;
+    .login-banner {
+        width: 100%;
+    }
 
-}
 
-.text-danger {
-    text-align: center;
+    .forgot-password-link {
+        text-decoration: none !important;
+        color: inherit;
+    }
+
+
+    .login-form {
+        margin-bottom: 1rem;
+    }
+
+
+ 
+
+    .text-danger {
+        text-align: center;
+    }
 }
