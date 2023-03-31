@@ -10,111 +10,64 @@
 }
 
 <main>
-    <div class="d-flex flex-column w-75 m-auto">
+    <div class="d-flex flex-column w-50 m-auto">
         <div class="w-100 d-flex flex-column justify-item-center">
             <div>
         
-                <h1>Details</h1>
+                <h1>Customer Details</h1>
 
                 <hr />
                 <dl class="row">
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-9 col-md-6">
                         Customer ID
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-9 col-md-6">
                         @Html.DisplayFor(model => model.CustomerId)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-9 col-md-6">
                         First Name
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-9 col-md-6">
                         @Html.DisplayFor(model => model.FirstName)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-9 col-md-6">
                         Last Name
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-9 col-md-6">
                         @Html.DisplayFor(model => model.LastName)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-9 col-md-6">
                         Email Address
                     </dt>
 
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-9 col-md-6">
                         @Html.DisplayFor(model => model.EmailAddress)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-9 col-md-6">
                         Phone Number
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-8 col-md-6">
                         @Html.DisplayFor(model => model.PhoneNumber)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-9 col-md-6">
                         Last Ordered On
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-9 col-md-6">
                         @Html.DisplayFor(model => model.LastOrdered)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-9 col-md-6">
                         Date Signed Up
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-9 col-md-6">
                         @Html.DisplayFor(model => model.SignedUp)
                     </dd>
                 </dl>
-
-
-                @*<dl class="row">
-                    <dt class="w-50 col-md-5">
-                        Customer ID
-                    </dt>
-                    <dd class="w-50 col-md-7">
-                        @Html.DisplayFor(model => model.CustomerId)
-                    </dd>
-                    <dt class="w-50 col-md-5">
-                        First Name
-                    </dt>
-                    <dd class="w-50 col-md-7">
-                        @Html.DisplayFor(model => model.FirstName)
-                    </dd>
-                    <dt class="w-50 col-md-5">
-                        Last Name
-                    </dt>
-                    <dd class="w-50 col-md-7">
-                        @Html.DisplayFor(model => model.LastName)
-                    </dd>
-                    <dt class="w-50 col-md-5">
-                        Email Address
-                    </dt>
-
-                    <dd class="w-50 col-md-7">
-                        @Html.DisplayFor(model => model.EmailAddress)
-                    </dd>
-                    <dt class="w-50 col-md-5">
-                        Phone Number
-                    </dt>
-                    <dd class="w-50 col-md-7">
-                        @Html.DisplayFor(model => model.PhoneNumber)
-                    </dd>
-                    <dt class="w-50 col-md-5">
-                        Last Ordered On
-                    </dt>
-                    <dd class="w-50 col-md-7">
-                        @Html.DisplayFor(model => model.LastOrdered)
-                    </dd>
-                    <dt class="w-50 col-md-5">
-                        Date Signed Up
-                    </dt>
-                    <dd class="w-50 col-md-7">
-                        @Html.DisplayFor(model => model.SignedUp)
-                    </dd>
-                </dl>*@
             </div>
         </div>
         
         <div>
-            <a type="button" class="btn btn-outline-secondary button-120" asp-action="History" asp-controller="Order" asp-route-customerId="@Model?.CustomerId">View History</a>
-            <a type="button" class="btn btn-outline-secondary button-120" asp-action="CustomerList">Back to List</a>
+            <a type="button" class="btn btn-outline-secondary button-120 mb-2" asp-action="History" asp-controller="Order" asp-route-customerId="@Model?.CustomerId">View History</a>
+            <a type="button" class="btn btn-outline-secondary button-120 mb-2" asp-action="CustomerList">Back to List</a>
         </div>
         @ViewBag.Message
     </div>

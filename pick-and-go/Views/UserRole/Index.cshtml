@@ -5,29 +5,31 @@
 }
 
 <main class="userroles">
+    <div class="d-flex flex-column w-50 m-auto">
 
-    <h1>Existing User Emails</h1>
-    <hr />
+        <h1>Existing User Emails</h1>
+        <hr />
 
-    <table class="table">
-        <thead class="table-heading">
-            <tr>
-                <th>Email</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+        <table class="table">
+            <thead class="table-heading">
                 <tr>
-                    <td>
-                        @item.Email
-                    </td>
-                    <td>
-                        <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Detail" asp-route-userName=@item.Email>View Roles</a>
-                    </td>
+                    <th>Email</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Detail" asp-route-userName=@item.Email>View Roles</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </main>

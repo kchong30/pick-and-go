@@ -6,7 +6,7 @@
 }
 
 input[type="checkbox"]:checked {
-    background-color: #ef6900;
+    accent-color: #ef6900;
     color: white;
 }
 
@@ -17,6 +17,10 @@ input[type="checkbox"]:checked {
 }
 
 .form-control input {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.category-list select {
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -69,3 +73,4 @@ input[type="checkbox"]:checked {
 .button-120 {
     width: 120px;
 }
+

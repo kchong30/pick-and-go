@@ -199,7 +199,7 @@ nav li a:hover {
     width: 150px;
 }
 
-.order-filter #orderfilter {
+.order-filter #orderFilter {
     height: 31px;
 }
 
@@ -225,7 +225,7 @@ nav li a:hover {
     width: 250px;
 }
 
-[aria-current="page"] {
+.link-disabled {
     pointer-events: none;
     cursor: default;
     text-decoration: none;
