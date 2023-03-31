@@ -1,0 +1,27 @@
+﻿.register-page{
+    padding:0;
+    margin-top:1rem;
+    max-width: 1200px;
+}
+
+.register-form input {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+.register-page label {
+    color: #ef6900;
+    font-weight: 500;
+}
+
+.signup-btn {
+    margin-top: 1rem;
+    height: 2.9rem;
+    width: 250px;
+}
+
+@media (max-width: 768px){
+    .register-page {
+        max-width: 100%;
+    }
+}

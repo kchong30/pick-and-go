@@ -4,13 +4,12 @@
 @{
     ViewData["Title"] = "Welcome to Pick And Go!";
 }
-<div class="d-flex flex-column w-50 m-auto mt-5">
+<main class="d-flex flex-column login-page">
     <img src="https://i.imgur.com/Z1Rb2VG.png" class="login-banner">
     <div class="w-100 d-flex flex-column justify-item-center">
         <div class="">
             <section>
                 <form id="account" method="post" class="d-flex flex-column align-items-center w-100">
-                    <h2 class="text-center mt-2">Login to Continue</h2>
                     <hr />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="login-form">
@@ -35,10 +34,10 @@
                         <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mb-4 ">Log in</button>
                     </div>
                     <div class = "d-flex flex-column align-items-center">
-                        <p>
+                        <p class="login-prompt">
                             Forgot Your Password? <a type="button" class="forgot-password-link" id="forgot-password" asp-page="./ForgotPassword">Click Here!</a>
                         </p>
-                        <p>
+                        <p class ="login-prompt">
                             Don't Have An Account? <a type="button" class="forgot-password-link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Sign Up Here!</a>
                         </p>
                     </div>
@@ -46,7 +45,7 @@
             </section>
         </div>
     </div>
-</div>
+</main>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
