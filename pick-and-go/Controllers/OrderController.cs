@@ -46,6 +46,11 @@ namespace PickAndGo.Controllers
                 }
 
             }
+            else
+            {
+                ViewBag.NameInput = HttpContext.Session.GetString("firstName");
+
+            }
             ProductRepository pr = new ProductRepository(_db);
             var vm = pr.GetProducts();
             return View(vm);

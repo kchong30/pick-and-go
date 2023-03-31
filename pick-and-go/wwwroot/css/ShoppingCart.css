@@ -67,9 +67,10 @@
     .dropdown .dropbtn {
         display: block;
         width: 100%;
+        min-width: 120px;
         text-align: center;
         padding: 10px;
-        font-size: 16px;
+        font-size: 0.9rem;
         border: none;
         background-color: #f1f1f1;
     }
