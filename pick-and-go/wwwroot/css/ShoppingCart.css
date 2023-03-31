@@ -1,7 +1,12 @@
-﻿.total-price {
+﻿.shopping-cart{
+    max-width:80%;
+}
+
+.total-price {
     margin-right: 5rem;
     font-size: 1.5rem;
 }
+
 
 .proceed-button{
     margin-right: 5rem;
