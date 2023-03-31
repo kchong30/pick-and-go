@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using PickAndGo.Repositories;
+using PickAndGo.Models;
 
 namespace PickAndGo.Areas.Identity.Pages.Account
 {
@@ -23,13 +25,15 @@ namespace PickAndGo.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private IServiceProvider _serviceProvider;
+        private PickAndGoContext _db;
 
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IServiceProvider serviceProvider)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IServiceProvider serviceProvider, PickAndGoContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
             _serviceProvider = serviceProvider;
+            _db = context;
         }
 
         /// <summary>
@@ -123,6 +127,12 @@ namespace PickAndGo.Areas.Identity.Pages.Account
                     .GetRequiredService<UserManager<IdentityUser>>();
                     var user = await UserManager.FindByEmailAsync(Input.Email);
                     var roles = await UserManager.GetRolesAsync(user);
+
+                    CustomerRepository cr = new CustomerRepository(_db);
+                    var customer = cr.ReturnCustomerByEmail(Input.Email);
+                    HttpContext.Session.SetString("firstName", customer.FirstName);
+
+
                     if (roles.Contains("Customer"))
                     {
                         returnUrl = Url.Content("~/");
