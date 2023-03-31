@@ -6,6 +6,12 @@
    
 }
 
+@media (max-width: 1200px) {
+    .login-banner {
+        width:100%;
+    }
+}
+
 .forgot-password-link {
     text-decoration:none !important;
     color: inherit;
@@ -14,4 +20,26 @@
 
 .login-button {
     width: 50%
+}
+
+.login-form {
+    margin-bottom:1rem;
+  
+}
+
+.login-form input{
+   padding:1rem;
+   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+   margin-bottom:20px;
+
+}
+
+.login-form label{
+    margin-bottom:5px;
+    color:#ef6900;
+
+}
+
+.text-danger {
+    text-align: center;
 }
