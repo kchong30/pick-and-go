@@ -3,17 +3,17 @@
 }
 
 .total-price {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin-right:3rem;
 }
 
 
-.proceed-button{
-    width:10rem;
-    height:fit-content;
-    padding: 1rem;
-    font-size: 1.5rem;
-    margin-right:3rem;
+.proceed-button {
+    width: 10%;
+    min-width: 120px;
+    padding: 10px;
+    font-size: 15px;
+    margin-right: 3rem;
 }
 
 .button-box{
@@ -113,7 +113,7 @@
     }
 
     .ingredient-dropdown {
-        margin:0;
+        margin-left:2.5rem;
     }
 
     .shopping-cart .container-fluid{
