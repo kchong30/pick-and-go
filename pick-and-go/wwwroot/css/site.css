@@ -368,3 +368,9 @@ input[type=radio]:checked {
     color: #ef6900;
 }
 
+/*Home Page Index*/
+
+.home-admin-button{
+    width:10rem;
+}
+
