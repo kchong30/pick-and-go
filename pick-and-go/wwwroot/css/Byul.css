@@ -73,10 +73,29 @@
     color: #ffaf01;
 }
 
+
 /* Order Confirmation */
 .confirmation i {
     border-radius: 50%;
     padding: 20px;
     border: 5px solid #ffaf01;
     color: #ffaf01;
+}
+
+/* Favourites */
+
+ 
+.text {
+    color: #ffaf01;
+}
+ 
+.favorites table * {
+    border:none;
+}
+.favorites th {
+ 
+}
+
+.favorites {
+ 
 }

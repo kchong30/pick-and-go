@@ -7,180 +7,193 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main>
-    <div>
-        <h1>Order History</h1>
-        <h4>@Model.FirstOrDefault()?.FullName</h4>
-    </div>
+<main class="history">
 
-    <div class="container">
+    <h1>Order History</h1>
+    @*<h4>@Model.FirstOrDefault()?.FullName</h4>*@
 
-        <table class="table">
+    @{
+        int prevOrderNumber = 0;
+    }
 
-            @{
-                int prevOrderNumber = 0;
-            }
+    @foreach (var order in Model)
+    {
 
-            @foreach (var order in Model)
+
+        <table class="table m-0">
+
+            @if (order.OrderId != prevOrderNumber)
             {
-                if (order.OrderId != prevOrderNumber)
-                {
-                    prevOrderNumber = order.OrderId;
-                    <thead>
-                        <tr class-"no-padding">
-                            <th colspan="2">Date: @order.OrderDate</th>
-                            <th colspan="2">Order#: @order.OrderId</th>
-                            <th colspan="2" text-center">@String.Format("${0:0.00}", order.OrderValue)</th>
-                            <th colspan="3"></th>
-                        </tr>
-                    </thead>
-                }
-                <tbody class="accordion" id="PickAndGoAccordion">
+                prevOrderNumber = order.OrderId;
+                <hr />
+                <thead class="">
+                    <tr class="no-padding">
+                        <th class="col-1" colspan="2">@order.OrderDate | #@order.OrderId</th>
+                        <th class="col" colspan="2"></th>
+                        <th class="col-1 text-end" colspan="2">@String.Format("${0:0.00}", order.OrderValue)</th>
+                    </tr>
+                </thead>
+            }
+            else
+            {
+                <thead hidden>
+                    <tr>
+                        <th class="col-1" colspan="2"></th>
+                        <th class="col" colspan="2"></th>
+                        <th class="col-1" colspan="2"></th>
+                    </tr>
+                </thead>
+            }
+            <tbody class="accordion" id="PickAndGoAccordion">
+                <tr class="no-padding">
+                    <td class="col-1 text-center">
+                        @{
+                            string imageSource = "/images/redoutline-heart.png";
+                            string modalLabel = "Add to favorites?";
+                            string favoriteName = "";
+                            Boolean askForName = true;
 
-                    <tr class-"no-padding">
-
-                        <td class="col-2">
-                            @{
-                                string imageSource = "/images/redoutline-heart.png";
-                                string modalLabel = "Add to favorites?";
-                                string favoriteName = "";
-                                Boolean askForName = true;
-
-                                if (order.IsFavorite)
-                                {
-                                    imageSource = "/images/red-heart.png";
-                                    modalLabel = "Remove from favorites?";
-                                    askForName = false;
-                                }
-
-                                var dataTargetConfirm = "#ModalYes" + @order.LineId;
-                                var modalID = "ModalYes" + @order.LineId;
+                            if (order.IsFavorite)
+                            {
+                                imageSource = "/images/red-heart.png";
+                                modalLabel = "Remove from favorites?";
+                                askForName = false;
                             }
 
-                            <!-- Add to Favorites not allowed for admin user -->
-                            @if (!User.IsInRole("Admin"))
+                            var dataTargetConfirm = "#ModalYes" + @order.LineId;
+                            var modalID = "ModalYes" + @order.LineId;
+                        }
+
+                        <!-- Add to Favorites not allowed for admin user -->
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <a asp-action="UpdateFavorites" asp-route-custId="@order.CustomerId" asp-route-orderId="@order.OrderId" asp-route-lineId="@order.LineId" asp-route-isFavorite="@order.IsFavorite" asp-route-name="@favoriteName" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">
+                                <img class="cell-image w-100" style="max-width:25px" src=@imageSource />
+
+                            </a>
+
+
+                            @using (Html.BeginForm("UpdateFavorites", "Order", new
                             {
-                                <a asp-action="UpdateFavorites" asp-route-custId="@order.CustomerId" asp-route-orderId="@order.OrderId" asp-route-lineId="@order.LineId" asp-route-isFavorite="@order.IsFavorite" asp-route-name="@favoriteName" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">
-                                    <img class="cell-image" src=@imageSource />
-                                </a>
+                                custId = @order.CustomerId,
+                                orderId = @order.OrderId,
+                                lineId = @order.LineId,
+                                isFavorite = order.IsFavorite,
+                                name = @favoriteName,
+                                fromHistory = true
 
+                            }, FormMethod.Post))
+                            {
+                                <!-- Modal -->
+                                <div class="modal fade bd-example-modal-sm" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmModalLabel">@modalLabel</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="modal-table">
+                                                    <tr>
+                                                        <td>Order:</td>
+                                                        <td>@order.OrderId</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Product:</td>
+                                                        <td>@order.Description</td>
+                                                    </tr>
+                                                </table>
+                                                @if (askForName)
+                                                {
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="favoriteName" class="col-form-label">Name of favorite:</label>
+                                                            <input type="text" class="form-control" id="favoriteName" name="favoriteName" maxlength="25" required>
+                                                        </div>
+                                                    </form>
+                                                }
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-primary">Yes</button>
 
-                                @using (Html.BeginForm("UpdateFavorites", "Order", new
-                                {
-                                    custId = @order.CustomerId,
-                                    orderId = @order.OrderId,
-                                    lineId = @order.LineId,
-                                    isFavorite = order.IsFavorite,
-                                    name = @favoriteName,
-                                    fromHistory = true
-
-                                }, FormMethod.Post))
-                                {
-                                    <!-- Modal -->
-                                    <div class="modal fade bd-example-modal-sm" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="confirmModalLabel">@modalLabel</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <table class="modal-table">
-                                                        <tr>
-                                                            <td>Order:</td>
-                                                            <td>@order.OrderId</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Product:</td>
-                                                            <td>@order.Description</td>
-                                                        </tr>
-                                                    </table>
-                                                    @if (askForName)
-                                                    {
-                                                        <form>
-                                                            <div class="form-group">
-                                                                <label for="favoriteName" class="col-form-label">Name of favorite:</label>
-                                                                <input type="text" class="form-control" id="favoriteName" name="favoriteName" maxlength="25" required>
-                                                            </div>
-                                                        </form>
-                                                    }
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                                    <button type="submit" class="btn btn-primary">Yes</button>
-
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                }
                             }
-                        </td>
-                        <td class="col-6">@order.Description</td>
-                        <td class="col-3"></td>
-                        <td class="col-2 cell-amount">@String.Format("${0:0.00}", order.LineValue)</td>
-                        <td class="col-1">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@order.OrderStr" aria-expanded="false" aria-controls="@order.OrderStr"></button>
-                        </td>
-                    </tr>
+                        }
+                    </td>
+                    <td class="col-6">@order.Description</td>
+                    <td class="col-1"></td>
+                    <td class="col-1"></td>
+                    <td class="col cell-amount">@String.Format("${0:0.00}", order.LineValue)</td>
+                    <td class="col-1">
+                        <button class="accordion-button collapsed" style="" type="button" data-bs-toggle="collapse" data-bs-target="#@order.OrderStr" aria-expanded="false" aria-controls="@order.OrderStr"></button>
+                    </td>
+                </tr>
 
-                    <tr id="@order.OrderStr" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
+                <tr id="@order.OrderStr" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
 
-                        <td class="accordion-detail accordion-body" colspan="12">
-                            <table class="accordion-table container">
+                    <td class="accordion-detail accordion-body p-0" colspan="12">
+                        <!-- Ingredients -->
+                        <table class="table accordion-table mb-0 text-secondary">
+                            <tr>
+                                <td class="col-1"></td>
+                                <td class="col ps-3"><i class="fa-solid fa-caret-right text pe-1"></i>Base sandwich price</td>
+                                <td class="col-1"></td>
+                                <td class="col cell-amount" colspan="2">@String.Format("${0:0.00}", order.Price)</td>
+                                <td class="col-1"></td>
+                            </tr>
 
+                            @foreach (var line in order.Ingredients)
+                            {
                                 <tr>
-                                    <td class="col-2"></td>
-                                    <td class="col-4">Base sandwich price</td>
-                                    <td class="col-2"></td>
-                                    <td class="col-2 cell-amount">@String.Format("${0:0.00}", order.Price)</td>
-                                    <td class="col-2"></td>
+                                    <td class="col"></td>
+                                    <td class="col ps-3"><i class="fa-solid fa-caret-right text pe-1"></i>@line.IngDescription</td>
+                                    @if (line.Quantity == 1)
+                                    {
+                                        <td class="col text-end">Reg</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col text-end">Extra</td>
+                                    }
+                                    <td class="col-1"></td>
+                                    <td class="col-1 cell-amount">@String.Format("${0:0.00}", line.IngValue)</td>
+
+                                    <td class="col"></td>
                                 </tr>
-
-                                @foreach (var line in order.Ingredients)
-                                {
-                                    <tr>
-                                        <td class="col-2"></td>
-                                        <td class="col-4">@line.IngDescription</td>
-                                        @if (line.Quantity == 1)
-                                        {
-                                            <td class="col-2">Reg</td>
-                                        }
-                                        else
-                                        {
-                                            <td class="col-2">Extra</td>
-                                        }
-                                        <td class="col-2 cell-amount">@String.Format("${0:0.00}", line.IngValue)          </td>
-                                        <td class="col-2"></td>
-                                    </tr>
-                                }
-                            </table>
-                        </td>
-
-                    </tr>
-                </tbody>
-            }
+                            }
+                        </table>
+                        <!--End of ingredients-->
+                    </td>
+                </tr>
+            </tbody>
         </table>
+    }
+    <hr />
+    <!--Pagination-->
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
 
-        @{
-            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-        }
+    <div class="paginated-list d-flex justify-content-center">
+        <a asp-action="History"
+           asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
+           asp-route-page="@(Model.PageIndex - 1)"
+           class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
+        <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
+        <a asp-action="History"
+           asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
+           asp-route-page="@(Model.PageIndex + 1)"
+           class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
+    </div>
+    <!--End of Pagination-->
 
-        <div class="paginated-list">
-            <a asp-action="History"
-               asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
-               asp-route-page="@(Model.PageIndex - 1)"
-               class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
-            <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
-            <a asp-action="History"
-               asp-route-customerId="@Model.FirstOrDefault()?.CustomerId"
-               asp-route-page="@(Model.PageIndex + 1)"
-               class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
-        </div>
-
-    </div>  <!--class="container"-->
+    <div>@ViewBag.Message</div>
 </main>
-@ViewBag.Message
+
 
