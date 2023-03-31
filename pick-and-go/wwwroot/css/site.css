@@ -86,6 +86,10 @@ nav li a:hover {
     background-color: #ffaf01;
 }
 
+nav .dropdown {
+    display:block;
+}
+
 @media (max-width: 768px) {
     .dropdown-menu{
         display: block;
