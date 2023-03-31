@@ -3,17 +3,17 @@
 }
 
 .total-price {
-    margin-right: 5rem;
     font-size: 1.5rem;
+    margin-right:3rem;
 }
 
 
 .proceed-button{
-    margin-right: 5rem;
     width:10rem;
     height:fit-content;
     padding: 1rem;
     font-size: 1.5rem;
+    margin-right:3rem;
 }
 
 .button-box{
@@ -52,8 +52,23 @@
 /* Media query for mobile view */
 @media (max-width: 768px) {
     /* Hide the buttons */
+
+    .shopping-cart {
+        min-width: 450px;
+        max-width:100%;
+        width:100%;
+        padding:1rem;
+    }
     .button-box .shopping-cart-btn {
         display: none;
+    }
+
+    .total-price {
+        margin-right: 2.0rem;
+    }
+
+    .proceed-button {
+        margin-right: 2.0rem;
     }
 
     .button-box {
@@ -73,15 +88,17 @@
         font-size: 0.9rem;
         border: none;
         background-color: #f1f1f1;
+        margin-left:2rem;
     }
 
 
-    .dropdown .dropdown-content {
-        display: none;
-        position: absolute;
-        z-index: 1;
-        width: 100%;
-    }
+        .dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            margin-left: 2rem;
+        }
 
 
     .dropdown .dropdown-content .shopping-cart-dropdown-btn {
@@ -93,5 +110,13 @@
 
     .dropdown:hover .dropdown-content {
         display: block;
+    }
+
+    .ingredient-dropdown {
+        margin:0;
+    }
+
+    .shopping-cart .container-fluid{
+        padding:0;
     }
 }
