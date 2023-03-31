@@ -49,22 +49,21 @@
 
                                 <td class="col-5">@item.Value.description</td>
                                 <td class="col-1"><span id="@item.Value.productId-amount" class="amount">$@Convert.ToDecimal(item.Value.subtotal).ToString("0.00")</span></td>
-
-@*                                <td class="order-again-button">
-                                    <a class="btn btn-primary " asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
-                                </td>
-                                <td class= "edit-button">
-                                    <a class="btn btn-primary" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger delete-button" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
-                                </td>*@
                                 <td class=" col-6 ">
-                                    <div class="button-box d-flex">
-                                        <a class="btn btn-primary shopping-cart-btn " asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
-                                        <a class="btn btn-primary shopping-cart-btn" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
-                                        <button class="btn btn-danger shopping-cart-btn" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
-                                    </div>
+                                            <div class="button-box">
+                                                    <a class="btn btn-primary shopping-cart-btn " asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
+                                                    <a class="btn btn-primary shopping-cart-btn" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
+                                                    <button class="btn btn-danger shopping-cart-btn" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
+                                                <div class="dropdown">
+                                                    <button class="dropbtn">Order Options</button>
+                                                    <div class="dropdown-content">
+                                                        <a class="btn btn-primary shopping-cart-dropdown-btn" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize">Order Again</a>
+                                                        <a class="btn btn-primary shopping-cart-dropdown-btn" asp-route-index="@item.Index" asp-route-removeitem="edit" asp-area="" asp-controller="Order" asp-action="EditCustomize">Edit</a>
+                                                        <button class="btn btn-danger shopping-cart-dropdown-btn" id="btnRemove" OnClick="removeSandwich(@item.Index)">Remove</button>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                      
                                 </td>
                             </tr>
                             <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
@@ -120,12 +119,12 @@
                     <span id="totalAmount">0</span>
                     <input id="currency" hidden value="CAD" />
                 </div>
-                <div class="d-flex justify-content-end my-3 proceed-button">
+                <div class="d-flex justify-content-end my-3">
                     @{
                         var dataTargetConfirm = "#ModalYes";
                         var modalID = "ModalYes";
                     }
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
+                        <button type="button" class="btn btn-primary btn-sm proceed-button" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
 
                     <!-- Modal -->
                     <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">

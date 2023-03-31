@@ -1,9 +1,14 @@
 ﻿.total-price {
     margin-right: 5rem;
+    font-size: 1.5rem;
 }
 
 .proceed-button{
     margin-right: 5rem;
+    width:10rem;
+    height:fit-content;
+    padding: 1rem;
+    font-size: 1.5rem;
 }
 
 .button-box{
@@ -22,4 +27,65 @@
 
 .shopping-title {
     margin-left: 3rem;
+}
+
+/* Default styling for the buttons */
+.button-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-box btn {
+    margin: 0 10px;
+}
+
+.dropdown {
+    display:none;
+}
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+    /* Hide the buttons */
+    .button-box .shopping-cart-btn {
+        display: none;
+    }
+
+    .button-box {
+        justify-content: end;
+    }
+
+    .dropdown{
+        display:block;
+    }
+
+    .dropdown .dropbtn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        background-color: #f1f1f1;
+    }
+
+
+    .dropdown .dropdown-content {
+        display: none;
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+    }
+
+
+    .dropdown .dropdown-content .shopping-cart-dropdown-btn {
+         width:100%;
+         display: block;
+         text-align: center;
+     }
+
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
 }
