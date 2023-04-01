@@ -1,57 +1,54 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Please Enter Your Account Details";
+    ViewData["Title"] = "Enter Your Account Details";
 }
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
 
-<head>
+@*<head>
     <link rel="stylesheet" href="~/css/Erik.css" asp-append-version="true" />
-</head>
+</head>*@
 
-<div class="row the-form">
-    <div class="col-md-4 the-div-form">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+<main class="register-page">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="d-flex flex-column align-items-center text-start">
             <h1 class="sign-up">@ViewData["Title"]</h1>
             <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div>
-            <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <label asp-for="Input.FirstName"></label>
-            <div class="form-floating">
+            <div class="register-form">
                 <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <label asp-for="Input.LastName"></label>
-            <div class="form-floating">
+            <div class="register-form">
                 <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" />
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <label asp-for="Input.Email"></label>
-            <div class="form-floating">
+            <div class="register-form">
                 <input asp-for="Input.Email" class="form-control" aria-required="true" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <label asp-for="Input.PhoneNumber"></label>
-            <div class="form-floating">
+            <div class="register-form">
                 <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="phonenumber" aria-required="true" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <label asp-for="Input.Password"></label>
-            <div class="form-floating">
+            <div class="register-form">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <label asp-for="Input.ConfirmPassword"></label>
-            <div class="form-floating">
+            <div class="register-form">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-primary the-btn">Sign Up</button>
+            <button id="registerSubmit" type="submit" class="btn btn-primary signup-btn">Sign Up</button>
         </form>
         <p class="mt-2 text-danger">@ViewData["ErrorMessage"]</p>
-    </div>
-</div>
+</main>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

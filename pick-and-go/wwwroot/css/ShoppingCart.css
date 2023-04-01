@@ -1,0 +1,122 @@
+﻿.shopping-cart{
+    max-width:80%;
+}
+
+.total-price {
+    font-size: 1.3rem;
+    margin-right:3rem;
+}
+
+
+.proceed-button {
+    width: 10%;
+    min-width: 120px;
+    padding: 10px;
+    font-size: 15px;
+    margin-right: 3rem;
+}
+
+.button-box{
+    width:100%;
+    justify-content: space-evenly
+}
+.shopping-cart-btn{
+    width:30%;
+    min-width:120px;
+}
+
+.ingredient-dropdown{
+   width:75%;
+   margin-left: 7rem;
+}
+
+.shopping-title {
+    margin-left: 3rem;
+}
+
+/* Default styling for the buttons */
+.button-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-box btn {
+    margin: 0 10px;
+}
+
+.dropdown {
+    display:none;
+}
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+    /* Hide the buttons */
+
+    .shopping-cart {
+        min-width: 450px;
+        max-width:100%;
+        width:100%;
+        padding:1rem;
+    }
+    .button-box .shopping-cart-btn {
+        display: none;
+    }
+
+    .total-price {
+        margin-right: 2.0rem;
+    }
+
+    .proceed-button {
+        margin-right: 2.0rem;
+    }
+
+    .button-box {
+        justify-content: end;
+    }
+
+    .dropdown{
+        display:block;
+    }
+
+    .dropdown .dropbtn {
+        display: block;
+        width: 100%;
+        min-width: 120px;
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9rem;
+        border: none;
+        background-color: #f1f1f1;
+        margin-left:2rem;
+    }
+
+
+        .dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            margin-left: 2rem;
+        }
+
+
+    .dropdown .dropdown-content .shopping-cart-dropdown-btn {
+         width:100%;
+         display: block;
+         text-align: center;
+     }
+
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .ingredient-dropdown {
+        margin-left:2.5rem;
+    }
+
+    .shopping-cart .container-fluid{
+        padding:0;
+    }
+}

@@ -21,7 +21,7 @@ using Microsoft.CodeAnalysis;
 
 namespace PickAndGo.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
 
     public class AdminController : Controller
     {
@@ -62,7 +62,7 @@ namespace PickAndGo.Controllers
             IngredientsRepository iR = new IngredientsRepository(_db);
             var vm = iR.BuildIngredientVM(0);
             ViewData["categories"] = new SelectList(_db.Categories, "CategoryId", "CategoryId");
-            return View();
+            return View(vm);
         }
 
         [HttpPost]
@@ -152,6 +152,15 @@ namespace PickAndGo.Controllers
 
         public IActionResult Overview(string currentDate, string submitBtn)
         {
+            CustomerRepository cr = new CustomerRepository(_db);
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
+                var customerId = customer.CustomerId.ToString();
+                HttpContext.Session.SetString("customerid", customerId);
+            }
+
             if (currentDate == null)
             {
                 currentDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -179,14 +188,12 @@ namespace PickAndGo.Controllers
             return View(ov);
         }
 
-        public IActionResult Orders(string message, string searchName, string searchOrder, int? page)
+        public IActionResult Orders(string message, string orderFilter, string searchName, string searchOrder, int? page)
         {
             if (message == null)
             {
                 message = "";
             }
-
-            string orderFilter = ViewData["CurrentFilter"] as string;
 
             if (orderFilter == null)
             {
@@ -218,9 +225,8 @@ namespace PickAndGo.Controllers
             ViewData["Message"] = message;
 
             int pageSize = 10;
-
-            return View(PaginatedList<OrderListVM>.Create(vm.AsNoTracking()
-                                                          , page ?? 1, pageSize));
+               return View(PaginatedList<OrderListVM>.Create(vm.AsNoTracking()
+                                                             , page ?? 1, pageSize));
         }
      
         [HttpPost]

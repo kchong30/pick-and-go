@@ -9,123 +9,125 @@
     var toDate = @ViewBag.CurrentToDate;
 }
 
-<div class="order-title">
-    <h1>Transactions</h1>
+<main class="transactions">
+    <div class="order-title">
+        <h1>Transactions</h1>
 
-    <div class="date-filter">
-        <form asp-controller="Admin" asp-action="Transactions">
-            <input type="hidden" name="searchName" value="@ViewData["CurrentNameSearch"]"/>
-            <input type="hidden" name="searchOrder" value="@ViewData["CurrentOrderSearch"]"/>
-            <input type="date" name="dateFrom" value=@fromDate required />
-            <input type="date" name="dateTo" value=@toDate required />
-            <input type="submit" value="Refresh" />
-        </form>
+        <div class="date-filter">
+            <form asp-controller="Admin" asp-action="Transactions">
+                <input type="hidden" name="searchName" value="@ViewData["CurrentNameSearch"]"/>
+                <input type="hidden" name="searchOrder" value="@ViewData["CurrentOrderSearch"]"/>
+                <input type="date" name="dateFrom" value=@fromDate required />
+                <input type="date" name="dateTo" value=@toDate required />
+                <input type="submit" value="Refresh" />
+            </form>
+        </div>
+
+        <div class="order-search">
+            <form asp-controller="Admin" asp-action="Transactions">
+                <input type="hidden" name="dateFrom" value="@fromDate" />
+                <input type="hidden" name="dateTo" value="@toDate" />
+                <p>
+                    Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
+                    or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
+                    <input type="submit" value="Search" />
+                    <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Transactions">Back to Full List</a>
+                </p>
+            </form>
+        </div>
     </div>
 
-    <div class="order-search">
-        <form asp-controller="Admin" asp-action="Transactions">
-            <input type="hidden" name="dateFrom" value="@fromDate" />
-            <input type="hidden" name="dateTo" value="@toDate" />
-            <p>
-                Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
-                or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
-                <input type="submit" value="Search" />
-                <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Transactions">Back to Full List</a>
-            </p>
-        </form>
-    </div>
-</div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Order#
-            </th>
-            <th>
-                Customer
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-                Date Ordered
-            </th>
-            <th>
-                Order Value
-            </th>
-            <th>
-                Payment Date
-            </th>
-            <th>
-                Payment Type
-            </th>
-            <th>
-                Payment Id
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead class="table-heading">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderDate)
-                </td>
-                <td>
-                    $ @Html.DisplayFor(modelItem => item.OrderValue) @Html.DisplayFor(modelItem => item.Currency)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentId)
-                </td>
+                <th>
+                    Order#
+                </th>
+                <th>
+                    Customer
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Date Ordered
+                </th>
+                <th>
+                    Order Value
+                </th>
+                <th>
+                    Payment Date
+                </th>
+                <th>
+                    Payment Type
+                </th>
+                <th>
+                    Payment Id
+                </th>
             </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td></td>
-            <td>Number of Orders:</td>
-            <td>@Model.Count()</td>
-            <td>Total Sales:</td>
-            <td>$ @Model.Sum(o => o.OrderValue) CAD</td>
-        </tr>
-    </tfoot>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        $ @Html.DisplayFor(modelItem => item.OrderValue) @Html.DisplayFor(modelItem => item.Currency)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentId)
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td>Number of Orders:</td>
+                <td>@Model.Count()</td>
+                <td>Total Sales:</td>
+                <td>$ @Model.Sum(o => o.OrderValue) CAD</td>
+            </tr>
+        </tfoot>
+    </table>
 
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
 
-<div class="paginated-list">
-    <a asp-action="Transactions"
-       asp-route-searchName="@ViewData["CurrentNameSearch"]"
-       asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
-       asp-route-dateFrom="@ViewData["CurrentFromDate"]"
-       asp-route-dateTo=" @ViewData["CurrentToDate"]"
-       asp-route-page="@(Model.PageIndex - 1)"
-       class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
-    <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
-    <a asp-action="Transactions"
-       asp-route-searchName="@ViewData["CurrentNameSearch"]"
-       asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
-       asp-route-dateFrom="@ViewData["CurrentFromDate"]"
-       asp-route-dateTo=" @ViewData["CurrentToDate"]"
-       asp-route-page="@(Model.PageIndex + 1)"
-       class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
-</div>
+    <div class="paginated-list">
+        <a asp-action="Transactions"
+           asp-route-searchName="@ViewData["CurrentNameSearch"]"
+           asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+           asp-route-dateFrom="@ViewData["CurrentFromDate"]"
+           asp-route-dateTo=" @ViewData["CurrentToDate"]"
+           asp-route-page="@(Model.PageIndex - 1)"
+           class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
+        <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
+        <a asp-action="Transactions"
+           asp-route-searchName="@ViewData["CurrentNameSearch"]"
+           asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+           asp-route-dateFrom="@ViewData["CurrentFromDate"]"
+           asp-route-dateTo=" @ViewData["CurrentToDate"]"
+           asp-route-page="@(Model.PageIndex + 1)"
+           class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
+    </div>
+</main>

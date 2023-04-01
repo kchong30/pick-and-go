@@ -29,6 +29,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
+                HttpContext.Session.Clear();
                 return LocalRedirect(returnUrl);
             }
             else

@@ -31,24 +31,24 @@ namespace PickAndGo.Controllers
             _emailService = emailService;
         }
 
-        public IActionResult Index(ProductVM products, string nameInput)
+        public IActionResult Index(ProductVM products)
         {
             //If the user is a guest - set viewbag for greeting to nameInput (gathered from form at landing page).
             //If logged in, get customer's first name - pass on for greeting.
             if (HttpContext.Session.GetString("firstName") == null)
             {
-                if (!User.Identity.IsAuthenticated)
-                {
-                    ViewBag.NameInput = nameInput;
-                    HttpContext.Session.SetString("firstName", nameInput);
-                }
-                else
+                if (User.Identity.IsAuthenticated)
                 {
                     CustomerRepository cr = new CustomerRepository(_db);
                     var customer = cr.ReturnCustomerByEmail(User.Identity.Name);
                     ViewBag.NameInput = customer.FirstName;
                     HttpContext.Session.SetString("firstName", customer.FirstName);
                 }
+
+            }
+            else
+            {
+                ViewBag.NameInput = HttpContext.Session.GetString("firstName");
 
             }
             ProductRepository pr = new ProductRepository(_db);
@@ -135,27 +135,35 @@ namespace PickAndGo.Controllers
             // Retrieve the session string value
             string jsonData = HttpContext.Session.GetString("shoppingCart");
 
-            // Pass it to VM for View
-            List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
-
-            // Check if the user is logged in or no
-
-            if (User.Identity.Name != null)
+            if(jsonData?.Length > 0)
+       
             {
-                string email = User.Identity.Name;
-                CustomerRepository cR = new CustomerRepository(_db);
-                // get current user record from client
-                Customer customer = cR.ReturnCustomerByEmail(email);
+                // Pass it to VM for View
+                List<ShoppingCartVM> items = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(jsonData);
 
-                //if (User.Identity.IsAuthenticated)
-                //{
-                HttpContext.Session.SetString("firstName", customer.FirstName);
-                HttpContext.Session.SetString("lastName", customer.LastName);
-                HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+                // Check if the user is logged in or no
 
-                //}
+                if (User.Identity.Name != null)
+                {
+                    string email = User.Identity.Name;
+                    CustomerRepository cR = new CustomerRepository(_db);
+                    // get current user record from client
+                    Customer customer = cR.ReturnCustomerByEmail(email);
+
+                    //if (User.Identity.IsAuthenticated)
+                    //{
+                    HttpContext.Session.SetString("firstName", customer.FirstName);
+                    HttpContext.Session.SetString("lastName", customer.LastName);
+                    HttpContext.Session.SetInt32("customerId", customer.CustomerId);
+
+                    //}
+                }
+                return View(items);
             }
-            return View(items);
+
+            return View();
+
+
 
         }
 
@@ -175,6 +183,11 @@ namespace PickAndGo.Controllers
             if (data.Email != null)
             {
                 HttpContext.Session.SetString("email", data.Email);
+            }
+
+            if (data.FirstName != null)
+            {
+                HttpContext.Session.SetString("firstName", data.FirstName);
             }
         }
 

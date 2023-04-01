@@ -6,16 +6,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
  
-<h1>Ingredients</h1>
+<main class="ingredients">
+    <h1>Ingredients</h1>
 
-<p>
-    <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsCreate">Create New</a>
-</p>
-
-<div class="container">
+    <p>
+        <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsCreate">Create New</a>
+    </p>
+    <hr />
 
     <table class="table">
-        <thead>
+        <thead class="table-heading">
             <tr>
                 <th>Category</th>
                 <th></th>
@@ -73,20 +73,20 @@
                                         }
                                         else
                                         {
-                                            <img class="ingredient-image rounded-circle shadow-sm" src="~/images/empty-image.png">
+                                            <img class="ingredient-image rounded-circle shadow-sm" src="/images/empty-image.png">
                                         }
                                     </td>
                                     <td class="celldesc">@ing.Description</td>
                                     <td>@ing.Price</td>
-                                    <td><img class="stock-icon" src="~/images/@ing.InStockIcon"/></td>
+                                    <td><img class="stock-icon" src="/images/@ing.InStockIcon"/></td>
                                     <td>
-                                        <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
-                                        <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
+                                        <a class="btn btn-outline-secondary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
+                                        <a class="btn btn-outline-secondary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
                                         @if (!ing.OutstandingOrders)
                                         {
                                             var dataTargetConfirm = "#ModalYes" + ing.IngredientId;
                                             var modalID = "ModalYes" + ing.IngredientId;
-                                            <a type="button" class="btn btn-outline-secondary"  asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
+                                            <a class="btn btn-outline-secondary" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
 
                                             @using (Html.BeginForm("IngredientsDelete", "Admin", new
                                             {
@@ -127,7 +127,7 @@
                                             }
                                         }
                                         else {
-                                            <a asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" aria-current="page">Delete</a>
+                                            <a class="link-disabled" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId">Delete</a>
                                         }
                                     </td>
                                     <td></td>
@@ -135,11 +135,11 @@
                             }
                         </table>
                     </td>
-
                 </tr>
-
             }
         </tbody>
+            
     </table>
-</div>  
-@ViewBag.Message
+    @ViewBag.Message
+</main>
+
