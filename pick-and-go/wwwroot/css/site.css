@@ -376,5 +376,5 @@ input[type=radio]:checked {
 
 /*Order Index*/
 .order-index-header {
-    white-space:nowrap;
+    text-align:center;
 }

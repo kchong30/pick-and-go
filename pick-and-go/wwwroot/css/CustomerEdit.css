@@ -1,0 +1,42 @@
+﻿.customer-edit-page {
+    padding: 0;
+    margin-top: 1rem;
+    max-width: 1200px;
+    margin:auto;
+    display:flex;
+    margin-top: 6rem;
+    align-items:center;
+}
+
+.customer-edit-form {
+    margin:auto;
+    text-align:center;
+}
+
+.customer-edit-form input {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+.customer-edit-form label {
+    color: #ef6900;
+    font-weight: 500;
+}
+
+.submit-btn{
+    margin-top: 1rem;
+    height: 2.9rem;
+    width: 250px;
+}
+
+.message-prompt {
+    margin-top: 3rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .register-page {
+        max-width: 100%;
+    }
+}
