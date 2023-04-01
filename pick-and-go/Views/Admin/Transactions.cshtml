@@ -101,9 +101,9 @@
             <tr>
                 <td></td>
                 <td>Number of Orders:</td>
-                <td>@Model.Count()</td>
+                <td>@Model.FirstOrDefault()?.OrderCount</td>
                 <td>Total Sales:</td>
-                <td>$ @Model.Sum(o => o.OrderValue) CAD</td>
+                <td>$ @Model.FirstOrDefault()?.OrderTotalVal CAD</td>
             </tr>
         </tfoot>
     </table>
