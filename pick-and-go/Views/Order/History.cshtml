@@ -7,6 +7,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/Erik.css" asp-append-version="true" />
+</head>
+
+<div class="header-titles">
+    <h1>Order History</h1>
+    <div class="header-name">
+        <h4>@Model.FirstOrDefault()?.FullName</h4>
+    </div>
+</div>
 <main class="history">
 
     <h1>Order History</h1>
@@ -18,8 +28,6 @@
 
     @foreach (var order in Model)
     {
-
-
         <table class="table m-0">
 
             @if (order.OrderId != prevOrderNumber)
