@@ -10,14 +10,11 @@
 </head>
 
 <div class="header-titles">
-    <h1>Favorites</h1>
-    <div class="header-name">
-        <h4>@Model.FirstOrDefault()?.FullName</h4>
-    </div>
+    <h1>Order History</h1>
+    <h2 class="header-name">@Model.FirstOrDefault()?.FullName</h2>
 </div>
 
 <main class="favorites">
-    <h1>Favorites</h1>
     @*<h4>@Model.FirstOrDefault()?.FullName</h4>*@
 
     @foreach (var favorite in Model)

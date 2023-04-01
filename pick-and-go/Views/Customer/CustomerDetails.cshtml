@@ -10,9 +10,7 @@
 
     <div class="header-titles">
         <h1>Customer Profile</h1>
-        <div class="header-name">
-            <h3>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h3>
-        </div>
+        <h2 class ="header-name">@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h2>
     </div>
     <main class="customer-details">
     <div>
@@ -65,6 +63,9 @@
         <a type="button" class="btn btn-primary" asp-controller="Order" asp-action="Favorites" asp-route-customerId="@Model?.CustomerId">Favourites</a>
         <a type="button" class="btn btn-primary" asp-controller="Home" asp-action="Index">Back Home</a>
         </div>
+    <div class="message-prompt">
+       @ViewBag.Message
+    </div>
     </main>
 
-@ViewBag.Message
+
