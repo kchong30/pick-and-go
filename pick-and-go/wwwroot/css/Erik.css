@@ -60,8 +60,41 @@
 .header-titles h1 {
     text-align: center;
     color:white;
-    margin-top:-1.5rem;
 
+
+}
+
+.title-name {
+}
+
+.customer-details-table{
+    width:60%;
+    margin:auto;
+}
+
+.customer-details-buttons {
+    margin-top:3rem;
+}
+
+.customer-details-buttons a {
+    width:40%;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 800px){
+    .customer-details-table {
+        width: 80%;
+        min-width:350px;
+    }
+    .customer-details-buttons a {
+        min-width: 300px
+    }
+}
+
+.title-result {
+    width:200px;
 }
 
 .header-name {
