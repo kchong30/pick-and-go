@@ -4,6 +4,7 @@ using PickAndGo.Models;
 using PickAndGo.ViewModels;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace PickAndGo.Services
@@ -48,12 +49,31 @@ namespace PickAndGo.Services
             var templateId = "d-aea4e36c45544c50b279e40406207b59";
             List<ShoppingCartVM> products = JsonConvert.DeserializeObject<List<ShoppingCartVM>>(payload.OrderDetails);
             var productsArray = products.ToArray();
+            decimal totalCost = 0;
+
+            foreach (var product in productsArray )
+            {
+                if (decimal.TryParse(product.subtotal, out var subtotal))
+                {
+                    totalCost = totalCost + subtotal;
+                    product.subtotal = subtotal.ToString("C");
+                }
+                else
+                {
+                    Console.WriteLine($"Unable to parse subtotal for product: {product.subtotal}");
+                }
+            }
+
+            var totalString = totalCost.ToString("C");
+
 
             var dynamicTemplateData = new
             {
                 name = payload.FirstName + " " + payload.LastName,
                 subject = "Your Order Has Been Placed!",
-                items = productsArray
+                items = productsArray,
+                pickuptime = payload.PickUpTime,
+                total = totalString
             };
             var msg = MailHelper.CreateSingleTemplateEmail(from, to, templateId, dynamicTemplateData);
             var request = client.SendEmailAsync(msg);
