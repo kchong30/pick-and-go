@@ -10,7 +10,6 @@
     string? email = Context.Session.GetString("email");
 }
 <br />
-<br />
     <main class="confirmation d-flex flex-column align-items-center">
     <div class="text-success m-3"><i class="fa-solid fa-check fs-1"></i></div>
     <div class="fs-1 fw-bolder m-3">Thank you for your order</div>
@@ -23,10 +22,13 @@
     </div>
     <div class="fs-6">A confirmation email has been sent to <span class="fw-bold">@email</span></div>
     <div style="margin-top: 50px;">
-        <h4>Thank you for choosing Sandwich Palace for your sandwich needs!</h4>
+
+    <h4>Thank you for choosing Sandwich Palace for your sandwich needs!</h4>
+    <div class="d-flex flex-column align-items-center mt-3">
             <p>Visit us at:</p>
             <p>123 Main Street, Anytown, CA 12345</p>
             <p>Call us at: (555) 123-4567</p>
+    </div>
      </div>
 
     <a class="btn btn-primary m-5 p-3" asp-controller="Home" asp-action="Index" role="button">Continue to shopping</a>
