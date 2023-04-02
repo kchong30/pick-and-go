@@ -322,7 +322,7 @@ function updateTotalPrice(id, quantityValue) {
     var totalPrice =
         parseFloat($("#product-price").html()) +
         parseFloat($("#ingredients-price").html());
-    $("#total-price").text(totalPrice);
+    $("#total-price").text(totalPrice.toFixed(2));
 }
 
 /* Checkout */

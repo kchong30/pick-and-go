@@ -10,171 +10,189 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var isSelectedO = @ViewBag.CurrentFilter == "O" ? true : false;
     var isSelectedC = @ViewBag.CurrentFilter == "C" ? true : false;
+    var isCustomer = @ViewBag.searchFilter == "customer" ? true : false;
+    var isOrderNum = @ViewBag.searchFilter == "orderNum" ? true : false;
 }
 
 <main class="orders">
-
-    <div class="order-title">
-        <h1>Orders</h1>
-
+    <h1>Orders</h1>
+    <div class="order-title d-flex justify-content-between">
         <div class="order-filter">
-            <form asp-controller="Admin" asp-action="Orders">
-
+            <form asp-controller="Admin" asp-action="Orders" class="border border-2">
                 @Html.DropDownList("orderFilter", new List<SelectListItem>
                 {
                 new SelectListItem { Text = "Outstanding", Value = "O", Selected = isSelectedO},
                 new SelectListItem { Text = "Completed", Value = "C", Selected = isSelectedC}
                 })
-                <input type="submit" value="Refresh" />
+                <button type="submit" value="Refresh" class="icon-btn"><i class="fa-solid fa-arrows-rotate"></i></button>
             </form>
         </div>
+
         <div class="order-search">
             <form asp-controller="Admin" asp-action="Orders">
                 <p>
-                    Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
-                    or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
-                    <input type="submit" value="Search" />
+                    @Html.DropDownList("searchFilter", new List<SelectListItem>
+                    {
+                    new SelectListItem { Text = "Customer", Value = "customer", Selected=isCustomer},
+                    new SelectListItem { Text = "Order#", Value = "orderNum", Selected=isOrderNum}
+                    })
+                    <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
+                    <button type="submit" value="Search" class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                     <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Orders">Back to Full List</a>
                 </p>
             </form>
         </div>
+
+        @*
+        <div class="order-search">
+        <form asp-controller="Admin" asp-action="Orders">
+        <p>
+        Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
+        or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
+        <input type="submit" value="Search" />
+        <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Orders">Back to Full List</a>
+        </p>
+        </form>
+        </div>
+        *@
     </div>
 
-    @*<div class="container">*@
+    <table class="table">
+        <thead class="table-heading">
+            <tr>
+                <th class="align-middle rounded-start">Order#</th>
+                <th>Customer</th>
+                <th>Order Details</th>
+                <th>Date Ordered</th>
+                <th>Pickup Time</th>
+                <th>Status</th>
+                <th>Change Status</th>
+                <th></th>
+                <th class="align-middle rounded-end"></th>
+            </tr>
+        </thead>
+        <tbody class="accordion" id="PickAndGoAccordion">
 
-        <table class="table">
-            <thead class="table-heading">
-                <tr>
-                    <th>Order#</th>
-                    <th>Customer</th>
-                    <th>Order Details</th>
-                    <th>Date Ordered</th>
-                    <th>Pickup Time</th>
-                    <th>Status</th>
-                    <th>Change Status</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="accordion" id="PickAndGoAccordion">
+            @foreach (var order in Model)
+            {
+                <tr style="color:@order.LineColor">
+                    <td>@order.OrderId</td>
+                    <td>@order.FullName</td>
+                    <td>@order.Description</td>
+                    <td>@order.OrderDate</td>
+                    <td>@order.PickupTime</td>
+                    <td>@(order.LineStatus == "O" ? "Outstanding" : "Completed")</td>
+                    <td class="col7">
+                        @if (@order.LineStatus != "C")
+                        {
+                            var dataTargetConfirm = "#ModalYes" + order.OrderId + order.LineId;
+                            var modalID = "ModalYes" + order.OrderId + order.LineId;
 
-                @foreach (var order in Model)
-                {
-                    <tr style="color:@order.LineColor">
-                        <td>@order.OrderId</td>
-                        <td>@order.FullName</td>
-                        <td>@order.Description</td>
-                        <td>@order.OrderDate</td>
-                        <td>@order.PickupTime</td>
-                        <td>@(order.LineStatus == "O" ? "Outstanding" : "Completed")</td>
-                        <td class="col7">
-                            @if (@order.LineStatus != "C")
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Complete?</button>
+
+                            @using (Html.BeginForm("Orders", "Admin", new
                             {
-                                var dataTargetConfirm = "#ModalYes" + order.OrderId + order.LineId;
-                                var modalID = "ModalYes" + order.OrderId + order.LineId;
+                                orderId = @order.OrderId,
+                                lineId = @order.LineId,
+                                changeStatus = true
+                            }, FormMethod.Post))
+                            {
+                                <!-- Modal -->
+                                <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmModalLabel">Complete this sandwich?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="modal-table">
+                                                    <tr>
+                                                        <td>Order number:</td>
+                                                        <td>@order.OrderId</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Customer:</td>
+                                                        <td>@order.FullName</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>@order.Description</td>
+                                                    </tr>
+                                                </table>
+                                                <p>Are you sure you want to mark this sandwich as complete?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-primary">Yes</button>
 
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Complete?</button>
-
-                                @using (Html.BeginForm("Orders", "Admin", new { orderId = @order.OrderId,
-                                                                                lineId = @order.LineId,
-                                                                                changeStatus = true }, FormMethod.Post))
-                                {
-                                    <!-- Modal -->
-                                    <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="confirmModalLabel">Complete this sandwich?</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <table class="modal-table">
-                                                        <tr>
-                                                            <td>Order number:</td>
-                                                            <td>@order.OrderId</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Customer:</td>
-                                                            <td>@order.FullName</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td>@order.Description</td>
-                                                        </tr>
-                                                    </table>
-                                                    <p>Are you sure you want to mark this sandwich as complete?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                                    <button type="submit" class="btn btn-primary">Yes</button>
-                                                
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                }
                             }
-                            else
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-primary btn-sm invisible">Complete?</button>
+                        }
+                    </td>
+                    <td>
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@order.OrderStr" aria-expanded="false" aria-controls="@order.OrderStr"></button>
+                    </td>
+                </tr>
+
+                <tr id="@order.OrderStr" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
+
+                    <td class="accordion-detail accordion-body" colspan="8">
+                        <table class="accordion-table container">
+                            @foreach (var line in order.Ingredients)
                             {
-                                <button type="button" class="btn btn-primary btn-sm invisible">Complete?</button>
+                                <tr class="row">
+                                    <td class="col"></td>
+                                    <td class="col"></td>
+                                    <td class="col">@line.IngDescription</td>
+                                    @if (line.Quantity == 1)
+                                    {
+                                        <td class="col">Reg</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col">Extra</td>
+                                    }
+                                    <td class="col"></td>
+                                    <td class="col"></td>
+                                    <td class="col"></td>
+                                </tr>
                             }
-                        </td>
-                        <td>
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@order.OrderStr" aria-expanded="false" aria-controls="@order.OrderStr"></button>
-                        </td>
-                    </tr>
+                        </table>
+                    </td>
 
-                    <tr id="@order.OrderStr" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
+                </tr>
 
-                        <td class="accordion-detail accordion-body" colspan="8">
-                            <table class="accordion-table container">
-                                @foreach (var line in order.Ingredients)
-                                {
-                                    <tr class="row">
-                                        <td class="col"></td>
-                                        <td class="col"></td>
-                                        <td class="col">@line.IngDescription</td>
-                                        @if (line.Quantity == 1)
-                                        {
-                                            <td class="col">Reg</td>
-                                        }
-                                        else
-                                        {
-                                            <td class="col">Extra</td>
-                                        }
-                                        <td class="col"></td>
-                                        <td class="col"></td>
-                                        <td class="col"></td>
-                                    </tr>
-                                }
-                            </table>
-                        </td>
-
-                    </tr>
-
-                }
-            </tbody>
-        </table>
-        @{
-            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-            <div class="paginated-list">
-                <a asp-action="Orders"
-                   asp-route-searchName="@ViewData["CurrentNameSearch"]"
-                   asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
-                   asp-route-orderFilter="@ViewData["CurrentFilter"]"
-                   asp-route-page="@(Model.PageIndex - 1)"
-                   class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
-                <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
-                <a asp-action="Orders"
-                   asp-route-searchName="@ViewData["CurrentNameSearch"]"
-                   asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
-                   asp-route-orderFilter="@ViewData["CurrentFilter"]"
-                   asp-route-page="@(Model.PageIndex + 1)"
-                   class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
-            </div>
-        }
+            }
+        </tbody>
+    </table>
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        <div class="paginated-list">
+            <a asp-action="Orders"
+           asp-route-searchName="@ViewData["CurrentNameSearch"]"
+           asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+           asp-route-orderFilter="@ViewData["CurrentFilter"]"
+           asp-route-page="@(Model.PageIndex - 1)"
+           class="btn btn-outline-secondary page-button @prevDisabled">&lt</a>
+            <p>Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages</p>
+            <a asp-action="Orders"
+           asp-route-searchName="@ViewData["CurrentNameSearch"]"
+           asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
+           asp-route-orderFilter="@ViewData["CurrentFilter"]"
+           asp-route-page="@(Model.PageIndex + 1)"
+           class="btn btn-outline-secondary page-button @nextDisabled">&gt</a>
+        </div>
+    }
     @*</div>*@  <!--class="container"-->
 </main>
 

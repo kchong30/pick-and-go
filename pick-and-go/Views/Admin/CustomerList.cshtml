@@ -10,12 +10,10 @@
 
     <h1>Customers</h1>
 
-    <hr />
-
     <table class="table">
         <thead class="table-heading">
             <tr>
-                <th class="align-middle">
+                <th class="align-middle rounded-start">
                     Customer ID
                 </th>
                 <th class="align-middle">
@@ -27,7 +25,8 @@
                 <th class="align-middle">
                     Orders
                 </th>
-                <th class="align-middle">
+                <th class="align-middle rounded-end">
+                    Details
                 </th>
             </tr>
         </thead>
@@ -49,8 +48,7 @@
                     </td>
 
                     <td class="align-middle">
-                        <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Details</a>
-
+                        <a type="button" class="btn btn-sm btn-primary" asp-action="CustomerDetail" asp-route-customerId="@item.CustomerId">Details</a>
                     </td>
                 </tr>
             }
