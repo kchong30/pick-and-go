@@ -99,3 +99,28 @@
 .favorites {
  
 }
+
+/* Orders */
+h1 {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.icon-btn {
+    background-color: #ffaf01;
+    color: white;
+    border: none;
+}
+
+    .icon-btn:hover {
+        background-color: #ef6900;
+    }
+
+.orders select {
+    border: 1px solid gray;
+ padding: 1px;
+}
+
+.orders input {
+    border: 1px solid gray;
+}

@@ -18,7 +18,7 @@
     <h1>Orders</h1>
     <div class="order-title d-flex justify-content-between">
         <div class="order-filter">
-            <form asp-controller="Admin" asp-action="Orders" class="border border-2">
+            <form asp-controller="Admin" asp-action="Orders" class="">
                 @Html.DropDownList("orderFilter", new List<SelectListItem>
                 {
                 new SelectListItem { Text = "Outstanding", Value = "O", Selected = isSelectedO},
@@ -38,7 +38,7 @@
                     })
                     <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
                     <button type="submit" value="Search" class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Orders">Back to Full List</a>
+                    <a type="button" class="btn btn-sm btn-primary btn-search" asp-action="Orders">Back to Full List</a>
                 </p>
             </form>
         </div>
@@ -59,8 +59,8 @@
 
     <table class="table">
         <thead class="table-heading">
-            <tr>
-                <th class="align-middle rounded-start">Order#</th>
+            <tr class="align-middle">
+                <th class="rounded-start">Order#</th>
                 <th>Customer</th>
                 <th>Order Details</th>
                 <th>Date Ordered</th>
@@ -68,14 +68,14 @@
                 <th>Status</th>
                 <th>Change Status</th>
                 <th></th>
-                <th class="align-middle rounded-end"></th>
+                <th class="rounded-end"></th>
             </tr>
         </thead>
         <tbody class="accordion" id="PickAndGoAccordion">
 
             @foreach (var order in Model)
             {
-                <tr style="color:@order.LineColor">
+                <tr style="color:@order.LineColor" class="align-middle">
                     <td>@order.OrderId</td>
                     <td>@order.FullName</td>
                     <td>@order.Description</td>
@@ -177,7 +177,7 @@
     @{
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-        <div class="paginated-list">
+        <div class="paginated-list d-flex justify-content-center">
             <a asp-action="Orders"
            asp-route-searchName="@ViewData["CurrentNameSearch"]"
            asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"
