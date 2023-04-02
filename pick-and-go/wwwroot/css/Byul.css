@@ -49,6 +49,12 @@
     border: none;
 }
 
+/*Added By Kevin*/
+#add-message {
+    color: #ef6900;
+    font-weight:700;
+}
+
 /* 
 * ADMIN-OVERVIEW
 */
