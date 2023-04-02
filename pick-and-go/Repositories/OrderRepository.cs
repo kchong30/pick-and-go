@@ -141,7 +141,7 @@ namespace PickAndGo.Repositories
             var vmList = from o in _db.OrderHeaders
                          join c in _db.Customers on o.CustomerId equals c.CustomerId
                          where o.OrderDate >= fromDate && o.OrderDate <= toDate
-                         orderby o.OrderDate descending         
+                         orderby o.OrderDate descending, o.OrderId descending
                          select new OrderTransactionVM
                          {
                              OrderId = o.OrderId,
