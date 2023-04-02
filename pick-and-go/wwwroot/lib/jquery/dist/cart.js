@@ -160,7 +160,8 @@ function addToCartFromFav(event) {
     cart.push(item);
     localStorage.setItem("cart", JSON.stringify(cart));
     $("#cart-icon").text(cart.length);
-    clearSelection();
+    //commented out clearSelection Call - KC - was changing quantity value in HTML to 0 after initial call.
+    //clearSelection();
 
     $("#message").text("This sandwich has been added to your shopping cart!")
 }
