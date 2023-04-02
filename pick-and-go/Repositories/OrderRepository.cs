@@ -132,10 +132,16 @@ namespace PickAndGo.Repositories
         public IQueryable<OrderTransactionVM> BuildOrderTransactionVM(string searchName, string searchOrder,
                                                                       DateTime fromDate, DateTime toDate)
         {
+            var oCount = _db.OrderHeaders
+                                .Where(oh => oh.OrderDate >= fromDate && oh.OrderDate <= toDate)
+                                .Count();
+            var oVal = (decimal)_db.OrderHeaders
+                                    .Where(oh => oh.OrderDate >= fromDate && oh.OrderDate <= toDate)
+                                    .Sum(oh => oh.OrderValue ?? 0);
             var vmList = from o in _db.OrderHeaders
                          join c in _db.Customers on o.CustomerId equals c.CustomerId
                          where o.OrderDate >= fromDate && o.OrderDate <= toDate
-                         orderby o.OrderDate descending
+                         orderby o.OrderDate descending         
                          select new OrderTransactionVM
                          {
                              OrderId = o.OrderId,
@@ -150,6 +156,8 @@ namespace PickAndGo.Repositories
                              PaymentType = o.PaymentType,
                              PaymentId = o.PaymentId,
                              PaymentDate = ((DateTime)o.PaymentDate).ToString("MM-dd-yyyy"),
+                             OrderCount = oCount,
+                             OrderTotalVal = oVal
                          };
 
             if (searchName != null && searchName != "")
