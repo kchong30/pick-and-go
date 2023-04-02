@@ -10,7 +10,7 @@ input[type="checkbox"]:checked {
     color: white;
 }
 
-.form-control {
+/*.form-control {
     padding-top: 15px;
     font-size: 1em;
     width: 300px;
@@ -33,7 +33,7 @@ input[type="checkbox"]:checked {
     border-color: #ef6900;
     box-shadow: 0 0 0 0.2rem rgba(0, 1, 0.5, 0.25);
 }
-
+*/
 .btn-outline-secondary {
     background-color: lightgray;
     color: black;

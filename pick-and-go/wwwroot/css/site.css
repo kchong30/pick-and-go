@@ -29,7 +29,7 @@ header {
 main {
     height: 100%;
     box-sizing: border-box;
-    margin:auto;
+    margin: auto;
     padding: 2rem;
 }
 
@@ -46,31 +46,30 @@ nav {
     font-size: 14px;
 }
 
-nav button {
-    font-size: 14px !important;
-}
+    nav button {
+        font-size: 14px !important;
+    }
 
-nav button:hover {
-    color: #ef6900 !important;
-}
+        nav button:hover {
+            color: #ef6900 !important;
+        }
 
-nav img {
-    width: 150px;
-    padding-top: 5px;
-}
+    nav img {
+        width: 150px;
+        padding-top: 5px;
+    }
 
-nav .dropdown button:hover {
-    color: #ef6900 !important;
-}
+    nav .dropdown button:hover {
+        color: #ef6900 !important;
+    }
 
-nav li a:hover {
-    color: #ef6900 !important;
-}
+    nav li a:hover {
+        color: #ef6900 !important;
+    }
 
 #cart-icon {
     font-size: 0.7rem;
     top: 0;
- 
 }
 
 .navbar-toggler:active,
@@ -86,25 +85,28 @@ nav li a:hover {
 }
 
 nav .dropdown {
-    display:block;
+    display: block;
 }
 
 @media (max-width: 768px) {
-    .dropdown-menu{
+    .dropdown-menu {
         display: block;
         position: static;
         background-color: transparent;
         border: none;
     }
-    .dropdown-menu li a{
-        color: white !important;
-    }
-    .dropdown-menu li:hover{
-        background-color: rgba(255,255,255,0.1);
-    }
+
+        .dropdown-menu li a {
+            color: white !important;
+        }
+
+        .dropdown-menu li:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
     nav .dropdown button:hover {
         color: white !important;
-        cursor:auto;
+        cursor: auto;
     }
 }
 
@@ -146,35 +148,35 @@ nav .dropdown {
     margin: 0;
 }
 
-.accordion-button:focus {
-    background-color: white !important;
-    box-shadow: none !important;
-    border-style: none;
-    outline: 0;
-}
+    .accordion-button:focus {
+        background-color: white !important;
+        box-shadow: none !important;
+        border-style: none;
+        outline: 0;
+    }
 
-.accordion-button:not(.collapsed) {
-    background-color: white !important;
-    box-shadow: none !important;
-    border-style: none;
-    outline: 0;
-    color: black;
-}
+    .accordion-button:not(.collapsed) {
+        background-color: white !important;
+        box-shadow: none !important;
+        border-style: none;
+        outline: 0;
+        color: black;
+    }
 
-.accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active {
-    background-color: white !important;
-    box-shadow: none !important;
-    border-style: none;
-    outline: 0;
-}
+    .accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active {
+        background-color: white !important;
+        box-shadow: none !important;
+        border-style: none;
+        outline: 0;
+    }
 
-.accordion-button.collapsed::after {
-    background-image: url("/images/down-arrow.jpg");
-}
+    .accordion-button.collapsed::after {
+        background-image: url("/images/down-arrow.jpg");
+    }
 
-.accordion-button:not(.collapsed)::after {
-    background-image: url("/images/down-arrow.jpg");
-}
+    .accordion-button:not(.collapsed)::after {
+        background-image: url("/images/down-arrow.jpg");
+    }
 
 .col {
     padding: 0;
@@ -218,15 +220,15 @@ nav .dropdown {
     margin-bottom: 30px;
 }
 
-.modal-table td {
-    padding-left: 15px;
-}
+    .modal-table td {
+        padding-left: 15px;
+    }
 
 /* Ingredient list with expanding/collapsing sections styles */
 
-.celldesc {
+/*.celldesc {
     width: 250px;
-}
+}*/
 
 .link-disabled {
     pointer-events: none;
@@ -238,7 +240,6 @@ nav .dropdown {
 .stock-icon {
     height: 1.5em;
     width: 1.5em;
-    margin-left: 20px;
 }
 
 .ingredient-image {
@@ -251,7 +252,6 @@ nav .dropdown {
 .sandwich-image {
     width: 170px;
     height: 100px;
- 
 }
 
 .button-strip {
@@ -275,12 +275,12 @@ input[type=radio] {
     transform: scale(1.8);
 }
 
-input[type=radio]:checked {
-    border: 1px solid orange;
-    background-color: orange;
-    box-shadow: inset 0 0 0 2px white;
-}
-   
+    input[type=radio]:checked {
+        border: 1px solid orange;
+        background-color: orange;
+        box-shadow: inset 0 0 0 2px white;
+    }
+
 
 /* Order history styles */
 
@@ -313,9 +313,9 @@ input[type=radio]:checked {
     margin-top: 10px;
 }
 
-.date-filter input[type="date"] {
-    width: 125px;
-}
+    .date-filter input[type="date"] {
+        width: 125px;
+    }
 
 /* Landing Page */
 
@@ -328,26 +328,26 @@ input[type=radio]:checked {
     height: 100%;
 }
 
-.landing-page img {
-    max-width: 700px;
-    padding: 50px;
-    margin-bottom: 10px;
-}
+    .landing-page img {
+        max-width: 700px;
+        padding: 50px;
+        margin-bottom: 10px;
+    }
 
-.landing-page .button {
-    max-width: 600px;
-}
+    .landing-page .button {
+        max-width: 600px;
+    }
 
-.landing-page a {
-    text-decoration: none;
-    color: #ef6900;
-    transition: all 0.2s ease-in-out;
-}
+    .landing-page a {
+        text-decoration: none;
+        color: #ef6900;
+        transition: all 0.2s ease-in-out;
+    }
 
-.landing-page a:hover{
-    background-color: rgba(0,0,0,0.1);
-    transition: all 0.2s ease-in-out;
-}
+        .landing-page a:hover {
+            background-color: rgba(0,0,0,0.1);
+            transition: all 0.2s ease-in-out;
+        }
 
 /* History styles */
 .history td {
@@ -359,7 +359,7 @@ input[type=radio]:checked {
 }
 
 .history table * {
-  border:none;
+    border: none;
 }
 
 /* Footer */
@@ -368,3 +368,40 @@ input[type=radio]:checked {
     color: #ef6900;
 }
 
+
+/* Forms */
+
+.form-group {
+    padding: 10px;
+}
+
+.form-group label {
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.form-group input {
+    padding: 0.8rem;
+    width: 400px;
+}
+
+.form-group input:focus,
+.form-group input:active {
+    border: 2px solid #ef6900;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-group select {
+    padding: 0.8rem;
+    box-shadow: none;
+}
+
+.form-group select:focus,
+.form-group select:active {
+    border: 2px solid #ef6900;
+    outline: none;
+    box-shadow: none;
+}
+
+ 
