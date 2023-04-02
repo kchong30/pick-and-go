@@ -25,7 +25,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-
+                        <div>
                         <td>
                             <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
                         </td>
@@ -38,7 +38,7 @@
                         <td class="radio-group align-middle">
                             <input asp-for=@item.SelectedProductId value="@item.ProductId" id="type_radio_@item.ProductId" name="SelectedProductId" type="radio" />
                         </td>
-
+                            </div>
                     </tr>
                 }
             </tbody>

@@ -198,3 +198,14 @@ h1 {
     border: 1px solid gray;
 }
  
+/* Start Order */
+
+.start-order box {
+    border: 2px solid red;
+    margin: 30px; 
+    box-shadow: 2px 2px 2px black;
+}
+
+/* Customize */
+
+ 

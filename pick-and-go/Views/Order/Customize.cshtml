@@ -5,7 +5,7 @@
     ViewData["Title"] = "Customize";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<main class="customize">
+<main class="customize md-screen">
 
     <div id="customize-page" hidden>Customize-page</div>
 
@@ -38,30 +38,30 @@
                     </h2>
                     <!-- Accordion Body : Ingredients, add show in the  class -->
                     <div id="@cat.CategoryId" class="accordion-collapse collapse p-2" aria-labelledby="@cat.CategoryId">
-                        <div class="accordion-body p-0">
+                        <table class="accordion-body p-0 w-100">
                             <!-- Ingredients Table -->
                             @foreach (var ing in cat.Ingredients)
                             {
                                 if (ing.InStock == "Y")
                                 {
-                                    <div id="@ing.IngredientId-table" class="ingredientTable d-flex w-100">
-                                        <div class="col p-3">
+                                    <tr id="@ing.IngredientId-table" class="ingredientTable align-middle w-100">
+                                        <td class="col text-center ps-3 p-2">
                                             @if (ing.IngredientImage != "" && ing.IngredientImage != null)
                                             {
-                                                <img src="@ing.IngredientImage" alt="@ing.Description" class="w-100 rounded-circle shadow-sm" />
+                                                <img src="@ing.IngredientImage" alt="@ing.Description" class="  rounded-circle shadow-sm" style="width: 80px" />
                                             }
                                             else
                                             {
-                                                <img class="w-100 rounded-circle shadow-sm" src="~/images/empty-image.png">
+                                                <img class=" rounded-circle shadow-sm" src="~/images/empty-image.png" style="width: 80px">
                                             }
-                                        </div>
-                                        <div class="col-4 d-flex flex-column justify-content-center p-3">
+                                        </td>
+                                        <td class="col-6 p-3" colspan="2">
                                             <div class="ingredientId" hidden>@ing.IngredientId</div>
                                             <div class="description fw-bold">@ing.Description</div>
                                             <div>$<span id="@ing.IngredientId-price" class="price">@ing.Price</span></div>
-                                        </div>
+                                        </td>
 
-                                        <div class="col-6 d-flex align-items-center justify-content-end p-3">
+                                        <td class="col p-3 text-center">
                                             <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
 
                                                 <label for="@ing.IngredientId-none" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
@@ -79,14 +79,15 @@
                                                 </label>
 
                                             </form>
-                                        </div>
-                                        <div id="@ing.IngredientId-quantity" class="quantity" hidden>0</div>
-                                        <div id="@ing.IngredientId-amount" class="amount" hidden>0.00</div>
-                                    </div>
+                                        </td>
+                                    
+                                        <td class="col text-center p-3"><div id="@ing.IngredientId-amount" class="amount">0.00</div></td>
+                                        <td id="@ing.IngredientId-quantity" class="quantity" hidden>0</td>
+                                    </tr>
                                 }
                             }
                             <!-- End of Ingredients table-->
-                        </div>
+                        </table>
                     </div>
                 </div>
             }
