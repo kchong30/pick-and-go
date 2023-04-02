@@ -24,7 +24,7 @@ namespace PickAndGo.Controllers
             return View();
         }
 
-        //[Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public IActionResult CustomerDetails(string message)
         {
             CustomerRepository cR = new CustomerRepository(_db);

@@ -63,6 +63,7 @@ function addToCart() {
         $(window).scrollTop(0);
         return false
     }
+
     var productPrice = $('#product-price').html();
     var productId = $("#product option:selected").val().split("-")[0];
     var description = $("#product option:selected").val().split("-")[2];
@@ -108,6 +109,7 @@ function addToCart() {
     $("#cart-icon").text(cart.length);
     clearSelection();
     checkoutBtnToggle()
+    $('#add-message').text("Sandwich Added To Cart!").fadeIn(1000).delay(1000).fadeOut(1000);
 }
 
 /* Add to Cart from Fav Page */
@@ -158,7 +160,8 @@ function addToCartFromFav(event) {
     cart.push(item);
     localStorage.setItem("cart", JSON.stringify(cart));
     $("#cart-icon").text(cart.length);
-    clearSelection();
+    //commented out clearSelection Call - KC - was changing quantity value in HTML to 0 after initial call.
+    //clearSelection();
 
     $("#message").text("This sandwich has been added to your shopping cart!")
 }

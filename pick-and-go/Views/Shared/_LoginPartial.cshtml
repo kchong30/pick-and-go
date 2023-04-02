@@ -7,15 +7,17 @@
 <ul class="navbar-nav aa justify-content-end w-100">
     @if (SignInManager.IsSignedIn(User))
     {
+        @if (User.IsInRole("Customer")){
         <li class="nav-item align-items-center d-flex">
             <a class="nav-link text-white" asp-area="" asp-controller="Customer" asp-action="CustomerDetails">Profile</a>
         </li>
+        }
         <li class="nav-item  align-items-center d-flex">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-white">Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-white shadow-none focus:shadow-none">Logout</button>
             </form>
         </li>
-        <li class=" align-items-center d-flex">
+        <li class=" align-items-center d-flex me-3">
             <p class="text-white m-auto pe-none  ml-5">Hello @Context.Session.GetString("firstName")!</p>
         </li>
 
@@ -26,7 +28,7 @@
             <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-white me-1" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>
