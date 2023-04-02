@@ -4,11 +4,10 @@
     ViewData["Title"] = "User Roles";
 }
 
-<main class="userroles">
-    <div class="d-flex flex-column w-50 m-auto">
-
-        <h1>Existing User Emails</h1>
-        <hr />
+<main class="userroles md-screen">
+    <h1>Existing User Emails</h1>
+    <div class="d-flex flex-column">
+ 
 
         <table class="table">
             <thead class="table-heading">
@@ -20,12 +19,12 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr class="align-middle">
                         <td>
                             @item.Email
                         </td>
-                        <td>
-                            <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Detail" asp-route-userName=@item.Email>View Roles</a>
+                        <td class="text-end">
+                            <a type="button" class="btn btn-sm btn-outline-primary" asp-action="Detail" asp-route-userName=@item.Email>View Roles</a>
                         </td>
                     </tr>
                 }

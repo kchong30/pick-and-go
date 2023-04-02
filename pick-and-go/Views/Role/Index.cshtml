@@ -4,35 +4,35 @@
     ViewData["Title"] = "Roles";
 }
 
-<main class="roles">
-    <div class="d-flex flex-column w-50 m-auto">
+<main class="roles md-screen">
 
-        <h1>Roles</h1>
-        <hr />
-        <p>
-            <a type="button" class="btn btn-outline-secondary" asp-action="Create">Create New Role</a>
-        </p>
-        <table class="table">
-            <thead class="table-heading">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.RoleName)
-                    </th>
-                    <th></th>
+    <h1>Roles</h1>
+
+    <p class="text-end">
+        <a type="button" class="btn btn-primary" asp-action="Create">Create New Role</a>
+    </p>
+    <table class="table">
+        <thead class="table-heading">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.RoleName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="align-middle">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoleName)
+                    </td>
+                    <td class="text-end">
+                        <a type="button" class="btn btn-sm btn-outline-primary" asp-action="Delete" asp-route-rolename="@item.RoleName">Delete</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model) {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoleName)
-                        </td>
-                        <td>
-                              <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-rolename="@item.RoleName">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+
 </main>

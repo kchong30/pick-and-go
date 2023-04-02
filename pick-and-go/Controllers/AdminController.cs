@@ -296,6 +296,20 @@ namespace PickAndGo.Controllers
             ViewData["CurrentFromDate"] = fromDate.ToString();
             ViewData["CurrentToDate"] = toDate.ToString();
 
+            // Nothing's taken out, just added 11 lines below
+            var http = Request.Method;
+            if (http == "POST")
+            {
+                var searchFilter = Request.Form["searchFilter"].ToString();
+                if (searchFilter != "customer")
+                {
+                    searchOrder = searchName;
+                    searchName = "";
+                }
+                ViewData["SearchFilter"] = searchFilter;
+            }
+            
+
             if (page == null || page == 0)
             {
                 page = 1;

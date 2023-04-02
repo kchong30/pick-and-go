@@ -7,34 +7,59 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var fromDate = @ViewBag.CurrentFromDate;
     var toDate = @ViewBag.CurrentToDate;
+    var isCustomer = @ViewBag.searchFilter == "customer" ? true : false;
+    var isOrderNum = @ViewBag.searchFilter == "orderNum" ? true : false;
 }
 
 <main class="transactions">
-    <div class="order-title">
-        <h1>Transactions</h1>
-
+    <h1>Transactions</h1>
+    <div class="order-title d-flex justify-content-between">
         <div class="date-filter">
             <form asp-controller="Admin" asp-action="Transactions">
-                <input type="hidden" name="searchName" value="@ViewData["CurrentNameSearch"]"/>
-                <input type="hidden" name="searchOrder" value="@ViewData["CurrentOrderSearch"]"/>
+                <input type="hidden" name="searchName" value="@ViewData["CurrentNameSearch"]" />
+                <input type="hidden" name="searchOrder" value="@ViewData["CurrentOrderSearch"]" />
                 <input type="date" name="dateFrom" value=@fromDate required />
                 <input type="date" name="dateTo" value=@toDate required />
-                <input type="submit" value="Refresh" />
+                <button type="submit" value="Refresh" class="icon-btn"><i class="fa-solid fa-arrows-rotate"></i></button>
             </form>
         </div>
 
         <div class="order-search">
+
             <form asp-controller="Admin" asp-action="Transactions">
                 <input type="hidden" name="dateFrom" value="@fromDate" />
                 <input type="hidden" name="dateTo" value="@toDate" />
-                <p>
-                    Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
-                    or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
-                    <input type="submit" value="Search" />
-                    <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Transactions">Back to Full List</a>
-                </p>
+
+
+                @Html.DropDownList("searchFilter", new List<SelectListItem>
+                {
+                new SelectListItem { Text = "Customer", Value = "customer", Selected=isCustomer},
+                new SelectListItem { Text = "Order#", Value = "orderNum", Selected=isOrderNum}
+                })
+                <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
+                <button type="submit" value="Search" class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <a type="button" class="btn btn-sm btn-primary btn-search" asp-action="Transactions">Back to Full List</a>
+
             </form>
         </div>
+
+
+
+        @*        <div class="order-search">
+        <form asp-controller="Admin" asp-action="Transactions">
+        <input type="hidden" name="dateFrom" value="@fromDate" />
+        <input type="hidden" name="dateTo" value="@toDate" />
+        <p>
+        Customer: <input type="text" name="searchName" value="@ViewData["CurrentNameSearch"]">
+        or Order#: <input type="text" name="searchOrder" value="@ViewData["CurrentOrderSearch"]">
+        <input type="submit" value="Search" />
+        <a type="button" class="btn btn-sm btn-outline-secondary btn-search" asp-action="Transactions">Back to Full List</a>
+        </p>
+        </form>
+        </div>
+        *@
+
+
     </div>
 
     <table class="table">
@@ -113,7 +138,7 @@
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
 
-    <div class="paginated-list">
+    <div class="paginated-list d-flex justify-content-center">
         <a asp-action="Transactions"
            asp-route-searchName="@ViewData["CurrentNameSearch"]"
            asp-route-searchOrder="@ViewData["CurrentOrderSearch"]"

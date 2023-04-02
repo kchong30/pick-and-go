@@ -309,8 +309,7 @@ input[type=radio] {
 /* Transactions styles */
 
 .date-filter {
-    margin-left: 50px;
-    margin-top: 10px;
+ 
 }
 
     .date-filter input[type="date"] {
@@ -404,4 +403,5 @@ input[type=radio] {
     box-shadow: none;
 }
 
+ /* Transactions */
  

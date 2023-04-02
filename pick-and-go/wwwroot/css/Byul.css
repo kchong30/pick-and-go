@@ -189,3 +189,12 @@ h1 {
 }
 
 
+.transactions select {
+    border: 1px solid gray;
+    padding: 1px;
+}
+
+.transactions input {
+    border: 1px solid gray;
+}
+ 
