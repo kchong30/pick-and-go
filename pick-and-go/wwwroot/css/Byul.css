@@ -1,63 +1,29 @@
-﻿/*
-* CUSTOMIZE PAGE
-*/
+﻿/* CUSTOMIZE PAGE */
 .customize label {
     font-size: 1rem;
     color: gray;
 }
 
 .clear-btn {
+    color: #ef6900;
+}
+
+.clear-btn:hover {
     color: #ffaf01;
 }
 
-    .clear-btn:hover {
-        color: #ef6900
-    }
-
-/* Radio Button (class: radio-btn) */
-.radio-btn {
-    cursor: pointer;
-    /*transition: background .2s ease;*/
+.btns {
+    box-sizing: border-box;
+    border: 2px solid red;
 }
 
-    .radio-btn input {
-        border: 1px solid gray;
-        width: 10px;
-        height: 10px;
-        border-radius: 10px;
-        appearance: none;
-        /*transition: box-shadow 150ms ease-in-out;*/
-        pointer-events: none
-    }
-
-        .radio-btn input:checked {
-            border: 1px solid orange;
-            background-color: orange;
-            box-shadow: inset 0 0 0 2px white;
-        }
-
-/* Temp btns styling (color, outline) */
-.customize button {
-    background-color: #ffaf01;
-    outline: none;
-    border: none;
-}
-
-    .customize button:hover {
-        background-color: #ef6900;
-        outline: none;
-        border: none;
-    }
-
-/*Added By Kevin*/
+/* Added By Kevin */
 #add-message {
     color: #ef6900;
-    font-weight:700;
+    font-weight: 700;
 }
 
-/* 
-* ADMIN-OVERVIEW
-*/
+/* ADMIN-OVERVIEW */
 .overview * {
     box-sizing: border-box;
 }
@@ -68,9 +34,9 @@
     background-color: #ffaf01;
 }
 
-    .overview button:hover {
-        background-color: #ef6900;
-    }
+.overview button:hover {
+    background-color: #ef6900;
+}
 
 .overview .update {
     color: gray;
@@ -91,7 +57,6 @@
 
 /* Favourites */
 
-
 .text {
     color: #ffaf01;
 }
@@ -100,118 +65,11 @@
     border: none;
 }
 
-.favorites th {
-}
 
-.favorites {
-}
-
-/* Orders */
-h1 {
-    text-align: center;
-    padding-bottom: 10px;
-}
-
-.icon-btn {
-    background-color: #ffaf01;
-    color: white;
-    border: none;
-}
-
-    .icon-btn:hover {
-        background-color: #ef6900;
-    }
-
-.orders select {
-    border: 1px solid gray;
-    padding: 1px;
-}
-
-.orders input {
-    border: 1px solid gray;
-}
-
-
-h1 {
-}
-
-/* primary, secondary, light, dark */
-
-.btn-primary {
-    background-color: #ef6900;
-    border: 1px solid #ef6900;
-    color: white;
-}
-
-    .btn-primary:hover {
-        border: 1px solid #ffaf01;
-        background-color: #ffaf01;
-    }
-
-.btn-outline-primary {
-    border-color: #ef6900;
-    color: #ef6900;
-}
-
-    .btn-outline-primary:hover {
-        background-color: #ef6900;
-        border-color: #ef6900;
-        color: white;
-    }
-
-.btn-secondary {
-    background-color: #ffaf01;
-    border-color: #ffaf01;
-    color: white;
-}
-
-    .btn-secondary:hover {
-        background-color: #ef6900;
-        border-color: #ef6900;
-        color: white;
-    }
-
-.btn-outline-secondary {
-    background-color: white;
-    border-color: #ffaf01;
-    color: #ffaf01;
-}
-
-    .btn-outline-secondary:hover {
-        background-color: #ffaf01;
-        border-color: #ffaf01;
-        color: white;
-    }
-
-.btn-outline-dark {
-    border-color: lightgray;
-}
-
-/* ingredients */
-
-.md-screen {
-    max-width: 800px;
-    margin: auto;
-}
-
-
-.transactions select {
-    border: 1px solid gray;
-    padding: 1px;
-}
-
-.transactions input {
-    border: 1px solid gray;
-}
- 
 /* Start Order */
 
 .start-order box {
     border: 2px solid red;
-    margin: 30px; 
+    margin: 30px;
     box-shadow: 2px 2px 2px black;
 }
-
-/* Customize */
-
- 

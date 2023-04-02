@@ -4,40 +4,38 @@
 
 }
 
-
 <style>
     .custom-min-height {
-        min-height: 100vh;
+        min-height: calc(100vh - 65px);
     }
 </style>
 
-<div class="home-page-card-stack text-center d-flex flex-column w-100 h-300 align-items-stretch min-height-md custom-min-height">
+<div class="home home-page-card-stack text-center d-flex flex-column w-100 h-300 align-items-stretch min-height-md custom-min-height">
     @if (!User.Identity.IsAuthenticated)
     {
-        <div class= "create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+        <div class="card create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
             <h1>Don't Have An Account?</h1>
             <p>Sign up to easily re-order your favourites</p>
-            <a class="btn btn-dark home-admin-button" asp-area="Identity" asp-page="/Account/Register" role="button">Create Account</a>
+            <a class="btn btn-primary home-admin-button" asp-area="Identity" asp-page="/Account/Register" role="button">Create Account</a>
         </div>
-        <div class="login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+        <div class="card login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
             <h1>Have An Account?</h1>
-            <a class="btn btn-dark home-admin-button" asp-area="Identity" asp-page="/Account/Login" role="button">Login</a>
+            <a class="btn btn-primary home-admin-button" asp-area="Identity" asp-page="/Account/Login" role="button">Login</a>
         </div>
-        <div class="guest-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+        <div class="card guest-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
             <h1>Continue as Guest?</h1>
-            <a class="btn btn-dark home-admin-button" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
+            <a class="btn btn-primary home-admin-button" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
         </div>
     }else{
-    <div class="create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+    <div class="card create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
         <h1>Feeling Hungry?</h1>
         <p>Let's Start An Order!</p>
-            <a class="btn btn-dark home-admin-button" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
-            <a class="btn btn-dark home-admin-button" asp-controller="Order" asp-action="Test" role="button">Version 2</a>
+            <a class="btn btn-primary home-admin-button" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
     </div>
-    <div class="login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+    <div class="card login-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
         <h1>Craving something familiar?</h1>
         <p>Let's Check Out Your Favorite Hits!</p>
-            <a class="btn btn-dark home-admin-button" asp-controller="Order" asp-action="Favorites" role="button">My Favorites</a>
+            <a class="btn btn-primary home-admin-button" asp-controller="Order" asp-action="Favorites" role="button">My Favorites</a>
     </div>
     }
 </div>

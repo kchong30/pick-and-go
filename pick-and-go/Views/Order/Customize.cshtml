@@ -9,9 +9,9 @@
 
     <div id="customize-page" hidden>Customize-page</div>
 
-    <div class="productTable container">
+    <div class="productTable">
         <h1>Customize</h1>
-        <hr />
+ 
         <!-- Product Select -->
         <select onchange="changeProduct(event)" id="product" class="p-3 mb-3 w-100 border-1 border">
             <option value="">-----Select sandwich size-----</option>
@@ -44,8 +44,8 @@
                             {
                                 if (ing.InStock == "Y")
                                 {
-                                    <tr id="@ing.IngredientId-table" class="ingredientTable align-middle w-100">
-                                        <td class="col text-center ps-3 p-2">
+                                    <tr id="@ing.IngredientId-table" class="ingredientTable align-middle">
+                                        <td class="col  text-center ps-3 p-2">
                                             @if (ing.IngredientImage != "" && ing.IngredientImage != null)
                                             {
                                                 <img src="@ing.IngredientImage" alt="@ing.Description" class="  rounded-circle shadow-sm" style="width: 80px" />
@@ -55,25 +55,25 @@
                                                 <img class=" rounded-circle shadow-sm" src="~/images/empty-image.png" style="width: 80px">
                                             }
                                         </td>
-                                        <td class="col-6 p-3" colspan="2">
+                                        <td class="col p-3" colspan="2">
                                             <div class="ingredientId" hidden>@ing.IngredientId</div>
                                             <div class="description fw-bold">@ing.Description</div>
-                                            <div>$<span id="@ing.IngredientId-price" class="price">@ing.Price</span></div>
+                                            <div class="text-secondary" hidden>$<span id="@ing.IngredientId-price" class="price">@ing.Price</span></div>
                                         </td>
 
-                                        <td class="col p-3 text-center">
-                                            <form onchange="changeQuantity(event)" class="d-flex justify-content-between">
+                                        <td class="col-4  text-center">
+                                            <form onchange="changeQuantity(event)" class="d-flex justify-content-around">
 
-                                                <label for="@ing.IngredientId-none" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                <label for="@ing.IngredientId-none" class="radio-btn d-flex flex-column align-items-center mt-2 gap-2">
                                                     <input type="radio" id="@ing.IngredientId-none" name="@ing.IngredientId" value="none" checked>
                                                     None
                                                 </label>
-                                                <label for="@ing.IngredientId-reg" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                <label for="@ing.IngredientId-reg" class="radio-btn d-flex flex-column align-items-center mt-2 gap-2">
                                                     <input type="radio" id="@ing.IngredientId-reg" name="@ing.IngredientId" value="reg">
                                                     Regular
                                                 </label>
 
-                                                <label for="@ing.IngredientId-extra" class="radio-btn d-flex flex-column align-items-center m-2 gap-2">
+                                                <label for="@ing.IngredientId-extra" class="radio-btn d-flex flex-column align-items-center mt-2 gap-2">
                                                     <input type="radio" id="@ing.IngredientId-extra" name="@ing.IngredientId" value="extra">
                                                     Extra
                                                 </label>
@@ -81,7 +81,7 @@
                                             </form>
                                         </td>
                                     
-                                        <td class="col text-center p-3"><div id="@ing.IngredientId-amount" class="amount">0.00</div></td>
+                                        <td class="col text-center p-3">$<span id="@ing.IngredientId-amount" class="amount">0.00</span></td>
                                         <td id="@ing.IngredientId-quantity" class="quantity" hidden>0</td>
                                     </tr>
                                 }
@@ -99,9 +99,10 @@
     <div class="container">
         <div class="d-flex justify-content-end p-3 fw-bold"><span class="pe-2">Total</span> <span class="pe-1">$</span> <span id="total-price">0.00</span> </div>
 
-        <div class="d-flex flex-column">
-            <button type="button" class="btn btn-primary fs-5 p-2 mb-3" id="add-cart" onclick="addToCart()" value="">Add to Cart</button>
-            <button type="button" class="btn btn-primary fs-5 p-2" id="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        <div class="d-flex">
+
+            <button type="button" class="btn btn-primary fs-5 w-50 m-2" id="add-cart" onclick="addToCart()" value="">Add to Cart</button>
+            <button type="button" class="btn btn-primary fs-5 w-50 m-2" id="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
         </div>
         <div class="text-center mt-5" id="add-message"></div>
 

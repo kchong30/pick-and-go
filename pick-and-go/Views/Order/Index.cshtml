@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main class="start-order">
+<main class="start-order md-screen">
 
     <h3 class="order-index-header text-center mb-0 pb-2">Hello @ViewBag.NameInput,</h3>
     <h1 class="text-center">Please Select a Sandwich Size!</h1>
@@ -25,7 +25,6 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-
                         <td>
                             <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
                         </td>
