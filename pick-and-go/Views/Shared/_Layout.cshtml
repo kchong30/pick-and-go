@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    string currentUrl = HttpContextAccessor.HttpContext.Request.Path.Value;
+}
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -42,14 +50,17 @@
             </a>
 
             <!-- Cart Icon -->
-            @if (!User.IsInRole("Admin"))
+            @if (currentUrl != "/")
             {
+                if (!User.IsInRole("Admin")){
                 <button class="navbar-cart order-md-5 border-0 bg-transparent text-white position-relative fs-4 px-4" id="checkout" onclick="checkout()">
                     <i class="fa-solid fa-cart-shopping"></i> @*top-0 start-20 *@
                 <span id="cart-icon" class="position-absolute translate-middle badge rounded-pill bg-danger">
                     0
                 </span>
+
             </button>
+                }
             }
 
 
