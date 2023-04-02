@@ -11,33 +11,34 @@
             <h1 class="sign-up">@ViewData["Title"]</h1>
             <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <label asp-for="Input.FirstName"></label>
             <div class="register-form">
+                <label asp-for="Input.FirstName"></label>
                 <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
-            <label asp-for="Input.LastName"></label>
             <div class="register-form">
+                <label asp-for="Input.LastName"></label>
                 <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" />
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
-            <label asp-for="Input.Email"></label>
             <div class="register-form">
+                <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" aria-required="true" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <label asp-for="Input.PhoneNumber"></label>
             <div class="register-form">
+                <label asp-for="Input.PhoneNumber"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="phonenumber" aria-required="true" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <label asp-for="Input.Password"></label>
+
             <div class="register-form">
+                 <label asp-for="Input.Password"></label>
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
-            <label asp-for="Input.ConfirmPassword"></label>
             <div class="register-form">
+                <label asp-for="Input.ConfirmPassword"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>

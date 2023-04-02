@@ -10,7 +10,6 @@
 
 .customer-edit-form {
     margin:auto;
-    text-align:center;
 }
 
 .customer-edit-form input {
@@ -19,8 +18,7 @@
 }
 
 .customer-edit-form label {
-    color: #ef6900;
-    font-weight: 500;
+    color: black;
 }
 
 .submit-btn{
