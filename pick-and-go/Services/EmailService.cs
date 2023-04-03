@@ -51,6 +51,9 @@ namespace PickAndGo.Services
             var productsArray = products.ToArray();
             decimal totalCost = 0;
 
+            DateTime dateObj = DateTime.ParseExact(payload.PickUpTime, "yyyy-MM-dd'T'HH:mm:ss", null);
+            string formattedPickUp = dateObj.ToString("yyyy-MM-dd - hh:mm:ss tt");
+
             foreach (var product in productsArray )
             {
                 if (decimal.TryParse(product.subtotal, out var subtotal))
@@ -72,7 +75,7 @@ namespace PickAndGo.Services
                 name = payload.FirstName + " " + payload.LastName,
                 subject = "Your Order Has Been Placed!",
                 items = productsArray,
-                pickuptime = payload.PickUpTime,
+                pickuptime = formattedPickUp,
                 total = totalString
             };
             var msg = MailHelper.CreateSingleTemplateEmail(from, to, templateId, dynamicTemplateData);
