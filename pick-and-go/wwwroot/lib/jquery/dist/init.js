@@ -18,12 +18,12 @@ function setProductPrice(value) {
     // parse price from value
     var productValue = value.split("-");
     var productPrice = productValue[1];
-    $("#product-price").text(productPrice);
+    $("#product-price").text(productPrice.toFixed(2));
 
     // display total price
     var totalPrice =
         parseFloat($("#product-price").html()) + parseFloat($("#ingredients-price").html());
-    $("#total-price").text(totalPrice);
+    $("#total-price").text(totalPrice.toFixed(2));
 }
 
 

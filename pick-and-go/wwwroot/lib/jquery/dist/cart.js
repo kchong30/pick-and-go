@@ -7,9 +7,9 @@
             var id = elementIdSplit[0];
             var quantityValue = elementIdSplit[1];
             updateTotalPrice(id, quantityValue)
-           
+
         });
-        checkoutBtnToggle()
+        checkoutBtnToggle();
     });
 })(jQuery);
 
@@ -17,12 +17,14 @@
 /* Checkout Button Toggle */
 function checkoutBtnToggle() {
     var cart = JSON.parse(localStorage.getItem("cart"));
-
     if (cart == null) {
-        console.log("hidden!")
         $("#checkout-btn").hide();
     } else {
-        $("#checkout-btn").show();
+        if (cart.length < 1) {
+            $("#checkout-btn").hide();
+        } else {
+            $("#checkout-btn").show();
+        }
     }
 }
 
@@ -108,7 +110,7 @@ function addToCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
     $("#cart-icon").text(cart.length);
     clearSelection();
-    checkoutBtnToggle()
+    checkoutBtnToggle();
     $('#add-message').text("Sandwich Added To Cart!").fadeIn(1000).delay(1000).fadeOut(1000);
 }
 
@@ -172,7 +174,7 @@ function addToCartFromEdit() {
     var productPrice;
     var productId;
     var description;
-    var subTotal = 0;
+    var subTotal = 0.00;
 
     if (!validateForm()) {
         $(window).scrollTop(0);
@@ -229,13 +231,14 @@ function addToCartFromEdit() {
     if (event.target.dataset.removeitem === "edit") {
         var index = event.target.dataset.index;
         removeSandwich(index);
-    }else{
+    } else {
         ajaxStoreCart();
     }
 }
 
 /* Clear Selection */
 function clearSelection() {
+    console.log("Cleared!")
     // Uncheck radio button
     $("input:radio").each(function () {
         if ($(this).val() == "none") {
@@ -246,21 +249,22 @@ function clearSelection() {
     });
 
     // Manually clear all sections
+    var zero = 0.00;
 
     $(".quantity").each(function () {
-        $(this).text(0);
+        $(this).text(zero.toFixed(2));
     });
 
     $(".amount").each(function () {
-        $(this).text(0);
+        $(this).text(zero.toFixed(2));
     });
 
-    $("#ingredients-price").text(0);
+    $("#ingredients-price").text(zero.toFixed(2));
 
-    $("#total-amt").text(0);
+    $("#total-amt").text(zero.toFixed(2));
 
     var totalPrice = parseFloat($("#product-price").html());
-    $("#total-price").text(totalPrice);
+    $("#total-price").text(totalPrice.toFixed(2));
 }
 
 /* Empty Cart */
@@ -336,7 +340,7 @@ function checkout(event) {
 function removeSandwich(index) {
 
     var cart = JSON.parse(localStorage.getItem("cart"))
-  //  var cart = localStorage.getItem("cart");
+    //  var cart = localStorage.getItem("cart");
 
     cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -361,7 +365,7 @@ function ajaxStoreCart() {
                     console.log(response);
                 }
             });
-            return 
+            return
         }
     }
     window.location.href = "/Order/ShoppingCart";

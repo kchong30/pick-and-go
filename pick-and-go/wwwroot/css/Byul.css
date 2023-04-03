@@ -12,10 +12,17 @@
     color: #ffaf01;
 }
 
-.btns {
-    box-sizing: border-box;
-    border: 2px solid red;
+.customize .btns {
+    display: grid;
+    gap: 1.5rem;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 350px));
 }
+
+.customize .btns button {
+ 
+}
+ 
 
 /* Added By Kevin */
 #add-message {
@@ -54,17 +61,6 @@
     border: 5px solid #ffaf01;
     color: #ffaf01;
 }
-
-/* Favourites */
-
-.text {
-    color: #ffaf01;
-}
-
-.favorites table * {
-    border: none;
-}
-
 
 /* Start Order */
 

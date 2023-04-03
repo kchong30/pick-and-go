@@ -11,7 +11,9 @@
 
     <div class="productTable">
         <h1>Customize</h1>
- 
+         <div class="d-flex w-100 justify-content-end">
+            <button id="clear-selection" class="border-0 my-2 bg-transparent clear-btn" onclick="clearSelection(event)">Clear Selection</button>
+        </div>
         <!-- Product Select -->
         <select onchange="changeProduct(event)" id="product" class="p-3 mb-3 w-100 border-1 border">
             <option value="">-----Select sandwich size-----</option>
@@ -20,10 +22,9 @@
                 <option value="@product.ProductId-@product.BasePrice-@product.Description" selected="@(ViewBag.ProductId==@product.ProductId ? "selected" : null)">@product.Description</option>
             }
         </select>
+        <div class="d-flex w-100 mb-4 pe-3 justify-content-end fw-bold">Base Price $<span id="product-price">0.00</span></div>
         <!-- End of Select-->
-        <div class="d-flex w-100 justify-content-end">
-            <button id="clear-selection" class="border-0 my-2 bg-transparent clear-btn" onclick="clearSelection(event)">Clear Selection</button>
-        </div>
+       
 
         <!-- Displaying Ingredients -->
         <div class="accordion" id="customize">
@@ -34,6 +35,10 @@
                     <h2 class="accordion-header p-3">
                         <button class="accordion-button collapsed fs-6 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="true" aria-controls="@cat.CategoryId">
                             @cat.CategoryId
+                            @if (cat.CategoryId == "Breads")
+                            {
+                                <div class="ms-4" style="font-size:12px; color:#ef6900;"><i class="fa-solid fa-circle-exclamation"></i> Required</div>
+                            }
                         </button>
                     </h2>
                     <!-- Accordion Body : Ingredients, add show in the  class -->
@@ -45,7 +50,7 @@
                                 if (ing.InStock == "Y")
                                 {
                                     <tr id="@ing.IngredientId-table" class="ingredientTable align-middle">
-                                        <td class="col  text-center ps-3 p-2">
+                                        <td class="col text-center ps-3 p-2">
                                             @if (ing.IngredientImage != "" && ing.IngredientImage != null)
                                             {
                                                 <img src="@ing.IngredientImage" alt="@ing.Description" class="  rounded-circle shadow-sm" style="width: 80px" />
@@ -61,7 +66,7 @@
                                             <div class="text-secondary" hidden>$<span id="@ing.IngredientId-price" class="price">@ing.Price</span></div>
                                         </td>
 
-                                        <td class="col-4  text-center">
+                                        <td class="col-4 text-center">
                                             <form onchange="changeQuantity(event)" class="d-flex justify-content-around">
 
                                                 <label for="@ing.IngredientId-none" class="radio-btn d-flex flex-column align-items-center mt-2 gap-2">
@@ -80,7 +85,7 @@
 
                                             </form>
                                         </td>
-                                    
+
                                         <td class="col text-center p-3">$<span id="@ing.IngredientId-amount" class="amount">0.00</span></td>
                                         <td id="@ing.IngredientId-quantity" class="quantity" hidden>0</td>
                                     </tr>
@@ -99,20 +104,17 @@
     <div class="container">
         <div class="d-flex justify-content-end p-3 fw-bold"><span class="pe-2">Total</span> <span class="pe-1">$</span> <span id="total-price">0.00</span> </div>
 
-        <div class="d-flex">
-
-            <button type="button" class="btn btn-primary fs-5 w-50 m-2" id="add-cart" onclick="addToCart()" value="">Add to Cart</button>
-            <button type="button" class="btn btn-primary fs-5 w-50 m-2" id="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        <div class="btns">
+            <button type="button" class="btn btn-outline-primary fs-5" id="add-cart" onclick="addToCart()" value="">Add to Cart</button>
+            <button type="button" class="btn btn-primary fs-5" id="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
         </div>
         <div class="text-center mt-5" id="add-message"></div>
-
-
     </div>
 
     <!--End of Bottom-->
     <!--jQuery Classes-->
     <div hidden>
-        <span id="product-price">0</span> | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
+        | <span id="ingredients-price">0</span> | <span id="total-amt">0</span>
         <button onclick="validateForm()">Validation</button>
         <button id="empty-cart" onclick="emptyCart(event)">Empty Cart (Temp)</button>
 
