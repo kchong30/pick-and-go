@@ -130,7 +130,19 @@ nav .dropdown {
 .btn-primary {
     background-color: #ef6900;
     border-radius: 5px;
-    border: none;
+    color: white;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #ef6900 !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #ffaf01;
+    border: 1px solid #ffaf01 !important;
+    box-shadow: none;
+    outline: none;
 }
 
 .btn-outline {
@@ -140,26 +152,6 @@ nav .dropdown {
     border-radius: 5px;
     border: none;
     height: 30px;
-}
-
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active {
-    background-color: #ffaf01;
-    color: black:
-}
-
-/* Button Styles */
-
-.btn-primary {
-    background-color: #ef6900;
-    border: 1px solid #ef6900;
-    color: white;
-}
-
-.btn-primary:hover {
-    border: 1px solid #ffaf01;
-    background-color: #ffaf01;
 }
 
 .btn-outline-primary {
@@ -173,7 +165,7 @@ nav .dropdown {
     color: white;
 }
 
-.btn-secondary {
+/*.btn-secondary {
     background-color: #ffaf01;
     border-color: #ffaf01;
     color: white;
@@ -196,7 +188,7 @@ nav .dropdown {
     border-color: #ffaf01;
     color: white;
 }
-
+*/
 .btn-outline-dark {
     border-color: lightgray;
 }
@@ -387,13 +379,16 @@ input[type=radio]:checked {
 }
 
 .icon-btn {
-    background-color: #ffaf01;
-    color: white;
-    border: none;
+    border: 1px solid #ef6900;
+    border-radius: 5px;
+    color: #ef6900;
+    background-color: transparent;
+    padding: 3px 7px;
 }
 
 .icon-btn:hover {
     background-color: #ef6900;
+    color: white;
 }
 
 .orders select {
@@ -414,7 +409,17 @@ input[type=radio]:checked {
 
 .add-button {
     min-width: 150px;
+
 }
+
+.text {
+    color: #ffaf01;
+}
+
+.favorites table * {
+    border: none;
+}
+
 
 /* Transactions styles */
 
@@ -506,6 +511,7 @@ input[type=radio]:checked {
 .form-group input {
     padding: 0.8rem;
     width: 400px;
+    box-shadow: none;
 }
 
 .form-group input:focus,
@@ -515,10 +521,10 @@ input[type=radio]:checked {
     box-shadow: none;
 }
 
-.form-group select {
-    padding: 0.8rem;
-    box-shadow: none;
-}
+    .form-group select {
+        padding: 0.8rem;
+        box-shadow: none;
+    }
 
 .form-group select:focus,
 .form-group select:active {
@@ -527,3 +533,4 @@ input[type=radio]:checked {
     box-shadow: none;
 }
 
+/* Pagination */

@@ -60,13 +60,13 @@
                                     <td class="col-2 text-center"><img class="stock-icon" src="/images/@ing.InStockIcon" /></td>
                                     <td class="col-4">
                                         <div class="d-flex flex-wrap gap-2">
-                                            <a class="btn btn-outline-primary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
-                                            <a class="btn btn-outline-primary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
+                                            <a class="btn btn-outline-secondary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
+                                            <a class="btn btn-outline-secondary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
                                         @if (!ing.OutstandingOrders)
                                         {
                                             var dataTargetConfirm = "#ModalYes" + ing.IngredientId;
                                             var modalID = "ModalYes" + ing.IngredientId;
-                                            <a class="btn btn-outline-primary" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
+                                            <a class="btn btn-outline-secondary" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
 
                                             @using (Html.BeginForm("IngredientsDelete", "Admin", new
                                             {

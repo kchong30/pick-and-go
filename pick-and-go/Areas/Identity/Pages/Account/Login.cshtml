@@ -4,20 +4,20 @@
 @{
     ViewData["Title"] = "Welcome to Pick And Go!";
 }
-<main class="d-flex flex-column login-page">
-    <img src="https://i.imgur.com/Z1Rb2VG.png" class="login-banner">
+<main class="login-page md-screen">
     <div class="w-100 d-flex flex-column justify-item-center">
+        <img src="https://i.imgur.com/etMV9Tq.png" class="login-banner">
         <div class="">
             <section>
                 <form id="account" method="post" class="d-flex flex-column align-items-center w-100">
                     <hr />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="login-form">
+                    <div class="form-group">
                         <label asp-for="Input.Email">Email</label>
                         <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
-                    <div class="login-form">
+                    <div class="form-group">
                         <label asp-for="Input.Password">Password</label>
                         <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password"/>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
