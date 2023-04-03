@@ -11,39 +11,38 @@
 
                 <h1>Product Details</h1>
 
-                <hr />
                 <dl class="row">
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-5 pb-2">
                         Product ID
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-7 pb-3">
                         @Html.DisplayFor(model => model.ProductId)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-5 pb-2">
                         Description
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-7 pb-3">
                         @Html.DisplayFor(model => model.Description)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-5 pb-2">
                         Image URL
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-7 pb-3">
                         @Html.DisplayFor(model => model.Image)
                     </dd>
-                    <dt class="col-sm-5">
+                    <dt class="col-sm-5 pb-2">
                         Base Price
                     </dt>
-                    <dd class="col-sm-7">
+                    <dd class="col-sm-7 pb-3">
                         @Html.DisplayFor(model => model.BasePrice)
                     </dd>
         
                 </dl>
             </div>
 
-            <div>
-                <a type="button" class="btn btn-outline-secondary button-120 mb-2" asp-action="ProductEdit" asp-route-productId="@Model?.ProductId">Edit</a>
-                <a type="button" class="btn btn-outline-secondary button-120 mb-2" asp-action="Products">Back to List</a>
+            <div class="d-flex gap-2 w-100">
+                <a type="button" class="btn btn-primary w-100 p-2" asp-action="ProductEdit" asp-route-productId="@Model?.ProductId">Edit</a>
+                <a type="button" class="btn btn-outline-primary w-100 p-2" asp-action="Products">Back to List</a>
             </div>
 
         </div>

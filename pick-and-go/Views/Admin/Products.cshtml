@@ -28,7 +28,6 @@
                     Image URL
                 </th>
                 <th class="rounded-end">
-                
                 </th>
             </tr>
         </thead>
@@ -51,7 +50,7 @@
                     <td>
                         @Html.DisplayFor(model => item.Image)
                     </td>
-                    <td>
+                    <td class="text-end">
                         <a type="button" class="btn btn-sm btn-outline-secondary"asp-action="ProductDetails" asp-route-productId="@item.ProductId">Details</a>
                         <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="ProductEdit" asp-route-productId="@item.ProductId">Edit</a>
                     </td>
