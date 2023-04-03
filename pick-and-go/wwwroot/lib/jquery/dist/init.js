@@ -18,7 +18,7 @@ function setProductPrice(value) {
     // parse price from value
     var productValue = value.split("-");
     var productPrice = productValue[1];
-    $("#product-price").text(productPrice.toFixed(2));
+    $("#product-price").text(productPrice);
 
     // display total price
     var totalPrice =
