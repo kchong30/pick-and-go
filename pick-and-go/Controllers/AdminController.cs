@@ -233,7 +233,8 @@ namespace PickAndGo.Controllers
         }
      
         [HttpPost]
-        public IActionResult Orders(string searchName, int orderId, int lineId, Boolean changeStatus, int? page)
+        public IActionResult Orders(string orderFilter, string searchFilter, string searchName,
+                                    int orderId, int lineId, Boolean changeStatus, int? page)
         {
             OrderRepository or = new OrderRepository(_db, _configuration);
 
@@ -242,24 +243,34 @@ namespace PickAndGo.Controllers
                 string editMessage = "";
                 editMessage = or.UpdateOrderLineStatus(orderId, lineId, COMPLETED);
 
-                return RedirectToAction("Orders", "Admin", new { message = editMessage });
+                return RedirectToAction("Orders", "Admin", new { message = editMessage,
+                                                                 orderFilter, searchFilter, searchName});
             }
 
-            var orderFilter = Request.Form["orderFilter"].ToString();
+            if (Request.Form["formName"] == "orderFilterForm")
+            {
+                orderFilter = Request.Form["orderFilter"].ToString();
+            }
+
             if (orderFilter == null || orderFilter == "")
             {
-                orderFilter = (string?)ViewData["CurrentFilter"];
+                orderFilter = OUTSTANDING;
+            }
+
+            // Nothing's taken out, just added 7 lines below
+            if (Request.Form["formName"] == "orderSearchForm")
+            {
+                searchFilter = Request.Form["searchFilter"].ToString();
+            }
+ 
+            if (searchFilter == null || searchFilter == "")
+            {
+                searchFilter = "customer";
             }
 
             ViewData["CurrentFilter"] = orderFilter;
+            ViewData["SearchFilter"] = searchFilter;
             ViewData["CurrentNameSearch"] = searchName;
-
-            // Nothing's taken out, just added 7 lines below
-            var searchFilter = Request.Form["searchFilter"].ToString();
-            if (searchFilter == null || searchFilter == "")
-            {
-                searchFilter = (string?)ViewData["searchFilter"];
-            }
 
             string searchOrder = "";
             if (searchFilter != "customer")
@@ -267,7 +278,6 @@ namespace PickAndGo.Controllers
                 searchOrder = searchName;
                 searchName = "";
             }
-            ViewData["SearchFilter"] = searchFilter;
 
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
 
