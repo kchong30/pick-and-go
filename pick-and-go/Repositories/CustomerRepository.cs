@@ -22,16 +22,16 @@ namespace PickAndGo.Repositories
             Customer newCustomer = new Customer();
             newCustomer.EmailAddress = email;
             newCustomer.FirstName = firstName;
-            newCustomer.LastName = lastName;
+            newCustomer.LastName = lastName != null ? lastName : "";
             newCustomer.PhoneNumber = phoneNumber;
             newCustomer.AdminUser = "N";
-            newCustomer.DateSignedUp = DateTime.Now;
+            newCustomer.DateSignedUp = phoneNumber != "" ? DateTime.Now : null;
 
             string message = "";
             try
             {
-                _db.Add(newCustomer);
-                _db.SaveChanges();
+                _ = _db.Add(newCustomer);
+                _ = _db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -86,7 +86,7 @@ namespace PickAndGo.Repositories
 
             try
             {
-                _db.Update(new Customer
+                _ = _db.Update(new Customer
                 {
                     CustomerId = vm.CustomerId,
                     LastName = customerVM.LastName,
@@ -97,7 +97,7 @@ namespace PickAndGo.Repositories
                     DateSignedUp = vm.DateSignedUp,
                     AdminUser = "N"
                 });
-                _db.SaveChanges();
+                _ = _db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -127,8 +127,8 @@ namespace PickAndGo.Repositories
 
             try
             {
-                _db.Customers.Update(customer);
-                _db.SaveChanges();
+                _ = _db.Customers.Update(customer);
+                _ = _db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -147,8 +147,8 @@ namespace PickAndGo.Repositories
 
             try
             {
-                _db.Customers.Update(customer);
-                _db.SaveChanges();
+                _ = _db.Customers.Update(customer);
+                _ = _db.SaveChanges();
             }
             catch (Exception ex)
             {
