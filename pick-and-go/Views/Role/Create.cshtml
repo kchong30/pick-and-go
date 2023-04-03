@@ -4,34 +4,27 @@
     ViewData["Title"] = "Create Role";
 }
 
-<main>
-    <div class="d-flex flex-column w-50 m-auto">
-        <div class="w-100 d-flex flex-column justify-item-center">
-            <div>
+<main class="md-screen">
+    <h1>Create New Role</h1>
 
-                <h1>Create New Role</h1>
-
-                <hr />
-                <div class="row">
-                    <div class="col-md-4">
-                        <form asp-action="Create">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="RoleName" class="control-label"></label>
-                                <input asp-for="RoleName" class="form-control" />
-                                <span asp-validation-for="RoleName" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary button-120" />
-                                <a type="button" class="btn btn-outline-secondary button-120" asp-action="Index">Back to Roles</a>
-                            </div>
-                        </form>
-                        @Html.AntiForgeryToken()
-                    </div>
+    <div class="w-100 d-flex flex-column justify-item-center">
+        <div>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="RoleName" class="control-label"></label>
+                    <input asp-for="RoleName" class="form-control w-100" />
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
                 </div>
-            </div>
+                <div class="form-group form-group d-flex gap-2">
+                    <input type="submit" value="Create" class="btn btn-primary w-100 p-2" />
+                    <a type="button" class="btn btn-outline-primary w-100 p-2" asp-action="Index">Back to Roles</a>
+                </div>
+            </form>
+            @Html.AntiForgeryToken()
         </div>
     </div>
+
 </main>
 
 @section Scripts {

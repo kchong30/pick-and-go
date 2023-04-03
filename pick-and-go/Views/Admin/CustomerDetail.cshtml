@@ -1,5 +1,4 @@
-﻿
-@using PickAndGo.ViewModels
+﻿@using PickAndGo.ViewModels
 @model CustomerVM
 
 
@@ -9,68 +8,65 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main>
-    <div class="d-flex flex-column w-50 m-auto">
-        <div class="w-100 d-flex flex-column justify-item-center">
-            <div>
-        
-                <h1>Customer Details</h1>
+<main class="customer-details md-screen mt-0">
+    <h1>Customer Details</h1>
 
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-9 col-md-6">
-                        Customer ID
-                    </dt>
-                    <dd class="col-sm-9 col-md-6">
-                        @Html.DisplayFor(model => model.CustomerId)
-                    </dd>
-                    <dt class="col-sm-9 col-md-6">
-                        First Name
-                    </dt>
-                    <dd class="col-sm-9 col-md-6">
-                        @Html.DisplayFor(model => model.FirstName)
-                    </dd>
-                    <dt class="col-sm-9 col-md-6">
-                        Last Name
-                    </dt>
-                    <dd class="col-sm-9 col-md-6">
-                        @Html.DisplayFor(model => model.LastName)
-                    </dd>
-                    <dt class="col-sm-9 col-md-6">
-                        Email Address
-                    </dt>
+    <div class="d-flex flex-column align-items-center">
 
-                    <dd class="col-sm-9 col-md-6">
-                        @Html.DisplayFor(model => model.EmailAddress)
-                    </dd>
-                    <dt class="col-sm-9 col-md-6">
-                        Phone Number
-                    </dt>
-                    <dd class="col-sm-8 col-md-6">
-                        @Html.DisplayFor(model => model.PhoneNumber)
-                    </dd>
-                    <dt class="col-sm-9 col-md-6">
-                        Last Ordered On
-                    </dt>
-                    <dd class="col-sm-9 col-md-6">
-                        @Html.DisplayFor(model => model.LastOrdered)
-                    </dd>
-                    <dt class="col-sm-9 col-md-6">
-                        Date Signed Up
-                    </dt>
-                    <dd class="col-sm-9 col-md-6">
-                        @Html.DisplayFor(model => model.SignedUp)
-                    </dd>
-                </dl>
-            </div>
-        </div>
-        
-        <div>
-            <a type="button" class="btn btn-outline-secondary button-120 mb-2" asp-action="History" asp-controller="Order" asp-route-customerId="@Model?.CustomerId">View History</a>
-            <a type="button" class="btn btn-outline-secondary button-120 mb-2" asp-action="CustomerList">Back to List</a>
-        </div>
-        @ViewBag.Message
+        <dl class="row">
+            <dt class="col-sm-9 col-md-6 pb-2">
+                Customer ID
+            </dt>
+            <dd class="col-sm-9 col-md-6 pb-3">
+                @Html.DisplayFor(model => model.CustomerId)
+            </dd>
+            <dt class="col-sm-9 col-md-6 pb-2">
+                First Name
+            </dt>
+            <dd class="col-sm-9 col-md-6 pb-3">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+            <dt class="col-sm-9 col-md-6 pb-2">
+                Last Name
+            </dt>
+            <dd class="col-sm-9 col-md-6 pb-3">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt class="col-sm-9 col-md-6 pb-2">
+                Email Address
+            </dt>
+
+            <dd class="col-sm-9 col-md-6 pb-3">
+                @Html.DisplayFor(model => model.EmailAddress)
+            </dd>
+            <dt class="col-sm-9 col-md-6 pb-2">
+                Phone Number
+            </dt>
+            <dd class="col-sm-8 col-md-6 pb-3">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+            <dt class="col-sm-9 col-md-6 pb-2">
+                Last Ordered On
+            </dt>
+            <dd class="col-sm-9 col-md-6 pb-3">
+                @Html.DisplayFor(model => model.LastOrdered)
+            </dd>
+            <dt class="col-sm-9 col-md-6 pb-2">
+                Date Signed Up
+            </dt>
+            <dd class="col-sm-9 col-md-6 pb-3">
+                @Html.DisplayFor(model => model.SignedUp)
+            </dd>
+        </dl>
     </div>
+
+
+    <div class="d-flex gap-2">
+        <a type="button" class="btn btn-primary w-100 p-2" asp-action="History" asp-controller="Order" asp-route-customerId="@Model?.CustomerId">View History</a>
+        <a type="button" class="btn btn-outline-primary w-100 p-2" asp-action="CustomerList">Back to List</a>
+    </div>
+    @ViewBag.Message
+
 </main>
 
 

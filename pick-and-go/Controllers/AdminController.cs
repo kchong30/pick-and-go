@@ -254,6 +254,15 @@ namespace PickAndGo.Controllers
             ViewData["CurrentNameSearch"] = searchName;
             ViewData["CurrentOrderSearch"] = searchOrder;
 
+            // Nothing's taken out, just added 7 lines below
+            var searchFilter = Request.Form["searchFilter"].ToString();
+            if (searchFilter != "customer")
+            {
+                searchOrder = searchName;
+                searchName = "";
+            }
+            ViewData["SearchFilter"] = searchFilter;
+
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
 
             int pageSize = 10;
@@ -286,6 +295,20 @@ namespace PickAndGo.Controllers
 
             ViewData["CurrentFromDate"] = fromDate.ToString();
             ViewData["CurrentToDate"] = toDate.ToString();
+
+            // Nothing's taken out, just added 11 lines below
+            var http = Request.Method;
+            if (http == "POST")
+            {
+                var searchFilter = Request.Form["searchFilter"].ToString();
+                if (searchFilter != "customer")
+                {
+                    searchOrder = searchName;
+                    searchName = "";
+                }
+                ViewData["SearchFilter"] = searchFilter;
+            }
+            
 
             if (page == null || page == 0)
             {

@@ -4,7 +4,8 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
+<main class="d-flex flex-column align-items-center">
     <h1 class="text-danger">@ViewData["Title"]</h1>
     <p class="text-danger">You do not have access to this resource.</p>
-</header>
+    <a class="btn btn-primary m-3" asp-controller="Home" asp-action="Index">Back to Home</a>
+</main>

@@ -9,12 +9,10 @@
 <main class="products">
     <h1>Products</h1>
 
-    <hr />
-
     <table class="table">
         <thead class="table-heading">
             <tr>
-                <th>
+                <th class="rounded-start">
                     Product Image
                 </th>
                 <th>
@@ -29,7 +27,7 @@
                 <th>
                     Image URL
                 </th>
-                <th>
+                <th class="rounded-end">
                 
                 </th>
             </tr>
@@ -37,23 +35,23 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr class="align-middle">
                     <td>
                         <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
                     </td>
-                    <td class="align-middle text-left">
+                    <td class="text-center">
                         @Html.DisplayFor(model => item.ProductId)
                     </td>
-                    <td class="align-middle text-left">
+                    <td>
                         @Html.DisplayFor(model => item.Description)
                     </td>
-                    <td class="align-middle text-left">
+                    <td>
                         @Html.DisplayFor(model => item.BasePrice)
                     </td>
-                    <td class="align-middle text-left">
+                    <td>
                         @Html.DisplayFor(model => item.Image)
                     </td>
-                    <td class="align-middle">
+                    <td>
                         <a type="button" class="btn btn-sm btn-outline-secondary"asp-action="ProductDetails" asp-route-productId="@item.ProductId">Details</a>
                         <a type="button" class="btn btn-sm btn-outline-secondary" asp-action="ProductEdit" asp-route-productId="@item.ProductId">Edit</a>
                     </td>

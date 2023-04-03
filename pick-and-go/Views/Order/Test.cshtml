@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main class="start-order md-screen">
+<main class="start-order">
 
     <h3 class="order-index-header text-center mb-0 pb-2">Hello @ViewBag.NameInput,</h3>
     <h1 class="text-center">Please Select a Sandwich Size!</h1>
@@ -25,6 +25,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <div>
                         <td>
                             <img class="sandwich-image" src="~/images/@item.Image" alt="Sandwich">
                         </td>
@@ -37,7 +38,7 @@
                         <td class="radio-group align-middle">
                             <input asp-for=@item.SelectedProductId value="@item.ProductId" id="type_radio_@item.ProductId" name="SelectedProductId" type="radio" />
                         </td>
-
+                            </div>
                     </tr>
                 }
             </tbody>

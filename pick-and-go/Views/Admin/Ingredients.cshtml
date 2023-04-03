@@ -5,68 +5,47 @@
     ViewData["Title"] = "Ingredients";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
- 
+
 <main class="ingredients">
     <h1>Ingredients</h1>
 
-    <p>
-        <a type="button" class="btn btn-outline-secondary" asp-action="IngredientsCreate">Create New</a>
+    <p class="text-end">
+        <a type="button" class="btn btn-primary" asp-action="IngredientsCreate">Create New</a>
     </p>
-    <hr />
 
     <table class="table">
-        <thead class="table-heading">
-            <tr>
+        <thead class=" " style="color: #ef6900">
+            <tr class="text-center">
                 <th>Category</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
         <tbody class="accordion" id="PickAndGoAccordion">
-
             @foreach (var cat in Model)
             {
                 <tr>
-                    <td>@cat.CategoryId</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
+                    <td class="d-flex">
+                        @cat.CategoryId
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@cat.CategoryId" aria-expanded="false" aria-controls="@cat.CategoryId"></button>
                     </td>
                 </tr>
 
                 <tr id="@cat.CategoryId" class="accordion-collapse collapse" aria-labelledby="PickAndGoAccordion">
-
                     <td class="accordion-detail accordion-body" colspan="8">
-                        <table class="accordion-table container">
+                        <table class="accordion-table w-100">
                             @if (cat.Ingredients.Count > 0)
                             {
                                 <tr>
                                     <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                    <th>In Stock</th>
-                                    <th></th>
+                                    <th class="ps-3">Description</th>
+                                    <th class="text-center">Price</th>
+                                    <th class="text-center">In Stock</th>
                                     <th></th>
                                 </tr>
                             }
                             @foreach (var ing in cat.Ingredients)
                             {
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
+                                    <td class="col-1">
                                         @if (ing.IngredientImage != "" && ing.IngredientImage != null)
                                         {
                                             <img class="ingredient-image rounded-circle shadow-sm" src=@ing.IngredientImage alt=@ing.Description>
@@ -76,17 +55,18 @@
                                             <img class="ingredient-image rounded-circle shadow-sm" src="/images/empty-image.png">
                                         }
                                     </td>
-                                    <td class="celldesc">@ing.Description</td>
-                                    <td>@ing.Price</td>
-                                    <td><img class="stock-icon" src="/images/@ing.InStockIcon"/></td>
-                                    <td>
-                                        <a class="btn btn-outline-secondary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
-                                        <a class="btn btn-outline-secondary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
+                                    <td class="col-4 ps-3">@ing.Description</td>
+                                    <td class="col-1 text-center">@ing.Price</td>
+                                    <td class="col-2 text-center"><img class="stock-icon" src="/images/@ing.InStockIcon" /></td>
+                                    <td class="col-4">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <a class="btn btn-outline-primary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
+                                            <a class="btn btn-outline-primary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
                                         @if (!ing.OutstandingOrders)
                                         {
                                             var dataTargetConfirm = "#ModalYes" + ing.IngredientId;
                                             var modalID = "ModalYes" + ing.IngredientId;
-                                            <a class="btn btn-outline-secondary" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
+                                            <a class="btn btn-outline-primary" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
 
                                             @using (Html.BeginForm("IngredientsDelete", "Admin", new
                                             {
@@ -123,14 +103,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             }
                                         }
-                                        else {
-                                            <a class="link-disabled" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId">Delete</a>
+                                        else
+                                        {
+                                            <a class="link-disabled btn btn-outline-dark" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId">Delete</a>
                                         }
+                                        </div>
                                     </td>
-                                    <td></td>
                                 </tr>
                             }
                         </table>
@@ -138,7 +118,7 @@
                 </tr>
             }
         </tbody>
-            
+
     </table>
     @ViewBag.Message
 </main>
