@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "PickAndGo";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 
 <style>
@@ -28,6 +27,7 @@
         </div>
     }else{
     <div class="card create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
+        <p>Welcome back @Context.Session.GetString("firstName")</p>
         <h1>Feeling Hungry?</h1>
         <p>Let's Start An Order!</p>
             <a class="btn btn-primary home-admin-button" asp-controller="Order" asp-action="Index" role="button">Start Order</a>

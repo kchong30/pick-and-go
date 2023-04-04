@@ -119,6 +119,10 @@ namespace PickAndGo.Controllers
                 page = 1;
             }
 
+            CustomerRepository cr = new CustomerRepository(_db);
+            var customer = cr.ReturnCustomerById(customerId);
+            ViewData["CustomerName"] = customer.FirstName + " " + customer.LastName;
+
             OrderRepository or = new OrderRepository(_db, _configuration);
             IQueryable<OrderHistoryVM> vm = or.BuildOrderHistoryVM(customerId);
 
@@ -258,6 +262,9 @@ namespace PickAndGo.Controllers
             }
 
             int customerId = Convert.ToInt32(HttpContext.Session.GetString("customerid"));
+            CustomerRepository cr = new CustomerRepository(_db);
+            var customer = cr.ReturnCustomerById(customerId);
+            ViewData["CustomerName"] = customer.FirstName + " " + customer.LastName;
 
             FavoritesRepository fr = new FavoritesRepository(_db);
             IQueryable<FavoritesVM> vm = fr.BuildFavoritesVM(customerId);

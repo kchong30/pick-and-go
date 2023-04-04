@@ -71,7 +71,6 @@
                                     </div>
                                     </div>*@
                                         </div>
-
                                     </td>
                                 </tr>
                                 <tr id="@($"item-{item.Index}")" class="accordion-collapse collapse show col-md" aria-labelledby="@item.Value.productId">
@@ -119,7 +118,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <footer>
 
                     <div class="d-flex justify-content-end total-price">
@@ -132,6 +130,7 @@
                             var dataTargetConfirm = "#ModalYes";
                             var modalID = "ModalYes";
                         }
+                        <a class="btn btn-primary float-left add-sandwich-button" asp-controller="Order" asp-action="Index">Add Sandwich</a>
                         <button type="button" class="btn btn-primary btn-sm proceed-button" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
 
                         <!-- Modal -->

@@ -135,7 +135,8 @@ namespace PickAndGo.Areas.Identity.Pages.Account
 
                     if (roles.Contains("Customer"))
                     {
-                        returnUrl = Url.Content("~/");
+                        // Changed to Home/Index page 
+                        returnUrl = Url.Content("~/Home/Index");
                     }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
