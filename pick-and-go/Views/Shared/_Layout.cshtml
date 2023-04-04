@@ -2,6 +2,7 @@
 
 @{
     string currentUrl = HttpContextAccessor.HttpContext.Request.Path.Value;
+    var customerId = Context.Session.GetString("customerid");
 }
 
 
@@ -99,6 +100,12 @@
                 <ul class="navbar-nav w-25">
                     <li class="nav-item">
                         <a class="nav-link text-white ps-0" asp-area="" asp-controller="Order" asp-action="Index">Start Order</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="History" asp-route-customerId="@customerId">Order History</a>
+                    </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="Favorites" asp-route-customerId="@customerId">Favorites</a>
                     </li>
                 </ul>
                 }
