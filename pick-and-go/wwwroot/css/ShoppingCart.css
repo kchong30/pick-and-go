@@ -34,6 +34,11 @@
     margin-left: 3rem;
 }
 
+
+.add-sandwich-button {
+    line-height:44px;
+}
+
 /* Default styling for the buttons */
 .button-box {
     display: flex;
