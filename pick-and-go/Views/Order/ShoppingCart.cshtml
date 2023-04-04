@@ -52,7 +52,8 @@
                                         <div class="button-box d-flex gap-4 fs-3 justify-content-center">
                                             <div class="shopping-cart-btn">
                                                 <div class="cart-btn-info order">OrderAgain</div>
-                                                <a class="order text-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize"><i class="fa-solid fa-plus"></i></a>
+                                                <button class="order text-secondary" id="btnAgain" OnClick="orderAgain(@item.Index)"><i class="fa-solid fa-plus"></i></button>
+                                                @*  <a class="order text-secondary" asp-route-index="@item.Index" asp-route-removeItem="again" asp-area="" asp-controller="Order" asp-action="EditCustomize"><i class="fa-solid fa-plus"></i></a>*@
                                             </div>
                                             <div class="shopping-cart-btn">
                                                 <div class="cart-btn-info">Edit</div>
