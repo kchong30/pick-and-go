@@ -69,45 +69,48 @@
                     <button class="dropdown-toggle border-0 bg-transparent text-white p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</button>
                     <ul class="dropdown-menu mt-md-2">
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="Admin" asp-action="Overview">Overview</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Overview">Overview</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="Admin" asp-action="Orders">Orders</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Orders">Orders</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="Admin" asp-action="Products">Products</a>
+                           <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Products">Products</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="Admin" asp-action="Ingredients">Ingredients</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Ingredients">Ingredients</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="Admin" asp-action="CustomerList">Customers</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="CustomerList">Customers</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="Admin" asp-action="Transactions">Transactions</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Transactions">Transactions</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link text-secondary" asp-area="" asp-controller="UserRole" asp-action="Index">User Roles</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="UserRole" asp-action="Index">User Roles</a>
                         </li>
                         <!-- Profie moved to LoginPartial, Start Order is below-->
                     </ul>
                 </div>
                }
                 @if (User.IsInRole("Customer")){
-                <ul class="navbar-nav w-25">
+                <div class="dropdown py-2 ps-md-2">
+                     <button class="dropdown-toggle border-0 bg-transparent text-white p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">Customer</button>
+                  <ul class="dropdown-menu mt-md-2">
                     <li class="nav-item">
-                        <a class="nav-link text-white ps-0" asp-area="" asp-controller="Order" asp-action="Index">Start Order</a>
+                        <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="Index">Start Order</a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="History" asp-route-customerId="@customerId">Order History</a>
                     </li>
-                        <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="Favorites" asp-route-customerId="@customerId">Favorites</a>
                     </li>
                 </ul>
+                </div>
                 }
                 <partial name="_LoginPartial" />
             </div>
