@@ -534,3 +534,7 @@ input[type=radio]:checked {
 }
 
 /* Pagination */
+.required {
+    color: red;
+    background-color: yellow;
+}

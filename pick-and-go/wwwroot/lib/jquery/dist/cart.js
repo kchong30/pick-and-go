@@ -30,6 +30,7 @@ function checkoutBtnToggle() {
 
 /* Form Validation */
 function validateForm() {
+
     // add required table here
     var validation = 0
     $('#Breads input:radio').each(function () {
@@ -63,7 +64,10 @@ function changeProduct(event) {
 function addToCart() {
     if (!validateForm()) {
         $(window).scrollTop(0);
+        $('#requiredfield').html('Please select bread')
         return false
+    } else {
+        $('#requiredfield').html("");
     }
 
     var productPrice = $('#product-price').html();
@@ -178,7 +182,10 @@ function addToCartFromEdit() {
 
     if (!validateForm()) {
         $(window).scrollTop(0);
+        $('#requiredfield').html('Please select bread')
         return false
+    } else {
+        $('#requiredfield').html("");
     }
 
     productPrice = $('#product-price').html();
