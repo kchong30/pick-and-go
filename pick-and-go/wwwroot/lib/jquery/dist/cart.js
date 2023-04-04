@@ -238,7 +238,6 @@ function addToCartFromEdit() {
 
 /* Clear Selection */
 function clearSelection() {
-    console.log("Cleared!")
     // Uncheck radio button
     $("input:radio").each(function () {
         if ($(this).val() == "none") {
