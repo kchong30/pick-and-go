@@ -10,6 +10,10 @@
             setProductPrice(pp);
         }
     });
+
+    $('.shopping-cart-btn').hover(function () {
+        $(this).find('.cart-btn-info').toggleClass('btn-display')
+    });
 })(jQuery);
 
 

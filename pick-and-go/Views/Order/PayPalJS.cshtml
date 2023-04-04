@@ -28,7 +28,8 @@
                     console.log(response);
                 },
                 error: function (response) {
-                    alrt("Error: Can not process the order currently.");
+                    $('#ModalYes').modal('hide');
+                    $('#errorModal').modal('show');
                     console.log(response);
                     throw new Error("Payment process stopped due to an error.");
                     return
@@ -107,8 +108,6 @@
                         console.log("Data: " + JSON.stringify(data));
                         window.location.href
                             = "/Order/Confirmation?confirmationId=" + data.paymentID;
-
-
                     },
                     //after fail
                     error: function (msg) {

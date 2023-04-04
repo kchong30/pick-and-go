@@ -4,51 +4,46 @@
     ViewData["Title"] = "Product Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<main>
-    <div class="d-flex flex-column w-50 m-auto">
-        <div class="w-100 d-flex flex-column justify-item-center">
-            <div>
+<main class="md-screen">
+    <h1>Product Details</h1>
+    <div class="w-80 d-flex flex-column align-items-center">
+        <dl class="row">
+            <dt class="col-sm-5 pb-2">
+                Product ID
+            </dt>
+            <dd class="col-sm-7 pb-3">
+                @Html.DisplayFor(model => model.ProductId)
+            </dd>
+            <dt class="col-sm-5 pb-2">
+                Description
+            </dt>
+            <dd class="col-sm-7 pb-3">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-5 pb-2">
+                Image URL
+            </dt>
+            <dd class="col-sm-7 pb-3">
+                @Html.DisplayFor(model => model.Image)
+            </dd>
+            <dt class="col-sm-5 pb-2">
+                Base Price
+            </dt>
+            <dd class="col-sm-7 pb-3">
+                @Html.DisplayFor(model => model.BasePrice)
+            </dd>
 
-                <h1>Product Details</h1>
-
-                <dl class="row">
-                    <dt class="col-sm-5 pb-2">
-                        Product ID
-                    </dt>
-                    <dd class="col-sm-7 pb-3">
-                        @Html.DisplayFor(model => model.ProductId)
-                    </dd>
-                    <dt class="col-sm-5 pb-2">
-                        Description
-                    </dt>
-                    <dd class="col-sm-7 pb-3">
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
-                    <dt class="col-sm-5 pb-2">
-                        Image URL
-                    </dt>
-                    <dd class="col-sm-7 pb-3">
-                        @Html.DisplayFor(model => model.Image)
-                    </dd>
-                    <dt class="col-sm-5 pb-2">
-                        Base Price
-                    </dt>
-                    <dd class="col-sm-7 pb-3">
-                        @Html.DisplayFor(model => model.BasePrice)
-                    </dd>
-        
-                </dl>
-            </div>
-
-            <div class="d-flex gap-2 w-100">
-                <a type="button" class="btn btn-primary w-100 p-2" asp-action="ProductEdit" asp-route-productId="@Model?.ProductId">Edit</a>
-                <a type="button" class="btn btn-outline-primary w-100 p-2" asp-action="Products">Back to List</a>
-            </div>
-
-        </div>
-
-        @ViewBag.Message
+        </dl>
     </div>
+
+    <div class="d-flex gap-2 w-100">
+        <a type="button" class="btn btn-primary w-100 p-2" asp-action="ProductEdit" asp-route-productId="@Model?.ProductId">Edit</a>
+        <a type="button" class="btn btn-outline-primary w-100 p-2" asp-action="Products">Back to List</a>
+    </div>
+
+
+    @ViewBag.Message
+
 </main>
 
 

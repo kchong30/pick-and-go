@@ -11,12 +11,10 @@
 
 <div class="header-titles">
     <h1>Favourites</h1>
-    <h2 class="header-name">@Model.FirstOrDefault()?.FullName</h2>
+    <h2 class="header-name">@ViewData["CustomerName"]</h2>
 </div>
 
 <main class="favorites md-screen">
-
-    @*<h4>@Model.FirstOrDefault()?.FullName</h4>*@
 
     @if (Model.Count() == 0)
     {
