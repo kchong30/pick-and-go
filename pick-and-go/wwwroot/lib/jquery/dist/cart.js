@@ -369,3 +369,14 @@ function ajaxStoreCart() {
     }
     window.location.href = "/Order/ShoppingCart";
 }
+
+function orderAgain(index) {
+    // get total of cart items
+    var cart = JSON.parse(localStorage.getItem("cart"));
+    var copySandwich = cart[index];
+
+    cart.push(copySandwich);
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    ajaxStoreCart();
+}
