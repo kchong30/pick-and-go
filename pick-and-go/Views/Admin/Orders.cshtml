@@ -19,6 +19,9 @@
     <div class="order-title d-flex justify-content-between">
         <div class="order-filter">
             <form asp-controller="Admin" asp-action="Orders" class="">
+                <input type="hidden" name="formName" value="orderFilterForm">
+                <input type="hidden" name="searchFilter" value="@ViewData["searchFilter"]">
+                <input type="hidden" name="searchName" value="@ViewData["CurrentNameSearch"]">
                 @Html.DropDownList("orderFilter", new List<SelectListItem>
                 {
                 new SelectListItem { Text = "Outstanding", Value = "O", Selected = isSelectedO},
@@ -30,6 +33,8 @@
 
         <div class="order-search">
             <form asp-controller="Admin" asp-action="Orders">
+                <input type="hidden" name="formName" value="orderSearchForm">
+                <input type="hidden" name="orderFilter" value="@ViewData["CurrentFilter"]">
                 <p>
                     @Html.DropDownList("searchFilter", new List<SelectListItem>
                     {
@@ -94,7 +99,10 @@
                             {
                                 orderId = @order.OrderId,
                                 lineId = @order.LineId,
-                                changeStatus = true
+                                changeStatus = true,
+                                orderFilter = @ViewData["CurrentFilter"],
+                                searchFilter = @ViewData["searchFilter"],
+                                searchName = @ViewData["CurrentNameSearch"]
                             }, FormMethod.Post))
                             {
                                 <!-- Modal -->

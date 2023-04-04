@@ -188,7 +188,8 @@ namespace PickAndGo.Controllers
             return View(ov);
         }
 
-        public IActionResult Orders(string message, string orderFilter, string searchName, string searchOrder, int? page)
+        public IActionResult Orders(string message, string orderFilter, string searchFilter, 
+                                    string searchName, int? page)
         {
             if (message == null)
             {
@@ -200,19 +201,21 @@ namespace PickAndGo.Controllers
                 orderFilter = OUTSTANDING;
             }
 
-            if (searchName == null)
+            string searchOrder = "";
+            if (searchFilter == null)
             {
-                searchName = "";
+                searchFilter = "customer";
+                searchOrder = "";
             }
 
-            if (searchOrder == null)
+            if (searchFilter == "orderNum")
             {
-                searchOrder = "";
+                searchOrder = searchName;
             }
 
             ViewData["CurrentFilter"] = orderFilter;
             ViewData["CurrentNameSearch"] = searchName;
-            ViewData["CurrentOrderSearch"] = searchOrder;
+            ViewData["searchFilter"] = searchFilter;
 
             if (page == null || page == 0)
             {
@@ -220,7 +223,7 @@ namespace PickAndGo.Controllers
             }
 
             OrderRepository or = new OrderRepository(_db, _configuration);
-            IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, "", "");
+            IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
 
             ViewData["Message"] = message;
 
@@ -230,8 +233,8 @@ namespace PickAndGo.Controllers
         }
      
         [HttpPost]
-        public IActionResult Orders(string searchName, string searchOrder, int orderId, int lineId,
-                                    Boolean changeStatus, int? page)
+        public IActionResult Orders(string orderFilter, string searchFilter, string searchName,
+                                    int orderId, int lineId, Boolean changeStatus, int? page)
         {
             OrderRepository or = new OrderRepository(_db, _configuration);
 
@@ -240,28 +243,41 @@ namespace PickAndGo.Controllers
                 string editMessage = "";
                 editMessage = or.UpdateOrderLineStatus(orderId, lineId, COMPLETED);
 
-                return RedirectToAction("Orders", "Admin", new { message = editMessage });
+                return RedirectToAction("Orders", "Admin", new { message = editMessage,
+                                                                 orderFilter, searchFilter, searchName});
             }
 
-            var orderFilter = Request.Form["orderfilter"].ToString();
+            if (Request.Form["formName"] == "orderFilterForm")
+            {
+                orderFilter = Request.Form["orderFilter"].ToString();
+            }
 
             if (orderFilter == null || orderFilter == "")
             {
                 orderFilter = OUTSTANDING;
             }
 
-            ViewData["CurrentFilter"] = orderFilter;
-            ViewData["CurrentNameSearch"] = searchName;
-            ViewData["CurrentOrderSearch"] = searchOrder;
-
             // Nothing's taken out, just added 7 lines below
-            var searchFilter = Request.Form["searchFilter"].ToString();
+            if (Request.Form["formName"] == "orderSearchForm")
+            {
+                searchFilter = Request.Form["searchFilter"].ToString();
+            }
+ 
+            if (searchFilter == null || searchFilter == "")
+            {
+                searchFilter = "customer";
+            }
+
+            ViewData["CurrentFilter"] = orderFilter;
+            ViewData["SearchFilter"] = searchFilter;
+            ViewData["CurrentNameSearch"] = searchName;
+
+            string searchOrder = "";
             if (searchFilter != "customer")
             {
                 searchOrder = searchName;
                 searchName = "";
             }
-            ViewData["SearchFilter"] = searchFilter;
 
             IQueryable<OrderListVM> vm = or.BuildOrderListVM(orderFilter, searchName, searchOrder);
 
