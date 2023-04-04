@@ -77,3 +77,18 @@
     margin: 30px;
     box-shadow: 2px 2px 2px black;
 }
+
+/* About */
+.about {
+}
+
+.about .title {
+    text-transform: uppercase;
+    font-weight: 900;
+    text-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.about .title p {
+    font-size: 5vw;
+}
