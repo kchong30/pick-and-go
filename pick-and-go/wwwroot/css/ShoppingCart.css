@@ -20,14 +20,45 @@
     width:100%;
     justify-content: space-evenly
 }
-.shopping-cart-btn{
-    width:30%;
-    min-width:120px;
+
+.cart-btn-info {
+    display: none;
 }
 
-.ingredient-dropdown{
-   width:75%;
-   margin-left: 7rem;
+.btn-display {
+    background-color: lightgray;
+    position: absolute;
+    display: flex;
+    bottom: -20px;
+    font-size: 12px;
+    width: fit-content
+}
+
+.shopping-cart-btn {
+    position: relative;
+    display: inline;
+    background-color: transparent;
+    border: none;
+}
+ 
+.shopping-cart-btn a:hover{
+    color: orange !important;
+}
+
+.shopping-cart-btn button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.shopping-cart-btn button:hover{
+    color: orange !important;
+}
+
+.ingredient-dropdown {
+    width: 75%;
+    margin-left: 7rem;
 }
 
 .shopping-title {
@@ -40,11 +71,11 @@
 }
 
 /* Default styling for the buttons */
-.button-box {
+/*.button-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+}*/
 
 .button-box btn {
     margin: 0 10px;
@@ -64,9 +95,9 @@
         width:100%;
         padding:1rem;
     }
-    .button-box .shopping-cart-btn {
+/*    .button-box .shopping-cart-btn {
         display: none;
-    }
+    }*/
 
     .total-price {
         margin-right: 2.0rem;
@@ -76,15 +107,15 @@
         margin-right: 2.0rem;
     }
 
-    .button-box {
+/*    .button-box {
         justify-content: end;
-    }
+    }*/
 
-    .dropdown{
+/*    .dropdown{
         display:block;
     }
-
-    .dropdown .dropbtn {
+*/
+/*    .dropdown .dropbtn {
         display: block;
         width: 100%;
         min-width: 120px;
@@ -95,28 +126,28 @@
         background-color: #f1f1f1;
         margin-left:2rem;
     }
+*/
 
-
-        .dropdown .dropdown-content {
+/*        .dropdown .dropdown-content {
             display: none;
             position: absolute;
             z-index: 1;
             width: 100%;
             margin-left: 2rem;
         }
+*/
 
-
-    .dropdown .dropdown-content .shopping-cart-dropdown-btn {
+/*    .dropdown .dropdown-content .shopping-cart-dropdown-btn {
          width:100%;
          display: block;
          text-align: center;
-     }
+     }*/
 
 
-    .dropdown:hover .dropdown-content {
+/*    .dropdown:hover .dropdown-content {
         display: block;
     }
-
+*/
     .ingredient-dropdown {
         margin-left:2.5rem;
     }

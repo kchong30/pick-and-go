@@ -1,12 +1,12 @@
 ﻿
 .login-page {
-    margin-top:2rem;
-    max-width: 65%;
+ 
 }
 
 .login-banner {
-    width:70%;
-    margin:auto;
+    width:100%;
+    padding: 1rem;
+    max-width: 500px;
 }
 
 .login-prompt {
