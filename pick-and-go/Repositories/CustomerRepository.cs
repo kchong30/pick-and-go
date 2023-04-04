@@ -139,10 +139,12 @@ namespace PickAndGo.Repositories
             return editMessage;
         }
 
-        public string UpdateCustomerSignUpDate(int customerId)
+        public string UpdateCustomerSignUpDate(int customerId, string firstName, string lastName)
         {
             string editMessage = "";
             Customer customer = GetCustomerRecord(customerId);
+            customer.FirstName = firstName;
+            customer.LastName = lastName;
             customer.DateSignedUp = DateTime.Now;
 
             try

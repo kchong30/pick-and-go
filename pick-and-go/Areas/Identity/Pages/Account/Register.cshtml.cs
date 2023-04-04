@@ -176,7 +176,7 @@ namespace PickAndGo.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    message = cr.UpdateCustomerSignUpDate(customer.CustomerId);
+                    message = cr.UpdateCustomerSignUpDate(customer.CustomerId, Input.FirstName, Input.LastName);
                 }
 
                 //If customer creation or update fails - redirect back to registration page with error message.
