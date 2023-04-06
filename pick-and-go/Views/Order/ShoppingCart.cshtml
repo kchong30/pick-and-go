@@ -131,8 +131,8 @@
                             var dataTargetConfirm = "#ModalYes";
                             var modalID = "ModalYes";
                         }
-                        <a class="btn btn-primary float-left add-sandwich-button" asp-controller="Order" asp-action="Index">Add Sandwich</a>
-                        <button type="button" class="btn btn-primary btn-sm proceed-button" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
+                        <a class="btn btn-primary add-sandwich-button" asp-controller="Order" asp-action="Index">Start New Sandwich</a>
+                        <button type="button" class="btn btn-primary btn-sm proceed-button ms-5" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Proceed</button>
 
                         <!-- Modal -->
                         <div class="modal fade" id=@modalID tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
