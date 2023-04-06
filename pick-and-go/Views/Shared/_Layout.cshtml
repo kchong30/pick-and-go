@@ -1,7 +1,8 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+
 @{
-    string currentUrl = HttpContextAccessor.HttpContext.Request.Path.Value;
+    string currentUrl = HttpContextAccessor.HttpContext.Request.Path;
     var customerId = Context.Session.GetString("customerid");
 }
 
@@ -47,16 +48,14 @@
             </a>
 
             <!-- Cart Icon -->
-            @if (currentUrl != "/")
-            {
+            @if (currentUrl != "/"){
                 if (!User.IsInRole("Admin")){
-                <button class="navbar-cart order-md-5 border-0 bg-transparent text-white position-relative fs-4 px-4" id="checkout" onclick="checkout()">
-                    <i class="fa-solid fa-cart-shopping"></i> @*top-0 start-20 *@
-                <span id="cart-icon" class="position-absolute translate-middle badge rounded-pill bg-danger">
-                    0
-                </span>
-
-            </button>
+                    <button class="navbar-cart order-md-5 border-0 bg-transparent text-white position-relative fs-4 px-4" id="checkout" onclick="checkout()">
+                        <i class="fa-solid fa-cart-shopping"></i> @*top-0 start-20 *@
+                        <span id="cart-icon" class="position-absolute translate-middle badge rounded-pill bg-danger">
+                            0
+                        </span>
+                    </button>
                 }
             }
 
@@ -109,13 +108,21 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" asp-area="" asp-controller="Order" asp-action="Favorites" asp-route-customerId="@customerId">Favorites</a>
                     </li>
-                     <li class="nav-item align-items-center d-flex">
+                     <li class="nav-item">
                           <a class="nav-link text-white" asp-area="" asp-controller="Customer" asp-action="CustomerDetails">Profile</a>
                      </li>
+                      <li class="nav-item">
+                         <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
+                      </li>
                 </ul>
                 </div>
                 }
+                @if (!(User.IsInRole("Customer") || User.IsInRole("Admin")))
+                {
+                    <a class="nav-link text-white about-us" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
+                }
                 <partial name="_LoginPartial" />
+
             </div>
         </nav>
     </header>

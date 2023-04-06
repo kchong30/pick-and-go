@@ -109,6 +109,13 @@ nav .dropdown {
 
 }
 
+.about-us {
+    width:fit-content;
+    white-space:nowrap;
+    padding-left:0;
+    
+}
+
 @media (max-width: 768px) {
     .dropdown-menu {
         display: block;
