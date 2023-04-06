@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PickAndGo.Repositories;
+using NuGet.Protocol.Core.Types;
 using PickAndGo.Data;
 using PickAndGo.Models;
 using PickAndGo.Services;
@@ -24,6 +26,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddSession();
+builder.Services.AddScoped<CustomerRepository>();
+
 
 var app = builder.Build();
 

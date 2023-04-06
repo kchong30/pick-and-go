@@ -1,6 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using PickAndGo.Repositories
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject CustomerRepository CustomerRepository
+
+@{
+    string firstName = "";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var email = User.Identity.Name;
+        var customer = CustomerRepository.ReturnCustomerByEmail(email);
+        firstName = customer.FirstName;
+    }
+}
 
 <ul class="navbar-nav aa justify-content-end w-100">
     @if (SignInManager.IsSignedIn(User))
@@ -11,7 +23,7 @@
             </form>
         </li>
         <li class=" align-items-center d-flex me-3">
-            <p class="text-white m-auto pe-none  ml-5">Hello @Context.Session.GetString("firstName")!</p>
+            <p class="text-white m-auto pe-none  ml-5">Hello @firstName!</p>
         </li>
 
     }

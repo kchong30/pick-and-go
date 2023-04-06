@@ -1,6 +1,19 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using PickAndGo.Repositories
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject CustomerRepository CustomerRepository
+
+@{
     ViewData["Title"] = "PickAndGo";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string firstName = "";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var email = User.Identity.Name;
+        var customer = CustomerRepository.ReturnCustomerByEmail(email);
+        firstName = customer.FirstName;
+    }
 }
 
 <style>
@@ -27,7 +40,7 @@
         </div>
     }else{
     <div class="card create-account-card d-flex flex-column flex-grow-1 justify-content-center align-items-center">
-        <p>Welcome back @Context.Session.GetString("firstName")</p>
+        <p>Welcome back @firstName!</p>
         <h1>Feeling Hungry?</h1>
         <p>Let's Start An Order!</p>
             <a class="btn btn-primary home-admin-button" asp-controller="Order" asp-action="Index" role="button">Start Order</a>
