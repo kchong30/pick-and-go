@@ -136,6 +136,7 @@ nav .dropdown {
         color: white !important;
         cursor: auto;
     }
+
 }
 
 /* Bootstrap button styles */
@@ -349,205 +350,230 @@ nav .dropdown {
     height: 100px;
 }
 
-.button-strip {
-    display: flex;
-    justify-content: center;
-    column-gap: 20px;
-    height: 40px;
-    width: 100%;
+/* added by Steph to improve mobile view for products and ingredients lists */
+
+.sandwich-image2 {
+    width: 170px;
+    height: 100px;
 }
 
-.radio-group input[type=radio] {
-    transform: scale(1.8);
-    border: 1px solid gray;
-    width: 10px;
-    height: 10px;
-    border-radius: 10px;
-    appearance: none;
+.ingredient-buttons {
+    column-gap: 4px;
 }
 
-input[type=radio] {
-    transform: scale(1.8);
-}
-
-input[type=radio]:checked {
-    border: 1px solid orange;
-    background-color: orange;
-    box-shadow: inset 0 0 0 2px white;
-}
-
-
-/* Order history styles */
-
-.no-padding {
-    padding: 0;
-}
-
-.cell-image {
-    width: 25px;
-}
-
-.cell-amount {
-    text-align: right;
-}
-
-.icon-btn {
-    border: 1px solid #ef6900;
-    border-radius: 5px;
-    color: #ef6900;
-    background-color: transparent;
-    padding: 3px 7px;
-}
-
-.icon-btn:hover {
-    background-color: #ef6900;
-    color: white;
-}
-
-.orders select {
-    border: 1px solid gray;
-    padding: 1px;
-}
-
-.orders input {
-    border: 1px solid gray;
-}
-
- 
-/* Favorites styles */
-
-.modal-a {
-    text-decoration: none;
-}
-
-.add-button {
-    min-width: 150px;
-
-}
-
-.text {
-    color: #ffaf01;
-}
-
-.favorites table * {
-    border: none;
-}
-
-
-/* Transactions styles */
-
-.date-filter {
- 
-}
-
-.date-filter input[type="date"] {
-    width: 125px;
-}
-
-.transactions select {
-    border: 1px solid gray;
-    padding: 1px;
-}
-
-.transactions input {
-    border: 1px solid gray;
-}
-
-/* Landing Page */
-
-.landing-page {
-    background-image: linear-gradient(#ffaf01, #ef6900);
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    z-index: 10;
-    overflow: auto;
-}
- 
-.landing-page img {
-    max-width: 700px;
-}
-
-.landing-page .button {
-    max-width: 600px;
-}
-
-.landing-page a {
-    text-decoration: none;
-    color: #ef6900;
-    transition: all 0.2s ease-in-out;
-}
-
-.landing-page a:hover {
-    background-color: rgba(0,0,0,0.1);
-    transition: all 0.2s ease-in-out;
-}
-
-/* Home */
-.home {
- overflow: hidden;
-    position: relative;
-}
-
-.card::before {
-    content: " ";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-        background-color: rgba(0,0,0,0.4);
-        z-index: 1;
-}
-
-.card * {
-    z-index:2;
-}
-
-/* History */
-
-.history table * {
-    border: none;
-}
-
-/* Forms */
-
-.form-group {
-    padding: 10px;
-}
-
-.form-group label {
-    font-weight: bold;
-    padding-bottom: 5px;
-}
-
-.form-group input {
-    padding: 0.8rem;
-    width: 400px;
-    box-shadow: none;
-}
-
-.form-group input:focus,
-.form-group input:active {
-    border: 2px solid #ef6900;
-    outline: none;
-    box-shadow: none;
-}
-
-    .form-group select {
-        padding: 0.8rem;
-        box-shadow: none;
+@media (max-width: 768px) {
+    .sandwich-image2 {
+        width: 100%;
+        height: auto;
     }
 
-.form-group select:focus,
-.form-group select:active {
-    border: 2px solid #ef6900;
-    outline: none;
-    box-shadow: none;
+    .action-button {
+        padding-left: 0.3rem;
+        padding-right: 0.3rem;
+    }
+
+    .ingredient-buttons {
+        column-gap: 2px;
+    }
 }
 
-/* Pagination */
-.required {
-    color: red;
-    background-color: yellow;
-}
+    .button-strip {
+        display: flex;
+        justify-content: center;
+        column-gap: 20px;
+        height: 40px;
+        width: 100%;
+    }
+
+    .radio-group input[type=radio] {
+        transform: scale(1.8);
+        border: 1px solid gray;
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        appearance: none;
+    }
+
+    input[type=radio] {
+        transform: scale(1.8);
+    }
+
+        input[type=radio]:checked {
+            border: 1px solid orange;
+            background-color: orange;
+            box-shadow: inset 0 0 0 2px white;
+        }
+
+
+    /* Order history styles */
+
+    .no-padding {
+        padding: 0;
+    }
+
+    .cell-image {
+        width: 25px;
+    }
+
+    .cell-amount {
+        text-align: right;
+    }
+
+    .icon-btn {
+        border: 1px solid #ef6900;
+        border-radius: 5px;
+        color: #ef6900;
+        background-color: transparent;
+        padding: 3px 7px;
+    }
+
+        .icon-btn:hover {
+            background-color: #ef6900;
+            color: white;
+        }
+
+    .orders select {
+        border: 1px solid gray;
+        padding: 1px;
+    }
+
+    .orders input {
+        border: 1px solid gray;
+    }
+
+
+    /* Favorites styles */
+
+    .modal-a {
+        text-decoration: none;
+    }
+
+    .add-button {
+        min-width: 150px;
+    }
+
+    .text {
+        color: #ffaf01;
+    }
+
+    .favorites table * {
+        border: none;
+    }
+
+
+    /* Transactions styles */
+
+    .date-filter {
+    }
+
+        .date-filter input[type="date"] {
+            width: 125px;
+        }
+
+    .transactions select {
+        border: 1px solid gray;
+        padding: 1px;
+    }
+
+    .transactions input {
+        border: 1px solid gray;
+    }
+
+    /* Landing Page */
+
+    .landing-page {
+        background-image: linear-gradient(#ffaf01, #ef6900);
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        z-index: 10;
+        overflow: auto;
+    }
+
+        .landing-page img {
+            max-width: 700px;
+        }
+
+        .landing-page .button {
+            max-width: 600px;
+        }
+
+        .landing-page a {
+            text-decoration: none;
+            color: #ef6900;
+            transition: all 0.2s ease-in-out;
+        }
+
+            .landing-page a:hover {
+                background-color: rgba(0,0,0,0.1);
+                transition: all 0.2s ease-in-out;
+            }
+
+    /* Home */
+    .home {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .card::before {
+        content: " ";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: rgba(0,0,0,0.4);
+        z-index: 1;
+    }
+
+    .card * {
+        z-index: 2;
+    }
+
+    /* History */
+
+    .history table * {
+        border: none;
+    }
+
+    /* Forms */
+
+    .form-group {
+        padding: 10px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            padding-bottom: 5px;
+        }
+
+        .form-group input {
+            padding: 0.8rem;
+            width: 400px;
+            box-shadow: none;
+        }
+
+            .form-group input:focus,
+            .form-group input:active {
+                border: 2px solid #ef6900;
+                outline: none;
+                box-shadow: none;
+            }
+
+        .form-group select {
+            padding: 0.8rem;
+            box-shadow: none;
+        }
+
+            .form-group select:focus,
+            .form-group select:active {
+                border: 2px solid #ef6900;
+                outline: none;
+                box-shadow: none;
+            }
+
+    /* Pagination */
+    .required {
+        color: red;
+        background-color: yellow;
+    }

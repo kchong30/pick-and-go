@@ -59,14 +59,14 @@
                                     <td class="col-1 text-center">$@ing.Price</td>
                                     <td class="col-2 text-center"><img class="stock-icon" src="/images/@ing.InStockIcon" /></td>
                                     <td class="col-4">
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <a class="btn btn-outline-secondary" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
-                                            <a class="btn btn-outline-secondary" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
+                                        <div class="d-flex flex-wrap ingredient-buttons">
+                                            <a class="btn btn-sm btn-outline-secondary action-button" asp-action="IngredientsDetails" asp-route-id="@ing.IngredientId">Details</a>
+                                            <a class="btn btn-sm btn-outline-secondary action-button" asp-action="IngredientsEdit" asp-route-id="@ing.IngredientId">Edit</a>
                                         @if (!ing.OutstandingOrders)
                                         {
                                             var dataTargetConfirm = "#ModalYes" + ing.IngredientId;
                                             var modalID = "ModalYes" + ing.IngredientId;
-                                            <a class="btn btn-outline-secondary" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
+                                                <a class="btn btn-sm btn-outline-secondary action-button" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId" data-bs-toggle="modal" data-bs-target="@dataTargetConfirm">Delete</a>
 
                                             @using (Html.BeginForm("IngredientsDelete", "Admin", new
                                             {
@@ -107,7 +107,7 @@
                                         }
                                         else
                                         {
-                                            <a class="link-disabled btn btn-outline-dark" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId">Delete</a>
+                                            <a class="link-disabled btn btn-sm btn-outline-dark action-button" asp-action="IngredientsDelete" asp-route-id="@ing.IngredientId">Delete</a>
                                         }
                                         </div>
                                     </td>
